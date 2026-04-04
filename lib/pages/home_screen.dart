@@ -184,12 +184,13 @@ class HomeScreenState extends State<HomeScreen> {
                   return TextButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: auto.isAutomaticSectionEnabled
+                          // ? Color.fromRGBO(120, 255, 165, 0.884)
                           ? Color.fromRGBO(44, 187, 104, 1)
                           : Color.fromRGBO(189, 232, 245, 1),
-                      foregroundColor: Colors.black,
+                      foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color.fromRGBO(27, 29, 29, 1), width: 2),
+                        side: BorderSide(color: Colors.white, width: 2),
                       ),
                     ),
                     onPressed: () => auto.setAutomaticEnable(),
@@ -339,8 +340,8 @@ class HomeScreenState extends State<HomeScreen> {
 
                                               context.read<ValueProvider>().setSelectedItem(item, context);
                                               // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
-                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!,'MM');
-                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!,'AM');
+                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!, 'MM');
+                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!, 'AM');
                                             },
                                             onSubmit: (item) {
                                               Provider.of<ValueProvider>(

@@ -157,7 +157,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: [
             for (var l in liveSymbols)
               ListTile(
-                title: Text(l.symbol),
+                // title: Text(l.symbol),
+                title: Row(
+                  spacing: 10,
+                  children: [
+                    SizedBox(width: 80, child: Text(l.symbol)),
+                    Row(
+                      spacing: 1,
+                      children: [
+                        Text('-'),
+                        SizedBox(
+                          width: 40,
+                          child: Text(l.method, style: TextStyle(color: Color.fromRGBO(45, 95, 233, 1))),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 trailing: Text(
                   l.profit.toStringAsFixed(2),
                   style: TextStyle(

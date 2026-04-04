@@ -6,8 +6,9 @@ part 'active_symbol_model.g.dart';
 class ActiveSymbolModel {
   String symbol;
   num profit;
+  String method;
 
-  ActiveSymbolModel({required this.symbol, required this.profit});
+  ActiveSymbolModel({required this.symbol, required this.profit, required this.method});
 
   factory ActiveSymbolModel.fromJson(Map<String, dynamic> json) => _$ActiveSymbolModelFromJson(json);
 
@@ -15,6 +16,6 @@ class ActiveSymbolModel {
 
   @override
   String toString() {
-    return "ActiveSymbolModel{Symbol : $symbol,Profit: $profit}";
+    return "ActiveSymbolModel{Symbol : $symbol,Profit: $profit, Method: $method}";
   }
 }

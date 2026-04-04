@@ -10,7 +10,12 @@ ActiveSymbolModel _$ActiveSymbolModelFromJson(Map<String, dynamic> json) =>
     ActiveSymbolModel(
       symbol: json['symbol'] as String,
       profit: json['profit'] as num,
+      method: json['method'] as String,
     );
 
 Map<String, dynamic> _$ActiveSymbolModelToJson(ActiveSymbolModel instance) =>
-    <String, dynamic>{'symbol': instance.symbol, 'profit': instance.profit};
+    <String, dynamic>{
+      'symbol': instance.symbol,
+      'profit': instance.profit,
+      'method': instance.method,
+    };

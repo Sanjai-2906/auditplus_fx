@@ -168,9 +168,13 @@ class _AutomationScreenState extends State<AutomationScreen> {
                             return TextButton(
                               style: ElevatedButton.styleFrom(
                                 maximumSize: Size(75, 40),
-                                backgroundColor: Color.fromRGBO(44, 187, 104, 1),
+                                // backgroundColor: Color.fromRGBO(44, 187, 104, 1),
+                                backgroundColor: Color.fromRGBO(2, 172, 58, 1),
                                 foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(5)),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(width: 1),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                               ),
                               // onPressed: () => Provider.of<CheckedBoxProvider>(
                               //   context,
@@ -216,90 +220,110 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                 return ListView.builder(
                                   itemCount: autoLive.liveAutomaticTrade.length,
                                   itemBuilder: (context, index) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12.0,
-                                            top: 5.0,
-                                            bottom: 5.0,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Color.fromRGBO(99, 187, 209, 1),
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                width: 135,
-                                                height: 35,
-                                                child: Text(
-                                                  autoLive.liveAutomaticTrade[index].symbol,
-                                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 65,
-                                                height: 35,
-                                                child: Text(
-                                                  autoLive.liveAutomaticTrade[index].volume.toString(),
-                                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  maximumSize: Size(75, 40),
-                                                  backgroundColor: Color.fromRGBO(97, 82, 179, 1),
-                                                  foregroundColor: Colors.black,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadiusGeometry.circular(5),
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                              left: 12.0,
+                                              right: 12.0,
+                                              top: 5.0,
+                                              bottom: 5.0,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Color.fromARGB(255, 255, 255, 255),
+                                              borderRadius: BorderRadius.circular(15),
+                                              border: BoxBorder.all(color: Colors.black),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 135,
+                                                  height: 35,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      autoLive.liveAutomaticTrade[index].symbol,
+                                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                                                    ),
                                                   ),
                                                 ),
-                                                onPressed: () async {
-                                                  final data = CurrentAutomationModel(
-                                                    symbol: autoLive.amSelectedValue ?? "",
-                                                    volume: autoLive.amVolume,
-                                                    isEnabled: true,
-                                                    action: ActionType.close,
-                                                    method: "AM",
-                                                  );
-                                                  await automaticTrading(context, data);
-                                                },
-                                                child: Text(
-                                                  'Close',
-                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  maximumSize: Size(75, 40),
-                                                  backgroundColor: Color.fromRGBO(212, 55, 55, 1),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadiusGeometry.circular(5),
+                                                SizedBox(
+                                                  width: 65,
+                                                  height: 35,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      autoLive.liveAutomaticTrade[index].volume.toString(),
+                                                      style: TextStyle(
+                                                        color: Color.fromRGBO(37, 99, 235, 1),
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                                onPressed: () async {
-                                                  final data = CurrentAutomationModel(
-                                                    symbol: autoLive.amSelectedValue ?? "",
-                                                    volume: autoLive.amVolume,
-                                                    isEnabled: false,
-                                                    action: ActionType.disable,
-                                                    method: "AM",
-                                                  );
-                                                  await automaticTrading(context, data);
-                                                  autoLive.removeLiveTrade(data.symbol);
-                                                },
-                                                icon: Icon(Icons.close, color: Colors.black),
-                                              ),
-                                            ],
+                                                TextButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    maximumSize: Size(75, 40),
+                                                    backgroundColor: Color.fromRGBO(229, 231, 235, 1),
+                                                    foregroundColor: Colors.black,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadiusGeometry.circular(5),
+                                                      side: BorderSide(color: Colors.black, width: 1),
+                                                    ),
+                                                  ),
+                                                  onPressed: () async {
+                                                    final data = CurrentAutomationModel(
+                                                      symbol: autoLive.amSelectedValue ?? "",
+                                                      volume: autoLive.amVolume,
+                                                      isEnabled: true,
+                                                      action: ActionType.close,
+                                                      method: "AM",
+                                                    );
+                                                    await automaticTrading(context, data);
+                                                  },
+                                                  child: Text(
+                                                    'Close',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    maximumSize: Size(75, 40),
+                                                    backgroundColor: Color.fromRGBO(254, 226, 226, 1),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadiusGeometry.circular(5),
+                                                      side: BorderSide(color: Colors.black, width: 1),
+                                                    ),
+                                                  ),
+                                                  onPressed: () async {
+                                                    final data = CurrentAutomationModel(
+                                                      symbol: autoLive.amSelectedValue ?? "",
+                                                      volume: autoLive.amVolume,
+                                                      isEnabled: false,
+                                                      action: ActionType.disable,
+                                                      method: "AM",
+                                                    );
+                                                    await automaticTrading(context, data);
+                                                    autoLive.removeLiveTrade(data.symbol);
+                                                  },
+                                                  icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     );
                                   },
                                 );
