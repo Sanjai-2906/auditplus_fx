@@ -25,7 +25,7 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "Method 2",
+                "",
                 style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
               ),
               Consumer2<MytokenProvider, CheckedBoxProvider>(
@@ -155,10 +155,34 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 6),
+                  //   child: Text(
+                  //     'OSC',
+                  //     textAlign: TextAlign.end,
+                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Text(
-                      'OSC',
+                      'MF',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text(
+                      'TREND',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Text(
+                      'REVERSAL',
                       textAlign: TextAlign.end,
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
@@ -175,7 +199,10 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                       _buildCheckboxRow('long', 'LongDivergenceChecked', checkedBox),
                       _buildCheckboxRow('long', 'LongRevChecked', checkedBox),
                       _buildCheckboxRow('long', 'LongCatcherChecked', checkedBox),
-                      _buildCheckboxRow('long', 'LongOscChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM2MfChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM2TrendChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM2ReversalChecked', checkedBox),
+                      // _buildCheckboxRow('long', 'LongOscChecked', checkedBox),
                     ],
                   );
                 },
@@ -190,7 +217,10 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                       _buildCheckboxRow('short', 'ShortDivergenceChecked', checkedBox),
                       _buildCheckboxRow('short', 'ShortRevChecked', checkedBox),
                       _buildCheckboxRow('short', 'ShortCatcherChecked', checkedBox),
-                      _buildCheckboxRow('short', 'ShortOscChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM2MfChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM2TrendChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM2ReversalChecked', checkedBox),
+                      // _buildCheckboxRow('short', 'ShortOscChecked', checkedBox),
                     ],
                   );
                 },
@@ -236,16 +266,28 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
         return checkedBox.isLongRevChecked;
       case 'LongCatcherChecked':
         return checkedBox.isLongCatcherChecked;
-      case 'LongOscChecked':
-        return checkedBox.isLongOscChecked;
+      // case 'LongOscChecked':
+      //   return checkedBox.isLongOscChecked;
+      case 'LongM2MfChecked':
+        return checkedBox.isLongM2MfChecked;
+      case 'LongM2TrendChecked':
+        return checkedBox.isLongM2TrendChecked;
+      case 'LongM2ReversalChecked':
+        return checkedBox.isLongM2ReversalChecked;
       case 'ShortDivergenceChecked':
         return checkedBox.isShortDivergenceChecked;
       case 'ShortRevChecked':
         return checkedBox.isShortRevChecked;
       case 'ShortCatcherChecked':
         return checkedBox.isShortCatcherChecked;
-      case 'ShortOscChecked':
-        return checkedBox.isShortOscChecked;
+      case 'ShortM2MfChecked':
+        return checkedBox.isShortM2MfChecked;
+      case 'ShortM2TrendChecked':
+        return checkedBox.isShortM2TrendChecked;
+      case 'ShortM2ReversalChecked':
+        return checkedBox.isShortM2ReversalChecked;
+      // case 'ShortOscChecked':
+      //   return checkedBox.isShortOscChecked;
       default:
         return false;
     }

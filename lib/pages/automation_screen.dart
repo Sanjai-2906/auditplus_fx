@@ -1,3 +1,4 @@
+import 'package:auditplus_fx/sections/sections.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
@@ -15,6 +16,7 @@ class AutomationScreen extends StatefulWidget {
 }
 
 class _AutomationScreenState extends State<AutomationScreen> {
+  bool isAutoClosingEnabled = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +44,9 @@ class _AutomationScreenState extends State<AutomationScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 5, bottom: 5),
+                  Container(
+                    width: MediaQuery.of(context).size.height * 0.7,
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +54,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                         Consumer<ValueProvider>(
                           builder: (context, drop, child) {
                             return SizedBox(
-                              width: 135,
+                              width: 110,
                               height: 35,
                               child: SearchField<String>(
                                 suggestions: widget.symbols,
@@ -64,7 +67,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                   filled: true,
                                   fillColor: Colors.white,
                                   isDense: true,
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
 
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
@@ -116,7 +119,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                           builder: (context, drop, child) {
                             return SizedBox(
                               height: 35,
-                              width: 65,
+                              width: 100,
                               child: TextFormField(
                                 // controller: drop.am1VolumeController,
                                 controller: drop.amVolumeController,
@@ -213,8 +216,13 @@ class _AutomationScreenState extends State<AutomationScreen> {
                         return Text("No items found");
                       } else {
                         return SingleChildScrollView(
-                          child: SizedBox(
-                            height: 450,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.black),
+                            ),
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.height * 0.7,
                             child: Consumer<ValueProvider>(
                               builder: (context, autoLive, child) {
                                 return ListView.builder(
@@ -238,87 +246,125 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                               borderRadius: BorderRadius.circular(15),
                                               border: BoxBorder.all(color: Colors.black),
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                            child: Column(
                                               children: [
-                                                SizedBox(
-                                                  width: 135,
-                                                  height: 35,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                      autoLive.liveAutomaticTrade[index].symbol,
-                                                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 65,
-                                                  height: 35,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                      autoLive.liveAutomaticTrade[index].volume.toString(),
-                                                      style: TextStyle(
-                                                        color: Color.fromRGBO(37, 99, 235, 1),
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.bold,
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 110,
+                                                      height: 35,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(top: 3.0),
+                                                        child: Text(
+                                                          autoLive.liveAutomaticTrade[index].symbol,
+                                                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    maximumSize: Size(75, 40),
-                                                    backgroundColor: Color.fromRGBO(229, 231, 235, 1),
-                                                    foregroundColor: Colors.black,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadiusGeometry.circular(5),
-                                                      side: BorderSide(color: Colors.black, width: 1),
+                                                    SizedBox(
+                                                      width: 65,
+                                                      height: 35,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.only(top: 3.0),
+                                                        child: Text(
+                                                          autoLive.liveAutomaticTrade[index].volume.toString(),
+                                                          style: TextStyle(
+                                                            color: Color.fromRGBO(37, 99, 235, 1),
+                                                            fontSize: 18,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  onPressed: () async {
-                                                    final data = CurrentAutomationModel(
-                                                      symbol: autoLive.amSelectedValue ?? "",
-                                                      volume: autoLive.amVolume,
-                                                      isEnabled: true,
-                                                      action: ActionType.close,
-                                                      method: "AM",
-                                                    );
-                                                    await automaticTrading(context, data);
-                                                  },
-                                                  child: Text(
-                                                    'Close',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                    TextButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        maximumSize: Size(75, 40),
+                                                        backgroundColor: Color.fromRGBO(229, 231, 235, 1),
+                                                        foregroundColor: Colors.black,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadiusGeometry.circular(5),
+                                                          side: BorderSide(color: Colors.black, width: 1),
+                                                        ),
+                                                      ),
+                                                      onPressed: () async {
+                                                        final data = CurrentAutomationModel(
+                                                          symbol: autoLive.amSelectedValue ?? "",
+                                                          volume: autoLive.amVolume,
+                                                          isEnabled: true,
+                                                          action: ActionType.close,
+                                                          method: "AM",
+                                                        );
+                                                        await automaticTrading(context, data);
+                                                      },
+                                                      child: Text(
+                                                        'Close',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  style: ElevatedButton.styleFrom(
-                                                    maximumSize: Size(75, 40),
-                                                    backgroundColor: Color.fromRGBO(254, 226, 226, 1),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadiusGeometry.circular(5),
-                                                      side: BorderSide(color: Colors.black, width: 1),
+                                                    IconButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        maximumSize: Size(45, 40),
+                                                        backgroundColor: Color.fromRGBO(254, 226, 226, 1),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadiusGeometry.circular(5),
+                                                          side: BorderSide(color: Colors.black, width: 1),
+                                                        ),
+                                                      ),
+                                                      onPressed: () async {
+                                                        final data = CurrentAutomationModel(
+                                                          symbol: autoLive.amSelectedValue ?? "",
+                                                          volume: autoLive.amVolume,
+                                                          isEnabled: false,
+                                                          action: ActionType.disable,
+                                                          method: "AM",
+                                                        );
+                                                        await automaticTrading(context, data);
+                                                        autoLive.removeLiveTrade(data.symbol);
+                                                      },
+                                                      icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
                                                     ),
-                                                  ),
-                                                  onPressed: () async {
-                                                    final data = CurrentAutomationModel(
-                                                      symbol: autoLive.amSelectedValue ?? "",
-                                                      volume: autoLive.amVolume,
-                                                      isEnabled: false,
-                                                      action: ActionType.disable,
-                                                      method: "AM",
-                                                    );
-                                                    await automaticTrading(context, data);
-                                                    autoLive.removeLiveTrade(data.symbol);
-                                                  },
-                                                  icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
+                                                    IconButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        maximumSize: Size(45, 40),
+                                                        backgroundColor: Color.fromRGBO(50, 187, 221, 1),
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadiusGeometry.circular(5),
+                                                          side: BorderSide(color: Colors.black, width: 1),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          isAutoClosingEnabled = !isAutoClosingEnabled;
+                                                        });
+                                                      },
+                                                      // onPressed: () async {
+                                                      //   final data = CurrentAutomationModel(
+                                                      //     symbol: autoLive.amSelectedValue ?? "",
+                                                      //     volume: autoLive.amVolume,
+                                                      //     isEnabled: false,
+                                                      //     action: ActionType.disable,
+                                                      //     method: "AM",
+                                                      //   );
+                                                      //   await automaticTrading(context, data);
+                                                      //   autoLive.removeLiveTrade(data.symbol);
+                                                      // },
+                                                      icon: Icon(Icons.add, color: Color.fromRGBO(12, 9, 56, 1)),
+                                                    ),
+                                                  ],
                                                 ),
+                                                if (isAutoClosingEnabled)
+                                                  Column(
+                                                    children: [
+                                                      Text('Slot for Settings'),
+                                                      AutomaticClosingSection(method: 'AM1'),
+                                                    ],
+                                                  ),
                                               ],
                                             ),
                                           ),

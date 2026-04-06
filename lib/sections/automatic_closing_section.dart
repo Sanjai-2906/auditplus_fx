@@ -11,17 +11,53 @@ class AutomaticClosingSection extends StatefulWidget {
 }
 
 class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
-  String get reversalPlus => {'MM1': 'MM1ReversalPlusChecked', 'MM2': 'MM2ReversalPlusChecked'}[widget.method]!;
+  String get reversalPlusPlus => {
+    'MM1': 'MM1ReversalPlusPlusChecked',
+    'MM2': 'MM2ReversalPlusPlusChecked',
+    'AM1': 'AM1ReversalPlusPlusChecked',
+    'AM2': 'AM2ReversalPlusPlusChecked',
+  }[widget.method]!;
 
-  String get reversal => {'MM1': 'MM1ReversalChecked', 'MM2': 'MM2ReversalChecked'}[widget.method]!;
+  String get reversalPlus => {
+    'MM1': 'MM1ReversalPlusChecked',
+    'MM2': 'MM2ReversalPlusChecked',
+    'AM1': 'AM1ReversalPlusChecked',
+    'AM2': 'AM2ReversalPlusChecked',
+  }[widget.method]!;
 
-  String get signal => {'MM1': 'MM1SignalExitChecked', 'MM2': 'MM2SignalExitChecked'}[widget.method]!;
+  String get reversal => {
+    'MM1': 'MM1ReversalChecked',
+    'MM2': 'MM2ReversalChecked',
+    'AM1': 'AM1ReversalChecked',
+    'AM2': 'AM2ReversalChecked',
+  }[widget.method]!;
 
-  String get tc => {'MM1': 'MM1TcChangeChecked', 'MM2': 'MM2TcChangeChecked'}[widget.method]!;
+  String get signal => {
+    'MM1': 'MM1SignalExitChecked',
+    'MM2': 'MM2SignalExitChecked',
+    'AM1': 'AM1SignalExitChecked',
+    'AM2': 'AM2SignalExitChecked',
+  }[widget.method]!;
 
-  String get hw => {'MM1': 'MM1HwChecked', 'MM2': 'MM2HwChecked'}[widget.method]!;
+  String get tc => {
+    'MM1': 'MM1TcChangeChecked',
+    'MM2': 'MM2TcChangeChecked',
+    'AM1': 'AM1TcChangeChecked',
+    'AM2': 'AM2TcChangeChecked',
+  }[widget.method]!;
 
-  String get mf => {'MM1': 'MM1MfChecked', 'MM2': 'MM2MfChecked'}[widget.method]!;
+  String get hw =>
+      {'MM1': 'MM1HwChecked', 'MM2': 'MM2HwChecked', 'AM1': 'AM1HwChecked', 'AM2': 'AM2HwChecked'}[widget.method]!;
+
+  String get hwTh => {
+    'MM1': 'MM1HWTHChecked',
+    'MM2': 'MM2HWTHChecked',
+    'AM1': 'AM1HWTHChecked',
+    'AM2': 'AM2HWTHChecked',
+  }[widget.method]!;
+
+  String get mf =>
+      {'MM1': 'MM1MfChecked', 'MM2': 'MM2MfChecked', 'AM1': 'AM1MfChecked', 'AM2': 'AM2MfChecked'}[widget.method]!;
 
   @override
   Widget build(BuildContext context) {
@@ -305,6 +341,104 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    style: _getCheckboxValue(reversalPlusPlus, checkedbox)
+                        ? ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                          )
+                        : ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.black,
+                            backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                          ),
+                    onPressed: () {
+                      // checkedbox.changeValue(widget.method, reversalPlusPlus, context);
+                      // checkedbox.changeValue(null, widget.method, reversalPlusPlus, context);
+                      checkedbox.changeValue(null, "MM", reversalPlusPlus, context);
+                    },
+                    child: Row(
+                      spacing: 3,
+                      children: [
+                        Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        Icon(
+                          Icons.add,
+                          color: _getCheckboxValue(reversalPlus, checkedbox)
+                              ? Color.fromRGBO(6, 255, 14, 1)
+                              : Color.fromRGBO(0, 57, 2, 1),
+                          size: 20.0,
+                        ),
+                        Icon(
+                          Icons.add,
+                          color: _getCheckboxValue(reversalPlus, checkedbox)
+                              ? Color.fromRGBO(6, 255, 14, 1)
+                              : Color.fromRGBO(0, 57, 2, 1),
+                          size: 20.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: _getCheckboxValue(hwTh, checkedbox)
+                        ? ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                          )
+                        : ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.black,
+                            backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                          ),
+                    onPressed: () {
+                      // checkedbox.changeValue(widget.method, reversalPlusPlus, context);
+                      // checkedbox.changeValue(null, widget.method, reversalPlusPlus, context);
+                      checkedbox.changeValue(null, "MM", hwTh, context);
+                    },
+                    child: Row(
+                      spacing: 3,
+                      children: [
+                        Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        Icon(
+                          Icons.close,
+                          color: _getCheckboxValue(signal, checkedbox) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                          size: 20.0,
+                        ),
+                        Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         );
@@ -314,6 +448,8 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
 
   bool _getCheckboxValue(String checkboxField, CheckedBoxProvider checkedBox) {
     switch (checkboxField) {
+      case 'MM1ReversalPlusPlusChecked':
+        return checkedBox.isMM1ReversalPlusPlusChecked;
       case 'MM1ReversalPlusChecked':
         return checkedBox.isMM1ReversalPlusChecked;
       case 'MM1ReversalChecked':
@@ -326,6 +462,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
         return checkedBox.isMM1HwChecked;
       case 'MM1MfChecked':
         return checkedBox.isMM1MfChecked;
+      case 'MM1HWTHChecked':
+        return checkedBox.isMM1HWTHChecked;
+      case 'MM2ReversalPlusPlusChecked':
+        return checkedBox.isMM2ReversalPlusPlusChecked;
       case 'MM2ReversalPlusChecked':
         return checkedBox.isMM2ReversalPlusChecked;
       case 'MM2ReversalChecked':
@@ -338,6 +478,8 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
         return checkedBox.isMM2HwChecked;
       case 'MM2MfChecked':
         return checkedBox.isMM2MfChecked;
+      case 'MM2HWTHChecked':
+        return checkedBox.isMM2HWTHChecked;
       // case 'M3ReversalPlusChecked':
       //   return checkedBox.isM3ReversalPlusChecked;
       // case 'M3ReversalChecked':

@@ -7,22 +7,26 @@ class CurrentOpenModel {
   String symbol;
   String method;
   String actionType;
+  bool reversalPlusPlus;
   bool reversalPlus;
   bool reversal;
   bool signalExit;
   bool tcChange;
   bool hyperWave;
+  bool hyperWaveThreshold;
   bool moneyFlow;
 
   CurrentOpenModel({
     required this.symbol,
     required this.method,
     required this.actionType,
+    required this.reversalPlusPlus,
     required this.reversalPlus,
     required this.reversal,
     required this.signalExit,
     required this.tcChange,
     required this.hyperWave,
+    required this.hyperWaveThreshold,
     required this.moneyFlow,
   });
 
@@ -32,6 +36,6 @@ class CurrentOpenModel {
 
   @override
   String toString() {
-    return "CurrentOpenModel{Symbol : $symbol,Method : $method,Action Type : $actionType, Reversal Plus: $reversalPlus,Reversal: $reversal,Signal Exit: $signalExit,Tc Change: $tcChange,Hyper Wave: $hyperWave,Money Flow: $moneyFlow}";
+    return "CurrentOpenModel{Symbol : $symbol,Method : $method,Action Type : $actionType, Reversal Plus Plus: $reversalPlusPlus, Reversal Plus: $reversalPlus,Reversal: $reversal,Signal Exit: $signalExit,Tc Change: $tcChange,Hyper Wave: $hyperWave,Hyper Wave Threshold: $hyperWaveThreshold,Money Flow: $moneyFlow}";
   }
 }

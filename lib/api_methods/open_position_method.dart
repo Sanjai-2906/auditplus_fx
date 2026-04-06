@@ -32,11 +32,13 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   final symbol = valueProv.manualSelectedValue;
   // final volume = valueProv.volume;
   final volume = valueProv.manualVolume;
+  late bool reversalPlusPlus;
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
   late bool tc;
   late bool hw;
+  late bool hwTh;
   late bool mf;
 
   if (method == 'MM1') {
@@ -54,11 +56,13 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
         }
       }
     }
+    reversalPlusPlus = checkedProv.isMM1ReversalPlusPlusChecked;
     reversalPlus = checkedProv.isMM1ReversalPlusChecked;
     reversal = checkedProv.isMM1ReversalChecked;
     signal = checkedProv.isMM1SignalExitChecked;
     tc = checkedProv.isMM1TcChangeChecked;
     hw = checkedProv.isMM1HwChecked;
+    hwTh = checkedProv.isMM1HWTHChecked;
     mf = checkedProv.isMM1MfChecked;
   } else if (method == 'MM2') {
     final prov = Provider.of<ValueProvider>(context, listen: false);
@@ -75,11 +79,13 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
         }
       }
     }
+    reversalPlusPlus = checkedProv.isMM2ReversalPlusPlusChecked;
     reversalPlus = checkedProv.isMM2ReversalPlusChecked;
     reversal = checkedProv.isMM2ReversalChecked;
     signal = checkedProv.isMM2SignalExitChecked;
     tc = checkedProv.isMM2TcChangeChecked;
     hw = checkedProv.isMM2HwChecked;
+    hwTh = checkedProv.isMM2HWTHChecked;
     mf = checkedProv.isMM2MfChecked;
   }
 
@@ -89,11 +95,13 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     method: method,
     volume: volume,
     takeProfit: takeProfit,
+    reversalPlusPlus: reversalPlusPlus,
     reversalPlus: reversalPlus,
     reversal: reversal,
     signalExit: signal,
     tcChange: tc,
     hyperWave: hw,
+    hyperWaveThreshold: hwTh,
     moneyFlow: mf,
   );
   try {
@@ -108,6 +116,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     late bool signal;
     late bool tc;
     late bool hw;
+    late bool hwTh;
 
     if (method == 'MM1') {
       reversalPlus = checkedProv.isMM1ReversalPlusChecked;
@@ -115,23 +124,27 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
       signal = checkedProv.isMM1SignalExitChecked;
       tc = checkedProv.isMM1TcChangeChecked;
       hw = checkedProv.isMM1HwChecked;
+      hwTh = checkedProv.isMM1HWTHChecked;
     } else if (method == 'MM2') {
       reversalPlus = checkedProv.isMM2ReversalPlusChecked;
       reversal = checkedProv.isMM2ReversalChecked;
       signal = checkedProv.isMM2SignalExitChecked;
       tc = checkedProv.isMM2TcChangeChecked;
       hw = checkedProv.isMM2HwChecked;
+      hwTh = checkedProv.isMM2HWTHChecked;
     }
 
     final mod = CurrentOpenModel(
       symbol: symbol!,
       method: data.method!,
       actionType: actionType,
+      reversalPlusPlus: reversalPlusPlus,
       reversalPlus: reversalPlus,
       reversal: reversal,
       signalExit: signal,
       tcChange: tc,
       hyperWave: hw,
+      hyperWaveThreshold: hwTh,
       moneyFlow: mf,
     );
     Provider.of<ValueProvider>(context, listen: false).addCurrentOpen(mod);

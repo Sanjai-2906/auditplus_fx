@@ -18,7 +18,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(maxWidth: double.infinity),
-      color: Color.fromRGBO(189, 232, 245, 1),
+      // color: Color.fromRGBO(189, 232, 245, 1),
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5, top: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +27,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "Method 1",
+                "",
                 style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
               ),
               Consumer2<MytokenProvider, CheckedBoxProvider>(
@@ -157,10 +157,34 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                  //   child: Text(
+                  //     'OSC',
+                  //     textAlign: TextAlign.end,
+                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                     child: Text(
-                      'OSC',
+                      'MF',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                    child: Text(
+                      'TREND',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                    child: Text(
+                      'REVERSAL',
                       textAlign: TextAlign.end,
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
@@ -178,7 +202,10 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       _buildCheckboxRow('long', 'LongTtChecked', checkedBox),
                       _buildCheckboxRow('long', 'LongNeoChecked', checkedBox),
                       _buildCheckboxRow('long', 'LongConfChecked', checkedBox),
-                      _buildCheckboxRow('long', 'LongHwoChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM1MfChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM1TrendChecked', checkedBox),
+                      _buildCheckboxRow('long', 'LongM1ReversalChecked', checkedBox),
+                      // _buildCheckboxRow('long', 'LongHwoChecked', checkedBox),
                     ],
                   );
                 },
@@ -194,7 +221,10 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       _buildCheckboxRow('short', 'ShortTtChecked', checkedBox),
                       _buildCheckboxRow('short', 'ShortNeoChecked', checkedBox),
                       _buildCheckboxRow('short', 'ShortConfChecked', checkedBox),
-                      _buildCheckboxRow('short', 'ShortHwoChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM1MfChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM1TrendChecked', checkedBox),
+                      _buildCheckboxRow('short', 'ShortM1ReversalChecked', checkedBox),
+                      // _buildCheckboxRow('short', 'ShortHwoChecked', checkedBox),
                     ],
                   );
                 },
@@ -240,20 +270,32 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
         return checkedBox.isLongTtChecked;
       case 'LongNeoChecked':
         return checkedBox.isLongNeoChecked;
-      case 'LongHwoChecked':
-        return checkedBox.isLongHwoChecked;
       case 'LongConfChecked':
         return checkedBox.isLongConfChecked;
+      // case 'LongHwoChecked':
+      //   return checkedBox.isLongHwoChecked;
+      case 'LongM1MfChecked':
+        return checkedBox.isLongM1MfChecked;
+      case 'LongM1TrendChecked':
+        return checkedBox.isLongM1TrendChecked;
+      case 'LongM1ReversalChecked':
+        return checkedBox.isLongM1ReversalChecked;
       case 'ShortTcChecked':
         return checkedBox.isShortTcChecked;
       case 'ShortTtChecked':
         return checkedBox.isShortTtChecked;
       case 'ShortNeoChecked':
         return checkedBox.isShortNeoChecked;
-      case 'ShortHwoChecked':
-        return checkedBox.isShortHwoChecked;
       case 'ShortConfChecked':
         return checkedBox.isShortConfChecked;
+      case 'ShortM1MfChecked':
+        return checkedBox.isShortM1MfChecked;
+      case 'ShortM1TrendChecked':
+        return checkedBox.isShortM1TrendChecked;
+      case 'ShortM1ReversalChecked':
+        return checkedBox.isShortM1ReversalChecked;
+      // case 'ShortHwoChecked':
+      //   return checkedBox.isShortHwoChecked;
       default:
         return false;
     }

@@ -8,7 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/models.dart';
 import 'providers.dart';
 
+//Screen Selection
+enum Method { method1, method2 }
+
 class ValueProvider extends ChangeNotifier {
+  //Screen Changes
+  Method screenView = Method.method1;
+
   String? manualSelectedValue;
   String? amSelectedValue;
   bool isAutomaticSectionEnabled = false;
@@ -58,7 +64,8 @@ class ValueProvider extends ChangeNotifier {
         final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
         checkboxProvider.loadFromApi(lastSymbol, 'MM');
-        checkboxProvider.loadFromApi(lastSymbol, 'AM');
+        checkboxProvider.loadFromApi(lastSymbol, 'AM1');
+        checkboxProvider.loadFromApi(lastSymbol, 'AM2');
       });
     }
     if (amLastSymbol.isNotEmpty) {
@@ -71,7 +78,8 @@ class ValueProvider extends ChangeNotifier {
         final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
         checkboxProvider.loadFromApi(lastSymbol, 'MM');
-        checkboxProvider.loadFromApi(lastSymbol, 'AM');
+        checkboxProvider.loadFromApi(lastSymbol, 'AM1');
+        checkboxProvider.loadFromApi(lastSymbol, 'AM2');
       });
     }
 
@@ -135,6 +143,12 @@ class ValueProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Change Screen
+  void changeMethodScreen(Method selection) {
+    screenView = selection;
+    notifyListeners();
+  }
+
   void setSelectedItem(SearchFieldListItem<String> item, BuildContext context) async {
     manualSelectedItem = item;
     manualSelectedValue = item.searchKey;
@@ -191,14 +205,16 @@ class ValueProvider extends ChangeNotifier {
     }
   }
 
-  void updateFlags(String symbol, bool rp, bool r, bool s, bool t, bool hw) {
+  void updateFlags(String symbol, bool rpp, bool rp, bool r, bool s, bool t, bool hw, bool hwTh) {
     final open = getOpenBySymbol(symbol);
     if (open != null) {
+      open.reversalPlusPlus = rpp;
       open.reversalPlus = rp;
       open.reversal = r;
       open.signalExit = s;
       open.tcChange = t;
       open.hyperWave = hw;
+      open.hyperWaveThreshold = hwTh;
       notifyListeners();
     }
   }

@@ -278,7 +278,6 @@ class HomeScreenState extends State<HomeScreen> {
                   child: auto.isAutomaticSectionEnabled
                       ? AutomationScreen(symbols: symbols)
                       : SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
@@ -450,87 +449,10 @@ class HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              Consumer<ValueProvider>(
-                                builder: (context, seg, child) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      // color: Colors.grey.shade200,
-                                      color: Color.fromRGBO(209, 238, 250, 1),
-                                      border: Border.all(color: Colors.black, width: 1.0),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => seg.changeMethodScreen(Method.method1),
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: seg.screenView == Method.method1
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    // : Colors.transparent,
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method1",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: seg.screenView == Method.method1
-                                                        // ? Colors.white
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => seg.changeMethodScreen(Method.method2),
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: seg.screenView == Method.method2
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    // : Colors.transparent,
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method2",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: seg.screenView == Method.method2
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                              Consumer<ValueProvider>(
-                                builder: (context, screen, child) {
-                                  return screen.screenView == Method.method1
-                                      ? ManualMethod1Section()
-                                      : ManualMethod2Section();
-                                },
-                              ),
+                              ManualMethod1Section(),
+                              DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
+                              ManualMethod2Section(),
+                              DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
                             ],
                           ),
                         ),

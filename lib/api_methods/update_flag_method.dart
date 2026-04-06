@@ -18,37 +18,45 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   final openTrade = valueProv.getOpenBySymbol(symbol);
   if (openTrade == null) return;
 
+  late bool reversalPlusPlus;
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
   late bool tc;
   late bool hw;
+  late bool hwTh;
   late bool mf;
 
   if (mod.method == 'MM1') {
+    reversalPlusPlus = checked.isMM1ReversalPlusPlusChecked;
     reversalPlus = checked.isMM1ReversalPlusChecked;
     reversal = checked.isMM1ReversalChecked;
     signal = checked.isMM1SignalExitChecked;
     tc = checked.isMM1TcChangeChecked;
     hw = checked.isMM1HwChecked;
+    hwTh = checked.isMM1HWTHChecked;
     mf = checked.isMM1MfChecked;
   } else if (mod.method == 'MM2') {
+    reversalPlusPlus = checked.isMM2ReversalPlusPlusChecked;
     reversalPlus = checked.isMM2ReversalPlusChecked;
     reversal = checked.isMM2ReversalChecked;
     signal = checked.isMM2SignalExitChecked;
     tc = checked.isMM2TcChangeChecked;
     hw = checked.isMM2HwChecked;
+    hwTh = checked.isMM2HWTHChecked;
     mf = checked.isMM2MfChecked;
   }
 
   final data = {
     'symbol': symbol,
     'method': mod.method,
+    'reversalPlusPlus': reversalPlusPlus,
     'reversalPlus': reversalPlus,
     'reversal': reversal,
     'signalExit': signal,
     'tcChange': tc,
     'hyperWave': hw,
+    'hyperWaveThreshold': hwTh,
     'moneyFlow': mf,
   };
 
@@ -62,5 +70,5 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   );
 
   // update local cache
-  valueProv.updateFlags(symbol, reversalPlus, reversal, signal, tc, hw);
+  valueProv.updateFlags(symbol, reversalPlusPlus, reversalPlus, reversal, signal, tc, hw, hwTh);
 }
