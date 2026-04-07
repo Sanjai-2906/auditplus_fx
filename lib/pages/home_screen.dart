@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:auditplus_fx/pages/automation_screen.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -278,7 +277,6 @@ class HomeScreenState extends State<HomeScreen> {
                   child: auto.isAutomaticSectionEnabled
                       ? AutomationScreen(symbols: symbols)
                       : SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
@@ -526,9 +524,18 @@ class HomeScreenState extends State<HomeScreen> {
                               ),
                               Consumer<ValueProvider>(
                                 builder: (context, screen, child) {
-                                  return screen.manualScreenView == Method.method1
-                                      ? ManualMethod1Section()
-                                      : ManualMethod2Section();
+                                  return PageView(
+                                    // Link this to your provider's state to jump between sections
+                                    controller: PageController(
+                                      initialPage: screen.manualScreenView == Method.method1 ? 0 : 1,
+                                    ),
+                                    onPageChanged: (index) {
+                                      final method = index == 0 ? Method.method1 : Method.method2;
+                                      screen.changeMethodScreen('MM', method);
+                                    },
+                                    physics: const BouncingScrollPhysics(), // Optional: for a nice bounce effect
+                                    children: [ManualMethod1Section(), ManualMethod2Section()],
+                                  );
                                 },
                               ),
                             ],

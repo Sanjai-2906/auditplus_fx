@@ -260,7 +260,16 @@ class _AutomationScreenState extends State<AutomationScreen> {
             ),
             Consumer<ValueProvider>(
               builder: (context, screen, child) {
-                return screen.autoScreenView == Method.method1 ? AutomaticMethod1Section() : AutomaticMethod2Section();
+                return PageView(
+                  // Link this to your provider's state to jump between sections
+                  controller: PageController(initialPage: screen.autoScreenView == Method.method1 ? 0 : 1),
+                  onPageChanged: (index) {
+                    final method = index == 0 ? Method.method1 : Method.method2;
+                    screen.changeMethodScreen('AM', method);
+                  },
+                  physics: const BouncingScrollPhysics(), // Optional: for a nice bounce effect
+                  children: [AutomaticMethod1Section(), AutomaticMethod2Section()],
+                );
               },
             ),
           ],
