@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:auditplus_fx/pages/automation_screen.dart';
-import 'package:dotted_line/dotted_line.dart';
+// import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -450,9 +450,9 @@ class HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               ManualMethod1Section(),
-                              DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
+                              // DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
                               ManualMethod2Section(),
-                              DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
+                              // DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
                             ],
                           ),
                         ),

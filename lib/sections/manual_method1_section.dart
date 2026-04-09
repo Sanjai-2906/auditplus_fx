@@ -17,7 +17,6 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(maxWidth: double.infinity),
-      // color: Color.fromRGBO(189, 232, 245, 1),
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5, top: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,8 +28,52 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                 "",
                 style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              Consumer2<MytokenProvider, CheckedBoxProvider>(
-                builder: (context, myToken, checkedBox, child) {
+              Consumer3<MytokenProvider, CheckedBoxProvider, ValueProvider>(
+                builder: (context, myToken, checkedBox, value, child) {
+                  final symbol = value.manualSelectedValue;
+                  if (symbol == null || checkedBox.mmValuesPerSymbol[symbol] == null) {
+                    // return const Center(child: CircularProgressIndicator());
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 5,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(100, 40),
+                            maximumSize: Size(100, 50),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: BorderSide(color: Colors.black, width: 2),
+                            ),
+                            elevation: 8.0,
+                            foregroundColor: Colors.black,
+                            backgroundColor: const Color.fromARGB(255, 199, 199, 199),
+                            textStyle: TextStyle(inherit: true, fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {},
+                          child: Text('Long'),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(100, 40),
+                            maximumSize: Size(100, 50),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            backgroundColor: const Color.fromARGB(255, 199, 199, 199),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: BorderSide(color: Colors.black, width: 2),
+                            ),
+                            elevation: 8.0,
+                            foregroundColor: Colors.black,
+                            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {},
+                          child: Text('Short'),
+                        ),
+                      ],
+                    );
+                  }
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 5,
@@ -46,10 +89,10 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                           ),
                           elevation: 8.0,
                           foregroundColor: Colors.black,
-                          backgroundColor: checkedBox.isM1LongAllChecked ? Colors.lightGreen : Colors.grey,
+                          backgroundColor: checkedBox.isM1LongAllChecked(symbol) ? Colors.lightGreen : Colors.grey,
                           textStyle: TextStyle(inherit: true, fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        onPressed: checkedBox.isM1LongAllChecked
+                        onPressed: checkedBox.isM1LongAllChecked(symbol)
                             ? () {
                                 final token = Provider.of<MytokenProvider>(context, listen: false).token;
                                 if (token != null) {
@@ -77,7 +120,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                           minimumSize: Size(100, 40),
                           maximumSize: Size(100, 50),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          backgroundColor: checkedBox.isM1ShortAllChecked ? Colors.red : Colors.grey,
+                          backgroundColor: checkedBox.isM1ShortAllChecked(symbol) ? Colors.red : Colors.grey,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                             side: BorderSide(color: Colors.black, width: 2),
@@ -86,7 +129,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                           foregroundColor: Colors.black,
                           textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        onPressed: checkedBox.isM1ShortAllChecked
+                        onPressed: checkedBox.isM1ShortAllChecked(symbol)
                             ? () {
                                 final token = Provider.of<MytokenProvider>(context, listen: false).token;
                                 if (token != null) {
@@ -156,14 +199,6 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                  //   child: Text(
-                  //     'OSC',
-                  //     textAlign: TextAlign.end,
-                  //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  //   ),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                     child: Text(
@@ -192,6 +227,10 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
               ),
               Consumer2<ValueProvider, CheckedBoxProvider>(
                 builder: (context, value, checkedBox, child) {
+                  if (checkedBox.isLoading || value.manualSelectedValue == null) {
+                    // return const Center(child: CircularProgressIndicator());
+                    return Column(children: List.generate(7, (_) => _placeHolderCheckboxRow('long')));
+                  }
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -204,13 +243,16 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       _buildCheckboxRow('long', 'LongM1MfChecked', checkedBox, value),
                       _buildCheckboxRow('long', 'LongM1TrendChecked', checkedBox, value),
                       _buildCheckboxRow('long', 'LongM1ReversalChecked', checkedBox, value),
-                      // _buildCheckboxRow('long', 'LongHwoChecked', checkedBox),
                     ],
                   );
                 },
               ),
               Consumer2<ValueProvider, CheckedBoxProvider>(
                 builder: (context, value, checkedBox, child) {
+                  if (checkedBox.isLoading || value.manualSelectedValue == null) {
+                    // return const Center(child: CircularProgressIndicator());
+                    return Column(children: List.generate(7, (_) => _placeHolderCheckboxRow('short')));
+                  }
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -223,7 +265,6 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
                       _buildCheckboxRow('short', 'ShortM1MfChecked', checkedBox, value),
                       _buildCheckboxRow('short', 'ShortM1TrendChecked', checkedBox, value),
                       _buildCheckboxRow('short', 'ShortM1ReversalChecked', checkedBox, value),
-                      // _buildCheckboxRow('short', 'ShortHwoChecked', checkedBox),
                     ],
                   );
                 },
@@ -237,6 +278,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
   }
 
   Widget _buildCheckboxRow(String method, String checkboxField, CheckedBoxProvider checkedBox, ValueProvider value) {
+    final symbol = value.manualSelectedValue;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -245,59 +287,30 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
         else
           Icon(Icons.arrow_downward_rounded, color: Colors.red, size: 18),
         Checkbox(
-          value: _getCheckboxValue(checkboxField, checkedBox),
-          onChanged: (bool? newValue) {
-            setState(() {
-              // checkedBox.changeValue('MM1', checkboxField, context);
-              // checkedBox.changeValue(null, 'MM', checkboxField, context);
-              checkedBox.changeValue(value.manualSelectedValue!, 'MM', checkboxField, context);
-            });
-          },
+          value: symbol != null ? checkedBox.getValue(symbol, "MM", checkboxField) : false,
+          onChanged: symbol != null
+              ? (bool? newValue) {
+                  checkedBox.changeValue(value.manualSelectedValue!, 'MM1', checkboxField, context);
+                }
+              : null,
           activeColor: method == 'long' ? Colors.green : Colors.red,
           checkColor: Colors.white,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          // visualDensity: const VisualDensity(horizontal: -1, vertical: -1),
         ),
       ],
     );
   }
 
-  bool _getCheckboxValue(String checkboxField, CheckedBoxProvider checkedBox) {
-    switch (checkboxField) {
-      case 'LongTcChecked':
-        return checkedBox.isLongTcChecked;
-      case 'LongTtChecked':
-        return checkedBox.isLongTtChecked;
-      case 'LongNeoChecked':
-        return checkedBox.isLongNeoChecked;
-      case 'LongConfChecked':
-        return checkedBox.isLongConfChecked;
-      // case 'LongHwoChecked':
-      //   return checkedBox.isLongHwoChecked;
-      case 'LongM1MfChecked':
-        return checkedBox.isLongM1MfChecked;
-      case 'LongM1TrendChecked':
-        return checkedBox.isLongM1TrendChecked;
-      case 'LongM1ReversalChecked':
-        return checkedBox.isLongM1ReversalChecked;
-      case 'ShortTcChecked':
-        return checkedBox.isShortTcChecked;
-      case 'ShortTtChecked':
-        return checkedBox.isShortTtChecked;
-      case 'ShortNeoChecked':
-        return checkedBox.isShortNeoChecked;
-      case 'ShortConfChecked':
-        return checkedBox.isShortConfChecked;
-      case 'ShortM1MfChecked':
-        return checkedBox.isShortM1MfChecked;
-      case 'ShortM1TrendChecked':
-        return checkedBox.isShortM1TrendChecked;
-      case 'ShortM1ReversalChecked':
-        return checkedBox.isShortM1ReversalChecked;
-      // case 'ShortHwoChecked':
-      //   return checkedBox.isShortHwoChecked;
-      default:
-        return false;
-    }
+  Widget _placeHolderCheckboxRow(String method) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (method == 'long')
+          Icon(Icons.arrow_upward_rounded, color: Colors.green, size: 18)
+        else
+          Icon(Icons.arrow_downward_rounded, color: Colors.red, size: 18),
+        Checkbox(value: false, onChanged: (bool? newValue) {}, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+      ],
+    );
   }
 }

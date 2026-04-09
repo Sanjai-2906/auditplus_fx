@@ -41,6 +41,13 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                         return ListView.builder(
                           itemCount: autoLive.liveAutomaticTradeM2.length,
                           itemBuilder: (context, index) {
+                            final symbol = autoLive.liveAutomaticTradeM2[index].symbol;
+
+                            if (!context.read<CheckedBoxProvider>().am2ValuesPerSymbol.containsKey(symbol)) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                context.read<CheckedBoxProvider>().loadFromApi(symbol, 'AM2');
+                              });
+                            }
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -167,7 +174,10 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                           ],
                                         ),
                                         if (expandedSymbols.contains(autoLive.liveAutomaticTradeM2[index].symbol))
-                                          AutomaticClosingSection(method: 'AM2'),
+                                          AutomaticClosingSection(
+                                            method: 'AM2',
+                                            amSymbol: autoLive.liveAutomaticTradeM2[index].symbol,
+                                          ),
                                       ],
                                     ),
                                   ),

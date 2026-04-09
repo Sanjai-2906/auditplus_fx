@@ -9,7 +9,7 @@ class CheckedBoxProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Map<String, bool> _mmValues = _mmEmptyValues();
+  Map<String, Map<String, bool>> mmValuesPerSymbol = {};
   Map<String, Map<String, bool>> am1ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am2ValuesPerSymbol = {};
 
@@ -73,16 +73,6 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM1HWTHChecked': false,
   };
 
-  //Generic getter
-  Map<String, bool> _getAM(String method, String symbol) {
-    if (method == "AM1") {
-      return am1ValuesPerSymbol.putIfAbsent(symbol, () => _am1EmptyValues());
-    } else if (method == "AM2") {
-      return am2ValuesPerSymbol.putIfAbsent(symbol, () => _am2EmptyValues());
-    }
-    throw Exception("Invalid method");
-  }
-
   static Map<String, bool> _am2EmptyValues() => {
     'AM2ReversalPlusPlusChecked': false,
     'AM2ReversalPlusChecked': false,
@@ -94,88 +84,85 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM2HWTHChecked': false,
   };
 
-  bool get isLongTcChecked => _mmValues['LongTcChecked']!;
-  bool get isLongTtChecked => _mmValues['LongTtChecked']!;
-  bool get isLongNeoChecked => _mmValues['LongNeoChecked']!;
-  bool get isLongM1MfChecked => _mmValues['LongM1MfChecked']!;
-  bool get isLongM1TrendChecked => _mmValues['LongM1TrendChecked']!;
-  bool get isLongM1ReversalChecked => _mmValues['LongM1ReversalChecked']!;
-  bool get isLongConfChecked => _mmValues['LongConfChecked']!;
-  bool get isLongDivergenceChecked => _mmValues['LongDivergenceChecked']!;
-  bool get isLongRevChecked => _mmValues['LongRevChecked']!;
-  bool get isLongCatcherChecked => _mmValues['LongCatcherChecked']!;
-  bool get isLongM2MfChecked => _mmValues['LongM2MfChecked']!;
-  bool get isLongM2TrendChecked => _mmValues['LongM2TrendChecked']!;
-  bool get isLongM2ReversalChecked => _mmValues['LongM2ReversalChecked']!;
-  bool get isLongGretTcChecked => _mmValues['LongGretTcChecked']!;
-  bool get isLongSigCrTtChecked => _mmValues['LongSigCrTtChecked']!;
+  //Generic getter
+  Map<String, bool> getValues(String method, String symbol) {
+    if (method == "MM") {
+      return mmValuesPerSymbol[symbol] ?? {};
+    } else if (method == "AM1") {
+      return am1ValuesPerSymbol[symbol] ?? {};
+    } else if (method == "AM2") {
+      return am2ValuesPerSymbol[symbol] ?? {};
+    }
+    throw Exception("Invalid method");
+  }
 
-  bool get isShortTcChecked => _mmValues['ShortTcChecked']!;
-  bool get isShortTtChecked => _mmValues['ShortTtChecked']!;
-  bool get isShortNeoChecked => _mmValues['ShortNeoChecked']!;
-  bool get isShortM1MfChecked => _mmValues['ShortM1MfChecked']!;
-  bool get isShortM1TrendChecked => _mmValues['ShortM1TrendChecked']!;
-  bool get isShortM1ReversalChecked => _mmValues['ShortM1ReversalChecked']!;
-  bool get isShortConfChecked => _mmValues['ShortConfChecked']!;
-  bool get isShortDivergenceChecked => _mmValues['ShortDivergenceChecked']!;
-  bool get isShortRevChecked => _mmValues['ShortRevChecked']!;
-  bool get isShortCatcherChecked => _mmValues['ShortCatcherChecked']!;
-  bool get isShortM2MfChecked => _mmValues['ShortM2MfChecked']!;
-  bool get isShortM2TrendChecked => _mmValues['ShortM2TrendChecked']!;
-  bool get isShortM2ReversalChecked => _mmValues['ShortM2ReversalChecked']!;
-  bool get isShortGretTcChecked => _mmValues['ShortGretTcChecked']!;
-  bool get isShortSigCrTtChecked => _mmValues['ShortSigCrTtChecked']!;
+  bool getValue(String symbol, String method, String field) {
+    final map = getValues(method, symbol);
+    return map[field] ?? false;
+  }
 
-  bool get isMM1ReversalPlusPlusChecked => _mmValues['MM1ReversalPlusPlusChecked']!;
-  bool get isMM1ReversalPlusChecked => _mmValues['MM1ReversalPlusChecked']!;
-  bool get isMM1ReversalChecked => _mmValues['MM1ReversalChecked']!;
-  bool get isMM1SignalExitChecked => _mmValues['MM1SignalExitChecked']!;
-  bool get isMM1TcChangeChecked => _mmValues['MM1TcChangeChecked']!;
-  bool get isMM1HwChecked => _mmValues['MM1HwChecked']!;
-  bool get isMM1MfChecked => _mmValues['MM1MfChecked']!;
-  bool get isMM1HWTHChecked => _mmValues['MM1HWTHChecked']!;
-  bool get isMM2ReversalPlusPlusChecked => _mmValues['MM2ReversalPlusPlusChecked']!;
-  bool get isMM2ReversalPlusChecked => _mmValues['MM2ReversalPlusChecked']!;
-  bool get isMM2ReversalChecked => _mmValues['MM2ReversalChecked']!;
-  bool get isMM2SignalExitChecked => _mmValues['MM2SignalExitChecked']!;
-  bool get isMM2TcChangeChecked => _mmValues['MM2TcChangeChecked']!;
-  bool get isMM2HwChecked => _mmValues['MM2HwChecked']!;
-  bool get isMM2MfChecked => _mmValues['MM2MfChecked']!;
-  bool get isMM2HWTHChecked => _mmValues['MM2HWTHChecked']!;
+  bool isLongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
 
-  bool get isLongAllChecked => isLongTcChecked && isLongTtChecked && isLongNeoChecked && isLongConfChecked;
+    return (v['LongTcChecked'] ?? false) &&
+        (v['LongTtChecked'] ?? false) &&
+        (v['LongNeoChecked'] ?? false) &&
+        (v['LongConfChecked'] ?? false);
+  }
 
-  bool get isShortAllChecked => isShortTcChecked && isShortTtChecked && isShortNeoChecked && isShortConfChecked;
+  bool isShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
 
-  bool get isM1LongAllChecked =>
-      (isLongAllChecked && isLongM1MfChecked && isLongM1TrendChecked) ||
-      (isLongAllChecked && !isLongM1MfChecked && isLongM1ReversalChecked && isLongM1TrendChecked);
+    return (v['ShortTcChecked'] ?? false) &&
+        (v['ShortTtChecked'] ?? false) &&
+        (v['ShortNeoChecked'] ?? false) &&
+        (v['ShortConfChecked'] ?? false);
+  }
 
-  bool get isM1ShortAllChecked =>
-      (isShortAllChecked && isShortM1MfChecked && isShortM1TrendChecked) ||
-      (isShortAllChecked && !isShortM1MfChecked && isShortM1ReversalChecked && isShortM1TrendChecked);
+  bool isM1LongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
 
-  bool get isM2LongAllChecked =>
-      ((isLongDivergenceChecked || isLongRevChecked) &&
-          isLongCatcherChecked &&
-          isLongM2MfChecked &&
-          isLongM2TrendChecked) ||
-      ((isLongDivergenceChecked || isLongRevChecked) &&
-          isLongCatcherChecked &&
-          !isLongM2MfChecked &&
-          isLongM2ReversalChecked &&
-          isLongM2TrendChecked);
+    return ((isLongAllChecked(symbol) && (v['LongM1MfChecked'] ?? false) && (v['LongM1TrendChecked'] ?? false)) ||
+        (isLongAllChecked(symbol)) &&
+            !(v['LongM1MfChecked'] ?? false) &&
+            (v['LongM1ReversalChecked'] ?? false) &&
+            (v['LongM1TrendChecked'] ?? false));
+  }
 
-  bool get isM2ShortAllChecked =>
-      ((isShortDivergenceChecked || isShortRevChecked) &&
-          isShortCatcherChecked &&
-          isShortM2MfChecked &&
-          isShortM2TrendChecked) ||
-      ((isShortDivergenceChecked || isShortRevChecked) &&
-          isShortCatcherChecked &&
-          !isShortM2MfChecked &&
-          isShortM2TrendChecked &&
-          isShortM2ReversalChecked);
+  bool isM1ShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return ((isShortAllChecked(symbol) && (v['ShortM1MfChecked'] ?? false) && (v['ShortM1TrendChecked'] ?? false)) ||
+        (isShortAllChecked(symbol) &&
+            !(v['ShortM1MfChecked'] ?? false) &&
+            (v['ShortM1ReversalChecked'] ?? false) &&
+            (v['ShortM1TrendChecked'] ?? false)));
+  }
+
+  bool isM2LongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (((v['LongDivergenceChecked'] ?? false) || (v['LongRevChecked'] ?? false)) &&
+            (v['LongCatcherChecked'] ?? false) &&
+            (v['LongM2MfChecked'] ?? false) &&
+            (v['LongM2TrendChecked'] ?? false)) ||
+        (((v['LongDivergenceChecked'] ?? false) || (v['LongRevChecked'] ?? false)) &&
+            (v['LongCatcherChecked'] ?? false) &&
+            !(v['LongM2MfChecked'] ?? false) &&
+            (v['LongM2ReversalChecked'] ?? false) &&
+            (v['LongM2TrendChecked'] ?? false));
+  }
+
+  bool isM2ShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (((v['ShortDivergenceChecked'] ?? false) || (v['ShortRevChecked'] ?? false)) &&
+            (v['ShortCatcherChecked'] ?? false) &&
+            (v['ShortM2MfChecked'] ?? false) &&
+            (v['ShortM2TrendChecked'] ?? false)) ||
+        (((v['ShortDivergenceChecked'] ?? false) || (v['ShortRevChecked'] ?? false)) &&
+            (v['ShortCatcherChecked'] ?? false) &&
+            !(v['ShortM2MfChecked'] ?? false) &&
+            (v['ShortM2ReversalChecked'] ?? false) &&
+            (v['ShortM2TrendChecked'] ?? false));
+  }
 
   Future<void> loadFromApi(String symbol, String section) async {
     _isLoading = true;
@@ -185,9 +172,7 @@ class CheckedBoxProvider extends ChangeNotifier {
       final result = await getSymbolSetting(userId: "1", symbol: symbol, section: section);
 
       if (section == 'MM') {
-        result.forEach((key, value) {
-          _mmValues[key] = value;
-        });
+        mmValuesPerSymbol[symbol] = {..._mmEmptyValues(), ...result};
       }
       if (section == 'AM1') {
         am1ValuesPerSymbol[symbol] = {..._am1EmptyValues(), ...result};
@@ -196,7 +181,7 @@ class CheckedBoxProvider extends ChangeNotifier {
         am2ValuesPerSymbol[symbol] = {..._am2EmptyValues(), ...result};
       }
     } catch (e) {
-      _mmValues = _mmEmptyValues();
+      mmValuesPerSymbol.clear();
       am1ValuesPerSymbol.clear();
       am2ValuesPerSymbol.clear();
     }
@@ -206,35 +191,34 @@ class CheckedBoxProvider extends ChangeNotifier {
   }
 
   void changeValue(String symbol, String method, String field, BuildContext context) {
-    if (method == "MM1" || method == "MM2") {
-      _mmValues[field] = !(_mmValues[field] ?? false);
+    if (method == "MM1" || method == "MM2" || method == "MM") {
+      mmValuesPerSymbol[symbol]![field] = !(mmValuesPerSymbol[symbol]![field] ?? false);
 
       if (field.startsWith('Long')) {
-        _mmValues[field.replaceFirst('Long', 'Short')] = false;
+        mmValuesPerSymbol[symbol]![field.replaceFirst('Long', 'Short')] = false;
       }
       if (field.startsWith('Short')) {
-        _mmValues[field.replaceFirst('Short', 'Long')] = false;
+        mmValuesPerSymbol[symbol]![field.replaceFirst('Short', 'Long')] = false;
       }
       symbolSetting(
         userId: "1",
         symbol: symbol,
         section: "MM", // MM1 / MM2
-        checkedValues: _mmValues,
+        checkedValues: mmValuesPerSymbol[symbol]!,
       );
     }
     if (method == 'AM1') {
-      final values = _getAM(method, symbol);
+      am1ValuesPerSymbol[symbol] ??= _am1EmptyValues();
+      am1ValuesPerSymbol[symbol]![field] = !(am1ValuesPerSymbol[symbol]![field] ?? false);
 
-      values[field] = !(values[field] ?? false);
-
-      symbolSetting(userId: "1", symbol: symbol, section: method, checkedValues: values);
+      symbolSetting(userId: "1", symbol: symbol, section: method, checkedValues: am1ValuesPerSymbol[symbol]!);
     }
+
     if (method == 'AM2') {
-      final values = _getAM(method, symbol);
+      am2ValuesPerSymbol[symbol] ??= _am2EmptyValues();
+      am2ValuesPerSymbol[symbol]![field] = !(am2ValuesPerSymbol[symbol]![field] ?? false);
 
-      values[field] = !(values[field] ?? false);
-
-      symbolSetting(userId: "1", symbol: symbol, section: method, checkedValues: values);
+      symbolSetting(userId: "1", symbol: symbol, section: method, checkedValues: am2ValuesPerSymbol[symbol]!);
     }
     notifyListeners();
     if (field == 'MM1ReversalPlusPlusChecked' ||
@@ -288,8 +272,8 @@ class CheckedBoxProvider extends ChangeNotifier {
   }
 
   void clearState(String method) {
-    if (method == 'MM1' || method == 'MM2') {
-      _mmValues = _mmEmptyValues();
+    if (method == 'MM1' || method == 'MM2' || method == 'MM') {
+      mmValuesPerSymbol.clear();
     }
     if (method == 'AM1') {
       am1ValuesPerSymbol.clear();
@@ -298,13 +282,5 @@ class CheckedBoxProvider extends ChangeNotifier {
       am2ValuesPerSymbol.clear();
     }
     notifyListeners();
-  }
-
-  //Automatic Closing per list Tile
-  bool getAutoValue(String symbol, String method, String field) {
-    if (method == 'AM1' || method == 'AM2') {
-      return _getAM(method, symbol)[field] ?? false;
-    }
-    return false;
   }
 }

@@ -139,7 +139,8 @@ class _AutomationScreenState extends State<AutomationScreen> {
                               child: SearchField<String>(
                                 suggestions: widget.symbols,
                                 suggestionState: Suggestion.hidden,
-                                selectedValue: widget.symbols.any((e) => e.searchKey == drop.amSelectedItem?.searchKey)
+                                // selectedValue: widget.symbols.any((e) => e.searchKey == drop.amSelectedItem?.searchKey)
+                                selectedValue: widget.symbols.contains(drop.amSelectedItem)
                                     ? drop.amSelectedItem
                                     : null,
                                 searchInputDecoration: SearchInputDecoration(
@@ -181,14 +182,19 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                     context,
                                     listen: false,
                                   ).setAMSelectedItem(SearchFieldListItem(item), context);
-                                  final data = CurrentAutomationModel(
-                                    symbol: drop.amSelectedValue ?? "",
-                                    volume: drop.amVolume,
-                                    isEnabled: true,
-                                    action: ActionType.add,
-                                    method: "AM",
-                                  );
-                                  await automaticTrading(context, data);
+                                  String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  String? symbol = drop.amSelectedValue;
+                                  if (symbol != null && symbol != "") {
+                                    final data = CurrentAutomationModel(
+                                      symbol: symbol,
+                                      volume: drop.amVolume,
+                                      isEnabled: true,
+                                      action: ActionType.add,
+                                      // method: "AM",
+                                      method: method,
+                                    );
+                                    await automaticTrading(context, data);
+                                  }
                                 },
                               ),
                             );
@@ -205,19 +211,26 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                 textAlign: TextAlign.center,
                                 onChanged: (newValue) {
                                   final parsedValue = double.tryParse(newValue);
+                                  final method = drop.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
                                   if (parsedValue != null) {
-                                    drop.setAMVolume('AM', parsedValue);
+                                    drop.setAMVolume(method, parsedValue);
+                                    // drop.setAMVolume('AM', parsedValue);
                                   }
                                 },
                                 onFieldSubmitted: (value) async {
-                                  final data = CurrentAutomationModel(
-                                    symbol: drop.amSelectedValue ?? "",
-                                    volume: drop.amVolume,
-                                    isEnabled: true,
-                                    action: ActionType.add,
-                                    method: "AM",
-                                  );
-                                  await automaticTrading(context, data);
+                                  String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  String? symbol = drop.amSelectedValue;
+                                  if (symbol != null && symbol != "") {
+                                    final data = CurrentAutomationModel(
+                                      symbol: symbol,
+                                      volume: drop.amVolume,
+                                      isEnabled: true,
+                                      action: ActionType.add,
+                                      // method: "AM",
+                                      method: method,
+                                    );
+                                    await automaticTrading(context, data);
+                                  }
                                 },
                                 textAlignVertical: TextAlignVertical.center,
                                 decoration: InputDecoration(
@@ -257,15 +270,19 @@ class _AutomationScreenState extends State<AutomationScreen> {
                               ),
                               onPressed: () async {
                                 String method = autoLive.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
-                                final data = CurrentAutomationModel(
-                                  symbol: autoLive.amSelectedValue ?? "",
-                                  volume: autoLive.amVolume,
-                                  isEnabled: true,
-                                  action: ActionType.add,
-                                  method: method,
-                                );
-                                await automaticTrading(context, data);
-                                autoLive.addLiveTrade(data);
+                                String? symbol = autoLive.amSelectedValue;
+                                if (symbol != null && symbol != "") {
+                                  final data = CurrentAutomationModel(
+                                    symbol: symbol,
+                                    volume: autoLive.amVolume,
+                                    isEnabled: true,
+                                    action: ActionType.add,
+                                    // method: "AM",
+                                    method: method,
+                                  );
+                                  await automaticTrading(context, data);
+                                  autoLive.addLiveTrade(data);
+                                }
                               },
                               child: Text('Add', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             );

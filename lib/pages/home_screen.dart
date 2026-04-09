@@ -299,7 +299,10 @@ class HomeScreenState extends State<HomeScreen> {
                                             focusNode: _symbolFocusNode,
                                             suggestions: symbols,
                                             suggestionState: Suggestion.hidden,
-                                            selectedValue: drop.manualSelectedItem,
+                                            // selectedValue: drop.manualSelectedItem,
+                                            selectedValue: symbols.contains(drop.manualSelectedItem)
+                                                ? drop.manualSelectedItem
+                                                : null,
                                             searchInputDecoration: SearchInputDecoration(
                                               hintText: "Symbols",
                                               filled: true,
@@ -325,8 +328,8 @@ class HomeScreenState extends State<HomeScreen> {
                                               if (searchText.isEmpty) {
                                                 return List<SearchFieldListItem<String>>.from(symbols);
                                               }
-                                              context.read<ValueProvider>().clearSelectedValue();
-                                              context.read<CheckedBoxProvider>().clearState("MM");
+                                              // context.read<ValueProvider>().clearSelectedValue();
+                                              // context.read<CheckedBoxProvider>().clearState("MM");
 
                                               final query = searchText.toUpperCase();
                                               return symbols.where((s) {
