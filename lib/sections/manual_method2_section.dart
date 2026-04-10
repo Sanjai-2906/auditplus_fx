@@ -27,156 +27,251 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                 children: [
                   SizedBox(width: 120),
                   Expanded(
-                    child: Consumer3<MytokenProvider, CheckedBoxProvider, ValueProvider>(
-                      builder: (context, myToken, checkedBox, value, child) {
-                        final symbol = value.manualSelectedValue;
-                        if (symbol == null || checkedBox.mmValuesPerSymbol[symbol] == null) {
-                          // return const Center(child: CircularProgressIndicator());
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            spacing: 5,
-                            children: [
-                              SizedBox(
-                                width: 100,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(100, 40),
-                                    maximumSize: Size(100, 50),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      side: BorderSide(color: Colors.black, width: 2),
+                    child:
+                        Consumer3<
+                          MytokenProvider,
+                          CheckedBoxProvider,
+                          ValueProvider
+                        >(
+                          builder: (context, myToken, checkedBox, value, child) {
+                            final symbol = value.manualSelectedValue;
+                            if (symbol == null ||
+                                checkedBox.mmValuesPerSymbol[symbol] == null) {
+                              // return const Center(child: CircularProgressIndicator());
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                spacing: 5,
+                                children: [
+                                  SizedBox(
+                                    width: 100,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(100, 40),
+                                        maximumSize: Size(100, 50),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.black,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        elevation: 8.0,
+                                        foregroundColor: Colors.black,
+                                        backgroundColor: const Color.fromARGB(
+                                          255,
+                                          199,
+                                          199,
+                                          199,
+                                        ),
+                                        textStyle: TextStyle(
+                                          inherit: true,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: Text('Long'),
                                     ),
-                                    elevation: 8.0,
-                                    foregroundColor: Colors.black,
-                                    backgroundColor: const Color.fromARGB(255, 199, 199, 199),
-                                    textStyle: TextStyle(inherit: true, fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
-                                  onPressed: () {},
-                                  child: Text('Long'),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 100,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(100, 40),
-                                    maximumSize: Size(100, 50),
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    backgroundColor: const Color.fromARGB(255, 199, 199, 199),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      side: BorderSide(color: Colors.black, width: 2),
+                                  SizedBox(
+                                    width: 100,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(100, 40),
+                                        maximumSize: Size(100, 50),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        backgroundColor: const Color.fromARGB(
+                                          255,
+                                          199,
+                                          199,
+                                          199,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.black,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        elevation: 8.0,
+                                        foregroundColor: Colors.black,
+                                        textStyle: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: Text('Short'),
                                     ),
-                                    elevation: 8.0,
-                                    foregroundColor: Colors.black,
-                                    textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
-                                  onPressed: () {},
-                                  child: Text('Short'),
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          spacing: 5,
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(100, 40),
-                                  maximumSize: Size(100, 50),
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: BorderSide(color: Colors.black, width: 2),
+                                ],
+                              );
+                            }
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              spacing: 5,
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size(100, 40),
+                                      maximumSize: Size(100, 50),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      elevation: 8.0,
+                                      foregroundColor: Colors.black,
+                                      backgroundColor:
+                                          checkedBox.isM2LongAllChecked(symbol)
+                                          ? Colors.lightGreen
+                                          : Colors.grey,
+                                      textStyle: TextStyle(
+                                        inherit: true,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed:
+                                        checkedBox.isM2LongAllChecked(symbol)
+                                        ? () {
+                                            final token =
+                                                Provider.of<MytokenProvider>(
+                                                  context,
+                                                  listen: false,
+                                                ).token;
+                                            if (token != null) {
+                                              Actions.invoke(
+                                                context,
+                                                const LongIntent(
+                                                  method: 'MM2',
+                                                  actionType: "ORDER_TYPE_BUY",
+                                                ),
+                                              );
+                                            } else {
+                                              toastification.show(
+                                                backgroundColor: Color.fromRGBO(
+                                                  242,
+                                                  186,
+                                                  185,
+                                                  1,
+                                                ),
+                                                context: context,
+                                                title: const Text('Error!'),
+                                                description: const Text(
+                                                  'Your token is empty',
+                                                ),
+                                                type: ToastificationType.error,
+                                                alignment: Alignment.center,
+                                                autoCloseDuration:
+                                                    const Duration(seconds: 2),
+                                              );
+                                            }
+                                          }
+                                        : null,
+                                    child: Text('Long'),
                                   ),
-                                  elevation: 8.0,
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: checkedBox.isM2LongAllChecked(symbol)
-                                      ? Colors.lightGreen
-                                      : Colors.grey,
-                                  textStyle: TextStyle(inherit: true, fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
-                                onPressed: checkedBox.isM2LongAllChecked(symbol)
-                                    ? () {
-                                        final token = Provider.of<MytokenProvider>(context, listen: false).token;
-                                        if (token != null) {
-                                          Actions.invoke(
-                                            context,
-                                            const LongIntent(method: 'MM2', actionType: "ORDER_TYPE_BUY"),
-                                          );
-                                        } else {
-                                          toastification.show(
-                                            backgroundColor: Color.fromRGBO(242, 186, 185, 1),
-                                            context: context,
-                                            title: const Text('Error!'),
-                                            description: const Text('Your token is empty'),
-                                            type: ToastificationType.error,
-                                            alignment: Alignment.center,
-                                            autoCloseDuration: const Duration(seconds: 2),
-                                          );
-                                        }
-                                      }
-                                    : null,
-                                child: Text('Long'),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 100,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(100, 40),
-                                  maximumSize: Size(100, 50),
-                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  backgroundColor: checkedBox.isM2ShortAllChecked(symbol) ? Colors.red : Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: BorderSide(color: Colors.black, width: 2),
+                                SizedBox(
+                                  width: 100,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size(100, 40),
+                                      maximumSize: Size(100, 50),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      backgroundColor:
+                                          checkedBox.isM2ShortAllChecked(symbol)
+                                          ? Colors.red
+                                          : Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      elevation: 8.0,
+                                      foregroundColor: Colors.black,
+                                      textStyle: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed:
+                                        checkedBox.isM2ShortAllChecked(symbol)
+                                        ? () {
+                                            final token =
+                                                Provider.of<MytokenProvider>(
+                                                  context,
+                                                  listen: false,
+                                                ).token;
+                                            if (token != null) {
+                                              Actions.invoke(
+                                                context,
+                                                const ShortIntent(
+                                                  method: 'MM2',
+                                                  actionType: "ORDER_TYPE_SELL",
+                                                ),
+                                              );
+                                            } else {
+                                              toastification.show(
+                                                backgroundColor: Color.fromRGBO(
+                                                  242,
+                                                  186,
+                                                  185,
+                                                  1,
+                                                ),
+                                                context: context,
+                                                title: const Text('Error!'),
+                                                description: const Text(
+                                                  'Your token is empty',
+                                                ),
+                                                type: ToastificationType.error,
+                                                alignment: Alignment.center,
+                                                autoCloseDuration:
+                                                    const Duration(seconds: 2),
+                                              );
+                                            }
+                                          }
+                                        : null,
+                                    child: Text('Short'),
                                   ),
-                                  elevation: 8.0,
-                                  foregroundColor: Colors.black,
-                                  textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
-                                onPressed: checkedBox.isM2ShortAllChecked(symbol)
-                                    ? () {
-                                        final token = Provider.of<MytokenProvider>(context, listen: false).token;
-                                        if (token != null) {
-                                          Actions.invoke(
-                                            context,
-                                            const ShortIntent(method: 'MM2', actionType: "ORDER_TYPE_SELL"),
-                                          );
-                                        } else {
-                                          toastification.show(
-                                            backgroundColor: Color.fromRGBO(242, 186, 185, 1),
-                                            context: context,
-                                            title: const Text('Error!'),
-                                            description: const Text('Your token is empty'),
-                                            type: ToastificationType.error,
-                                            alignment: Alignment.center,
-                                            autoCloseDuration: const Duration(seconds: 2),
-                                          );
-                                        }
-                                      }
-                                    : null,
-                                child: Text('Short'),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                              ],
+                            );
+                          },
+                        ),
                   ),
                 ],
               ),
               SizedBox(height: 8),
-              _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
-              _buildRow("Reversal Plus", "LongRevPlusChecked", "ShortRevChecked"),
+              _buildRow(
+                "Divergence",
+                "LongDivergenceChecked",
+                "ShortDivergenceChecked",
+              ),
+              _buildRow(
+                "Reversal Plus",
+                "LongRevPlusChecked",
+                "ShortRevChecked",
+              ),
               _buildRow("Catcher", "LongCatcherChecked", "ShortCatcherChecked"),
               _buildRow("MF", "LongM2MfChecked", "ShortM2MfChecked"),
               _buildRow("HW", "LongM2HwChecked", "ShortM2HwChecked"),
@@ -216,11 +311,20 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.arrow_upward_rounded, color: Colors.green, size: 18),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: Colors.green,
+                      size: 18,
+                    ),
                     Checkbox(
                       value: checkedBox.getValue(symbol, "MM", longField),
                       onChanged: (_) {
-                        checkedBox.changeValue(symbol, 'MM2', longField, context);
+                        checkedBox.changeValue(
+                          symbol,
+                          'MM2',
+                          longField,
+                          context,
+                        );
                       },
                       activeColor: Colors.green,
                     ),
@@ -232,11 +336,20 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.arrow_downward_rounded, color: Colors.red, size: 18),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: Colors.red,
+                      size: 18,
+                    ),
                     Checkbox(
                       value: checkedBox.getValue(symbol, "MM", shortField),
                       onChanged: (_) {
-                        checkedBox.changeValue(symbol, 'MM2', shortField, context);
+                        checkedBox.changeValue(
+                          symbol,
+                          'MM2',
+                          shortField,
+                          context,
+                        );
                       },
                       activeColor: Colors.red,
                     ),
@@ -255,9 +368,15 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text(title)),
-          Expanded(
-            flex: 2,
+          SizedBox(
+            width: 100,
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(
+            width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -266,8 +385,8 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
               ],
             ),
           ),
-          Expanded(
-            flex: 2,
+          SizedBox(
+            width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -5,10 +5,15 @@ import 'package:auditplus_fx/Providers/providers.dart';
 class AutomaticClosingSection extends StatefulWidget {
   final String method;
   final String? amSymbol;
-  const AutomaticClosingSection({super.key, required this.method, this.amSymbol});
+  const AutomaticClosingSection({
+    super.key,
+    required this.method,
+    this.amSymbol,
+  });
 
   @override
-  State<AutomaticClosingSection> createState() => _AutomaticClosingSectionState();
+  State<AutomaticClosingSection> createState() =>
+      _AutomaticClosingSectionState();
 }
 
 class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
@@ -47,8 +52,12 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM2': 'AM2TcChangeChecked',
   }[widget.method]!;
 
-  String get hw =>
-      {'MM1': 'MM1HwChecked', 'MM2': 'MM2HwChecked', 'AM1': 'AM1HwChecked', 'AM2': 'AM2HwChecked'}[widget.method]!;
+  String get hw => {
+    'MM1': 'MM1HwChecked',
+    'MM2': 'MM2HwChecked',
+    'AM1': 'AM1HwChecked',
+    'AM2': 'AM2HwChecked',
+  }[widget.method]!;
 
   String get hwTh => {
     'MM1': 'MM1HWTHChecked',
@@ -57,8 +66,12 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM2': 'AM2HWTHChecked',
   }[widget.method]!;
 
-  String get mf =>
-      {'MM1': 'MM1MfChecked', 'MM2': 'MM2MfChecked', 'AM1': 'AM1MfChecked', 'AM2': 'AM2MfChecked'}[widget.method]!;
+  String get mf => {
+    'MM1': 'MM1MfChecked',
+    'MM2': 'MM2MfChecked',
+    'AM1': 'AM1MfChecked',
+    'AM2': 'AM2MfChecked',
+  }[widget.method]!;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +81,9 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
           return _buildPlaceholderUI();
         }
         final value = context.read<ValueProvider>();
-        final symbol = (widget.method == "MM1" || widget.method == "MM2") ? value.manualSelectedValue : widget.amSymbol;
+        final symbol = (widget.method == "MM1" || widget.method == "MM2")
+            ? value.manualSelectedValue
+            : widget.amSymbol;
         String method = "";
         if (widget.method == "MM1" || widget.method == "MM2") {
           method = "MM";
@@ -104,7 +119,11 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
               children: [
                 Text(
                   "Automatic Closing",
-                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -116,7 +135,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
                   foregroundColor: Colors.black,
                   backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                 ),
@@ -124,25 +146,44 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Text(
+                      "Rev",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.add,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
                   ],
                 ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
                   foregroundColor: Colors.black,
                   backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                 ),
                 onPressed: () {},
-                child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                child: Text(
+                  "Rev",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
                   foregroundColor: Colors.black,
                   backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                 ),
@@ -150,71 +191,18 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-                ),
-                onPressed: () {},
-                child: Row(
-                  spacing: 3,
-                  children: [
-                    Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-                ),
-                onPressed: () {},
-                child: Row(
-                  spacing: 3,
-                  children: [
-                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-                ),
-                onPressed: () {},
-                child: Row(
-                  spacing: 3,
-                  children: [
-                    Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                    Text(
+                      "Sig",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.close,
+                      color: Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
                   ],
                 ),
               ),
@@ -229,7 +217,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                   minimumSize: Size.zero,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
                   foregroundColor: Colors.black,
                   backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                 ),
@@ -237,9 +228,23 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Text(
+                      "TC",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
                   ],
                 ),
               ),
@@ -248,7 +253,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                   minimumSize: Size.zero,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
                   foregroundColor: Colors.black,
                   backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                 ),
@@ -256,9 +264,139 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                    Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "HW",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text(
+                      "MF",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text(
+                      "Rev",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.add,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                    Icon(
+                      Icons.add,
+                      color: Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text(
+                      "HW",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Icon(
+                      Icons.close,
+                      color: Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                    Text(
+                      "TH",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -269,10 +407,15 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     );
   }
 
-  Widget _buildRealUI(String symbol, String method, CheckedBoxProvider checkedbox) {
+  Widget _buildRealUI(
+    String symbol,
+    String method,
+    CheckedBoxProvider checkedbox,
+  ) {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
+        color: const Color.fromARGB(87, 71, 111, 197),
         borderRadius: BorderRadius.circular(15),
         border: Border.all(width: 0.5, color: Colors.black),
       ),
@@ -288,11 +431,16 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
               children: [
                 Text(
                   "Automatic Closing",
-                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -323,7 +471,13 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "Rev",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.add,
                       color: checkedbox.getValue(symbol, method, reversalPlus)
@@ -357,7 +511,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 onPressed: () {
                   checkedbox.changeValue(symbol, method, reversal, context);
                 },
-                child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                child: Text(
+                  "Rev",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
               ElevatedButton(
                 style: checkedbox.getValue(symbol, method, signal)
@@ -385,10 +542,18 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "Sig",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.close,
-                      color: checkedbox.getValue(symbol, method, signal) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      color: checkedbox.getValue(symbol, method, signal)
+                          ? Colors.red
+                          : Color.fromRGBO(102, 7, 0, 1),
                       size: 20.0,
                     ),
                   ],
@@ -404,7 +569,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 style: checkedbox.getValue(symbol, method, tc)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -415,7 +583,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                       )
                     : ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -430,7 +601,13 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "TC",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.arrow_upward_rounded,
                       color: checkedbox.getValue(symbol, method, tc)
@@ -440,7 +617,9 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                     ),
                     Icon(
                       Icons.arrow_downward_rounded,
-                      color: checkedbox.getValue(symbol, method, tc) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      color: checkedbox.getValue(symbol, method, tc)
+                          ? Colors.red
+                          : Color.fromRGBO(102, 7, 0, 1),
                       size: 20.0,
                     ),
                   ],
@@ -450,7 +629,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 style: checkedbox.getValue(symbol, method, hw)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -461,7 +643,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                       )
                     : ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -476,7 +661,13 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "HW",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.arrow_upward_rounded,
                       color: checkedbox.getValue(symbol, method, hw)
@@ -486,7 +677,9 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                     ),
                     Icon(
                       Icons.arrow_downward_rounded,
-                      color: checkedbox.getValue(symbol, method, hw) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      color: checkedbox.getValue(symbol, method, hw)
+                          ? Colors.red
+                          : Color.fromRGBO(102, 7, 0, 1),
                       size: 20.0,
                     ),
                   ],
@@ -496,7 +689,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 style: checkedbox.getValue(symbol, method, mf)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -507,7 +703,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                       )
                     : ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -522,7 +721,13 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "MF",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.arrow_upward_rounded,
                       color: checkedbox.getValue(symbol, method, mf)
@@ -532,7 +737,9 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                     ),
                     Icon(
                       Icons.arrow_downward_rounded,
-                      color: checkedbox.getValue(symbol, method, mf) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      color: checkedbox.getValue(symbol, method, mf)
+                          ? Colors.red
+                          : Color.fromRGBO(102, 7, 0, 1),
                       size: 20.0,
                     ),
                   ],
@@ -548,7 +755,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 style: checkedbox.getValue(symbol, method, reversalPlusPlus)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -559,7 +769,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                       )
                     : ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -569,22 +782,35 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                         backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
                 onPressed: () {
-                  checkedbox.changeValue(symbol, method, reversalPlusPlus, context);
+                  checkedbox.changeValue(
+                    symbol,
+                    method,
+                    reversalPlusPlus,
+                    context,
+                  );
                 },
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "Rev",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.add,
-                      color: checkedbox.getValue(symbol, method, reversalPlusPlus)
+                      color:
+                          checkedbox.getValue(symbol, method, reversalPlusPlus)
                           ? Color.fromRGBO(6, 255, 14, 1)
                           : Color.fromRGBO(0, 57, 2, 1),
                       size: 20.0,
                     ),
                     Icon(
                       Icons.add,
-                      color: checkedbox.getValue(symbol, method, reversalPlusPlus)
+                      color:
+                          checkedbox.getValue(symbol, method, reversalPlusPlus)
                           ? Color.fromRGBO(6, 255, 14, 1)
                           : Color.fromRGBO(0, 57, 2, 1),
                       size: 20.0,
@@ -596,7 +822,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 style: checkedbox.getValue(symbol, method, hwTh)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -607,7 +836,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                       )
                     : ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -622,13 +854,27 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "HW",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       Icons.close,
-                      color: checkedbox.getValue(symbol, method, hwTh) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      color: checkedbox.getValue(symbol, method, hwTh)
+                          ? Colors.red
+                          : Color.fromRGBO(102, 7, 0, 1),
                       size: 20.0,
                     ),
-                    Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      "TH",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
