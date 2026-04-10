@@ -4,17 +4,15 @@ import 'package:provider/provider.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
-import 'sections.dart';
 
-class AutomaticMethod1Section extends StatefulWidget {
-  const AutomaticMethod1Section({super.key});
+class AutomaticMethod3Section extends StatefulWidget {
+  const AutomaticMethod3Section({super.key});
 
   @override
-  State<AutomaticMethod1Section> createState() => _AutomaticMethod1SectionState();
+  State<AutomaticMethod3Section> createState() => _AutomaticMethod3SectionState();
 }
 
-class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
-  Set<String> expandedSymbols = {};
+class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +23,7 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
         children: [
           Consumer<ValueProvider>(
             builder: (context, autoLive, child) {
-              if (autoLive.liveAutomaticTradeM1.isEmpty) {
+              if (autoLive.liveAutomaticTradeM3.isEmpty) {
                 return Text("No items found");
               } else {
                 return SingleChildScrollView(
@@ -38,18 +36,10 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                     width: MediaQuery.of(context).size.height * 0.7,
                     child: Consumer<ValueProvider>(
                       builder: (context, autoLive, child) {
-                        final items = autoLive.liveAutomaticTradeM1.values.toList();
                         return ListView.builder(
-                          itemCount: autoLive.liveAutomaticTradeM1.length,
+                          itemCount: autoLive.liveAutomaticTradeM3.length,
                           itemBuilder: (context, index) {
-                            final symbol = items[index].symbol;
-
-                            if (!context.read<CheckedBoxProvider>().am1ValuesPerSymbol.containsKey(symbol)) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (!mounted) return;
-                                context.read<CheckedBoxProvider>().loadFromApi(symbol, 'AM1');
-                              });
-                            }
+                            final items = autoLive.liveAutomaticTradeM1.values.toList();
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -75,6 +65,7 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 3.0),
                                                 child: Text(
+                                                  // autoLive.liveAutomaticTradeM3[index].symbol,
                                                   items[index].symbol,
                                                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                                                 ),
@@ -107,11 +98,15 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                                               ),
                                               onPressed: () async {
                                                 final data = CurrentAutomationModel(
+                                                  // symbol: autoLive.amSelectedValue ?? "",
+                                                  // symbol: autoLive.liveAutomaticTradeM3[index].symbol,
                                                   symbol: items[index].symbol,
+                                                  // volume: autoLive.amVolume,
+                                                  // volume: autoLive.liveAutomaticTradeM3[index].volume,
                                                   volume: items[index].volume,
                                                   isEnabled: true,
                                                   action: ActionType.close,
-                                                  method: "AM1",
+                                                  method: "AM3",
                                                 );
                                                 await automaticTrading(context, data);
                                               },
@@ -135,43 +130,24 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                                               ),
                                               onPressed: () async {
                                                 final data = CurrentAutomationModel(
+                                                  // symbol: autoLive.amSelectedValue ?? "",
+                                                  // symbol: autoLive.liveAutomaticTradeM3[index].symbol,
                                                   symbol: items[index].symbol,
+                                                  // volume: autoLive.amVolume,
+                                                  // volume: autoLive.liveAutomaticTradeM3[index].volume,
                                                   volume: items[index].volume,
                                                   isEnabled: false,
                                                   action: ActionType.disable,
-                                                  method: "AM1",
+                                                  method: "AM3",
                                                 );
                                                 await automaticTrading(context, data);
+                                                // autoLive.removeLiveTrade(data.symbol);
                                                 autoLive.removeLiveTrade(data.symbol, data.method);
                                               },
                                               icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
                                             ),
-                                            IconButton(
-                                              style: ElevatedButton.styleFrom(
-                                                maximumSize: Size(45, 40),
-                                                backgroundColor: Color.fromRGBO(50, 187, 221, 1),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadiusGeometry.circular(5),
-                                                  side: BorderSide(color: Colors.black, width: 1),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                final symbol = items[index].symbol;
-
-                                                setState(() {
-                                                  if (expandedSymbols.contains(symbol)) {
-                                                    expandedSymbols.remove(symbol);
-                                                  } else {
-                                                    expandedSymbols.add(symbol);
-                                                  }
-                                                });
-                                              },
-                                              icon: Icon(Icons.add, color: Color.fromRGBO(12, 9, 56, 1)),
-                                            ),
                                           ],
                                         ),
-                                        if (expandedSymbols.contains(items[index].symbol))
-                                          AutomaticClosingSection(method: 'AM1', amSymbol: items[index].symbol),
                                       ],
                                     ),
                                   ),

@@ -86,542 +86,556 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
   }
 
   Widget _buildPlaceholderUI() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(width: 0.5, color: Colors.black),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Automatic Closing",
+                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Automatic Closing",
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                  ],
+                ),
               ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                  ],
+                ),
               ),
-              onPressed: () {},
-              child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                    Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
+                  ],
+                ),
               ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
+                  foregroundColor: Colors.black,
+                  backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                ),
+                onPressed: () {},
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
+                    Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                  Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                  Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.arrow_upward_rounded, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                  Icon(Icons.arrow_downward_rounded, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                  Icon(Icons.add, color: Color.fromRGBO(0, 57, 2, 1), size: 20.0),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.zero,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 0,
-                shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                foregroundColor: Colors.black,
-                backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              ),
-              onPressed: () {},
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(Icons.close, color: Color.fromRGBO(102, 7, 0, 1), size: 20.0),
-                  Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildRealUI(String symbol, String method, CheckedBoxProvider checkedbox) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(width: 0.5, color: Colors.black),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Automatic Closing",
+                  style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Automatic Closing",
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, reversalPlus)
+                    ? ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                      ),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, reversalPlus, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.add,
+                      color: checkedbox.getValue(symbol, method, reversalPlus)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, reversal)
+                    ? ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                      ),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, reversal, context);
+                },
+                child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              ),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, signal)
+                    ? ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                      ),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, signal, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.close,
+                      color: checkedbox.getValue(symbol, method, signal) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, reversalPlus)
-                  ? ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, tc)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, tc, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: checkedbox.getValue(symbol, method, tc)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, reversalPlus, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.add,
-                    color: checkedbox.getValue(symbol, method, reversalPlus)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                ],
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: checkedbox.getValue(symbol, method, tc) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, reversal)
-                  ? ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, hw)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, hw, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: checkedbox.getValue(symbol, method, hw)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, reversal, context);
-              },
-              child: Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, signal)
-                  ? ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: checkedbox.getValue(symbol, method, hw) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, signal, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Sig", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.close,
-                    color: checkedbox.getValue(symbol, method, signal) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-                    size: 20.0,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, tc)
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, mf)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, mf, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: checkedbox.getValue(symbol, method, mf)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, tc, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("TC", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.arrow_upward_rounded,
-                    color: checkedbox.getValue(symbol, method, tc)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                  Icon(
-                    Icons.arrow_downward_rounded,
-                    color: checkedbox.getValue(symbol, method, tc) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-                    size: 20.0,
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, hw)
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: checkedbox.getValue(symbol, method, mf) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, hw, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.arrow_upward_rounded,
-                    color: checkedbox.getValue(symbol, method, hw)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                  Icon(
-                    Icons.arrow_downward_rounded,
-                    color: checkedbox.getValue(symbol, method, hw) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-                    size: 20.0,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, mf)
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, reversalPlusPlus)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, reversalPlusPlus, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.add,
+                      color: checkedbox.getValue(symbol, method, reversalPlusPlus)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, mf, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("MF", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.arrow_upward_rounded,
-                    color: checkedbox.getValue(symbol, method, mf)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                  Icon(
-                    Icons.arrow_downward_rounded,
-                    color: checkedbox.getValue(symbol, method, mf) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-                    size: 20.0,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, reversalPlusPlus)
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                    Icon(
+                      Icons.add,
+                      color: checkedbox.getValue(symbol, method, reversalPlusPlus)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, reversalPlusPlus, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.add,
-                    color: checkedbox.getValue(symbol, method, reversalPlusPlus)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                  Icon(
-                    Icons.add,
-                    color: checkedbox.getValue(symbol, method, reversalPlusPlus)
-                        ? Color.fromRGBO(6, 255, 14, 1)
-                        : Color.fromRGBO(0, 57, 2, 1),
-                    size: 20.0,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: checkedbox.getValue(symbol, method, hwTh)
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
+              ElevatedButton(
+                style: checkedbox.getValue(symbol, method, hwTh)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.black,
-                      backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                onPressed: () {
+                  checkedbox.changeValue(symbol, method, hwTh, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.close,
+                      color: checkedbox.getValue(symbol, method, hwTh) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
                     ),
-              onPressed: () {
-                checkedbox.changeValue(symbol, method, hwTh, context);
-              },
-              child: Row(
-                spacing: 3,
-                children: [
-                  Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(
-                    Icons.close,
-                    color: checkedbox.getValue(symbol, method, hwTh) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-                    size: 20.0,
-                  ),
-                  Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                ],
+                    Text("TH", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -113,6 +113,39 @@ class _AutomationScreenState extends State<AutomationScreen> {
                           ),
                         ),
                       ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => {
+                            am.changeMethodScreen('AM', Method.method3),
+                            _pageController.animateToPage(
+                              2,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            ),
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            decoration: BoxDecoration(
+                              color: am.autoScreenView == Method.method3
+                                  ? const Color.fromRGBO(33, 52, 72, 1)
+                                  // : Colors.transparent,
+                                  : Color.fromRGBO(209, 238, 250, 1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Method3",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: am.autoScreenView == Method.method3 ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -182,7 +215,16 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                     context,
                                     listen: false,
                                   ).setAMSelectedItem(SearchFieldListItem(item), context);
-                                  String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  // String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  String method = "";
+                                  if (drop.autoScreenView == Method.method1) {
+                                    method = "AM1";
+                                  } else if (drop.autoScreenView == Method.method2) {
+                                    method = "AM2";
+                                  }
+                                  if (drop.autoScreenView == Method.method3) {
+                                    method = "AM3";
+                                  }
                                   String? symbol = drop.amSelectedValue;
                                   if (symbol != null && symbol != "") {
                                     final data = CurrentAutomationModel(
@@ -211,14 +253,30 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                 textAlign: TextAlign.center,
                                 onChanged: (newValue) {
                                   final parsedValue = double.tryParse(newValue);
-                                  final method = drop.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
+                                  // final method = drop.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
+                                  String method = "";
+                                  if (drop.autoScreenView == Method.method1) {
+                                    method = "AM1";
+                                  } else if (drop.autoScreenView == Method.method2) {
+                                    method = "AM2";
+                                  } else if (drop.autoScreenView == Method.method3) {
+                                    method = "AM3";
+                                  }
                                   if (parsedValue != null) {
                                     drop.setAMVolume(method, parsedValue);
                                     // drop.setAMVolume('AM', parsedValue);
                                   }
                                 },
                                 onFieldSubmitted: (value) async {
-                                  String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  // String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
+                                  String method = "";
+                                  if (drop.autoScreenView == Method.method1) {
+                                    method = "AM1";
+                                  } else if (drop.autoScreenView == Method.method2) {
+                                    method = "AM2";
+                                  } else if (drop.autoScreenView == Method.method3) {
+                                    method = "AM3";
+                                  }
                                   String? symbol = drop.amSelectedValue;
                                   if (symbol != null && symbol != "") {
                                     final data = CurrentAutomationModel(
@@ -269,7 +327,16 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                 ),
                               ),
                               onPressed: () async {
-                                String method = autoLive.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
+                                // String method = autoLive.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
+                                String method = "";
+                                if (autoLive.autoScreenView == Method.method1) {
+                                  method = "AM1";
+                                } else if (autoLive.autoScreenView == Method.method2) {
+                                  method = "AM2";
+                                }
+                                if (autoLive.autoScreenView == Method.method3) {
+                                  method = "AM3";
+                                }
                                 String? symbol = autoLive.amSelectedValue;
                                 if (symbol != null && symbol != "") {
                                   final data = CurrentAutomationModel(
@@ -301,11 +368,19 @@ class _AutomationScreenState extends State<AutomationScreen> {
                   return PageView(
                     controller: _pageController,
                     onPageChanged: (index) {
-                      final method = index == 0 ? Method.method1 : Method.method2;
+                      // final method = index == 0 ? Method.method1 : Method.method2;
+                      Method method = Method.method1;
+                      if (index == 0) {
+                        method = Method.method1;
+                      } else if (index == 1) {
+                        method = Method.method2;
+                      } else if (index == 2) {
+                        method = Method.method3;
+                      }
                       screen.changeMethodScreen('AM', method);
                     },
                     physics: const BouncingScrollPhysics(),
-                    children: [AutomaticMethod1Section(), AutomaticMethod2Section()],
+                    children: [AutomaticMethod1Section(), AutomaticMethod2Section(), AutomaticMethod3Section()],
                   );
                 },
               ),

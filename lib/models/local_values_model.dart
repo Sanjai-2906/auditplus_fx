@@ -15,6 +15,13 @@ class LiveAutomaticTradeModel {
   Map<String, dynamic> toJson() => _$LiveAutomaticTradeModelToJson(this);
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is LiveAutomaticTradeModel && symbol == other.symbol && method == other.method;
+
+  @override
+  int get hashCode => symbol.hashCode ^ method.hashCode;
+
+  @override
   String toString() {
     return "LiveAutomaticTradeModel{Method: $method,Symbol: $symbol,Volume: $volume}";
   }

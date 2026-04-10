@@ -9,7 +9,7 @@ import '../models/models.dart';
 import 'providers.dart';
 
 //Screen Selection
-enum Method { method1, method2 }
+enum Method { method1, method2, method3 }
 
 class ValueProvider extends ChangeNotifier {
   //Screen Changes
@@ -32,8 +32,12 @@ class ValueProvider extends ChangeNotifier {
   CurrentAutomationModel? lastAMOpen;
   bool get isLoading => _isLoading;
 
-  List<LiveAutomaticTradeModel> liveAutomaticTradeM1 = [];
-  List<LiveAutomaticTradeModel> liveAutomaticTradeM2 = [];
+  // List<LiveAutomaticTradeModel> liveAutomaticTradeM1 = [];
+  // List<LiveAutomaticTradeModel> liveAutomaticTradeM2 = [];
+  // List<LiveAutomaticTradeModel> liveAutomaticTradeM3 = [];
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM1 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM2 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM3 = {};
 
   ValueProvider(BuildContext context) {
     _loadInitial(context);
@@ -50,15 +54,27 @@ class ValueProvider extends ChangeNotifier {
     manualVolume = response.manualVolume;
     manualVolumeController.text = manualVolume.toString();
     amVolume = response.automaticVolume;
-    amVolumeController.text = amVolume.toString();
+    amVolumeController.text = amVolume.toStringAsFixed(2);
     final lastSymbol = response.lastActiveSymbol;
     final amLastSymbol = response.amLastSymbol;
     var liveAmData = response.liveAutomaticTrade;
     for (var item in liveAmData) {
+      // if (item.method == 'AM1') {
+      //   liveAutomaticTradeM1.add(item);
+      // } else if (item.method == 'AM2') {
+      //   liveAutomaticTradeM2.add(item);
+      // } else if (item.method == 'AM3') {
+      //   liveAutomaticTradeM3.add(item);
+      // }
       if (item.method == 'AM1') {
-        liveAutomaticTradeM1.add(item);
+        // liveAutomaticTradeM1.add(item);
+        liveAutomaticTradeM1[item.symbol] = item;
       } else if (item.method == 'AM2') {
-        liveAutomaticTradeM2.add(item);
+        // liveAutomaticTradeM2.add(item);
+        liveAutomaticTradeM2[item.symbol] = item;
+      } else if (item.method == 'AM3') {
+        // liveAutomaticTradeM3.add(item);
+        liveAutomaticTradeM3[item.symbol] = item;
       }
     }
     if (lastSymbol.isNotEmpty) {
@@ -111,7 +127,12 @@ class ValueProvider extends ChangeNotifier {
       automaticVolume: amVolume,
       manualVolume: manualVolume,
       // liveAutomaticTrade: liveAutomaticTrade,
-      liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2],
+      // liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2, ...liveAutomaticTradeM3],
+      liveAutomaticTrade: [
+        ...liveAutomaticTradeM1.values,
+        ...liveAutomaticTradeM2.values,
+        ...liveAutomaticTradeM3.values,
+      ],
     );
     await setLocalValues(data);
     notifyListeners();
@@ -119,7 +140,7 @@ class ValueProvider extends ChangeNotifier {
 
   void setAMVolume(String method, double newVolume) async {
     amVolume = newVolume;
-    amVolumeController.text = newVolume.toString();
+    amVolumeController.text = newVolume.toStringAsFixed(2);
 
     final data = LocalValuesModel(
       userId: "1",
@@ -128,7 +149,12 @@ class ValueProvider extends ChangeNotifier {
       automaticVolume: amVolume,
       manualVolume: manualVolume,
       // liveAutomaticTrade: liveAutomaticTrade,
-      liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2],
+      // liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2, ...liveAutomaticTradeM3],
+      liveAutomaticTrade: [
+        ...liveAutomaticTradeM1.values,
+        ...liveAutomaticTradeM2.values,
+        ...liveAutomaticTradeM3.values,
+      ],
     );
     await setLocalValues(data);
     notifyListeners();
@@ -167,7 +193,12 @@ class ValueProvider extends ChangeNotifier {
       automaticVolume: amVolume,
       manualVolume: manualVolume,
       // liveAutomaticTrade: liveAutomaticTrade,
-      liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2],
+      // liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2, ...liveAutomaticTradeM3],
+      liveAutomaticTrade: [
+        ...liveAutomaticTradeM1.values,
+        ...liveAutomaticTradeM2.values,
+        ...liveAutomaticTradeM3.values,
+      ],
     );
     await setLocalValues(data);
     notifyListeners();
@@ -184,7 +215,12 @@ class ValueProvider extends ChangeNotifier {
       automaticVolume: amVolume,
       manualVolume: manualVolume,
       // liveAutomaticTrade: liveAutomaticTrade,
-      liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2],
+      // liveAutomaticTrade: [...liveAutomaticTradeM1, ...liveAutomaticTradeM2, ...liveAutomaticTradeM3],
+      liveAutomaticTrade: [
+        ...liveAutomaticTradeM1.values,
+        ...liveAutomaticTradeM2.values,
+        ...liveAutomaticTradeM3.values,
+      ],
     );
     await setLocalValues(data);
 
@@ -230,20 +266,50 @@ class ValueProvider extends ChangeNotifier {
 
   void removeLiveTrade(String symbol, String method) {
     if (method == 'AM1') {
-      liveAutomaticTradeM1.removeWhere((el) => el.symbol == symbol);
+      // liveAutomaticTradeM1.removeWhere((el) => el.symbol == symbol);
+      liveAutomaticTradeM1.remove(symbol);
     } else if (method == 'AM2') {
-      liveAutomaticTradeM2.removeWhere((el) => el.symbol == symbol);
+      // liveAutomaticTradeM2.removeWhere((el) => el.symbol == symbol);
+      liveAutomaticTradeM2.remove(symbol);
+    } else if (method == 'AM3') {
+      // liveAutomaticTradeM3.removeWhere((el) => el.symbol == symbol);
+      liveAutomaticTradeM3.remove(symbol);
     }
     notifyListeners();
   }
 
+  // void addLiveTrade(CurrentAutomationModel mod) {
+  //   print(mod);
+  //   if (mod.method == 'AM1') {
+  //     liveAutomaticTradeM1.add(LiveAutomaticTradeModel(method: mod.method, symbol: mod.symbol, volume: mod.volume));
+  //   } else if (mod.method == 'AM2') {
+  //     liveAutomaticTradeM2.add(LiveAutomaticTradeModel(method: mod.method, symbol: mod.symbol, volume: mod.volume));
+  //   } else if (mod.method == 'AM3') {
+  //     liveAutomaticTradeM3.add(LiveAutomaticTradeModel(method: mod.method, symbol: mod.symbol, volume: mod.volume));
+  //   }
+  //   notifyListeners();
+  // }
   void addLiveTrade(CurrentAutomationModel mod) {
-    print(mod);
     if (mod.method == 'AM1') {
-      liveAutomaticTradeM1.add(LiveAutomaticTradeModel(method: mod.method, symbol: mod.symbol, volume: mod.volume));
+      liveAutomaticTradeM1[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
     } else if (mod.method == 'AM2') {
-      liveAutomaticTradeM2.add(LiveAutomaticTradeModel(method: mod.method, symbol: mod.symbol, volume: mod.volume));
+      liveAutomaticTradeM2[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM3') {
+      liveAutomaticTradeM3[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
     }
+
     notifyListeners();
   }
 }
