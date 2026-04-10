@@ -9,7 +9,7 @@ import 'contants.dart';
 
 Future<void> automaticTrading(BuildContext context, CurrentAutomationModel data) async {
   final token = Provider.of<MytokenProvider>(context, listen: false).token;
-
+  print(data);
   if (token == null) {
     toastification.show(
       backgroundColor: Color.fromRGBO(242, 186, 185, 1),

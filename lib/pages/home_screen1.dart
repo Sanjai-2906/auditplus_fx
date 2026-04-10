@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:auditplus_fx/pages/automation_screen.dart';
+// import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,6 @@ class HomeScreenState extends State<HomeScreen> {
   List<SearchFieldListItem<String>> symbols = [];
   bool isLoading = true;
   // late Future _initFuture;
-  late PageController _pageController;
 
   late TextEditingController _tokenController;
   late FocusNode _symbolFocusNode;
@@ -41,7 +41,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+
     _symbolFocusNode = FocusNode();
     _tokenController = TextEditingController();
 
@@ -299,10 +299,7 @@ class HomeScreenState extends State<HomeScreen> {
                                             focusNode: _symbolFocusNode,
                                             suggestions: symbols,
                                             suggestionState: Suggestion.hidden,
-                                            // selectedValue: drop.manualSelectedItem,
-                                            selectedValue: symbols.contains(drop.manualSelectedItem)
-                                                ? drop.manualSelectedItem
-                                                : null,
+                                            selectedValue: drop.manualSelectedItem,
                                             searchInputDecoration: SearchInputDecoration(
                                               hintText: "Symbols",
                                               filled: true,
@@ -328,8 +325,8 @@ class HomeScreenState extends State<HomeScreen> {
                                               if (searchText.isEmpty) {
                                                 return List<SearchFieldListItem<String>>.from(symbols);
                                               }
-                                              // context.read<ValueProvider>().clearSelectedValue();
-                                              // context.read<CheckedBoxProvider>().clearState("MM");
+                                              context.read<ValueProvider>().clearSelectedValue();
+                                              context.read<CheckedBoxProvider>().clearState("MM");
 
                                               final query = searchText.toUpperCase();
                                               return symbols.where((s) {
@@ -452,107 +449,10 @@ class HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              Consumer<ValueProvider>(
-                                builder: (context, mm, child) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(209, 238, 250, 1),
-                                      border: Border.all(color: Colors.black, width: 1.0),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => {
-                                              mm.changeMethodScreen('MM', Method.method1),
-                                              _pageController.animateToPage(
-                                                0,
-                                                duration: Duration(milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              ),
-                                            },
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: mm.manualScreenView == Method.method1
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    // : Colors.transparent,
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method1",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: mm.manualScreenView == Method.method1
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => {
-                                              mm.changeMethodScreen('MM', Method.method2),
-                                              _pageController.animateToPage(
-                                                1,
-                                                duration: Duration(milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              ),
-                                            },
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: mm.manualScreenView == Method.method2
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method2",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: mm.manualScreenView == Method.method2
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.8,
-                                child: Consumer<ValueProvider>(
-                                  builder: (context, screen, child) {
-                                    return PageView(
-                                      controller: _pageController,
-                                      onPageChanged: (index) {
-                                        final method = index == 0 ? Method.method1 : Method.method2;
-                                        screen.changeMethodScreen('MM', method);
-                                      },
-                                      physics: const BouncingScrollPhysics(),
-                                      children: [ManualMethod1Section(), ManualMethod2Section()],
-                                    );
-                                  },
-                                ),
-                              ),
+                              ManualMethod1Section(),
+                              // DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
+                              ManualMethod2Section(),
+                              // DottedLine(lineThickness: 1.5, dashColor: Color.fromRGBO(33, 52, 72, 1)),
                             ],
                           ),
                         ),

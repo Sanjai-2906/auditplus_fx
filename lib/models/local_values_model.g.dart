@@ -9,13 +9,18 @@ part of 'local_values_model.dart';
 LiveAutomaticTradeModel _$LiveAutomaticTradeModelFromJson(
   Map<String, dynamic> json,
 ) => LiveAutomaticTradeModel(
+  method: json['method'] as String,
   symbol: json['symbol'] as String,
   volume: json['volume'] as num,
 );
 
 Map<String, dynamic> _$LiveAutomaticTradeModelToJson(
   LiveAutomaticTradeModel instance,
-) => <String, dynamic>{'symbol': instance.symbol, 'volume': instance.volume};
+) => <String, dynamic>{
+  'method': instance.method,
+  'symbol': instance.symbol,
+  'volume': instance.volume,
+};
 
 LocalValuesModel _$LocalValuesModelFromJson(Map<String, dynamic> json) =>
     LocalValuesModel(

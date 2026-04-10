@@ -4,10 +4,11 @@ part 'local_values_model.g.dart';
 
 @JsonSerializable()
 class LiveAutomaticTradeModel {
+  String method;
   String symbol;
   num volume;
 
-  LiveAutomaticTradeModel({required this.symbol, required this.volume});
+  LiveAutomaticTradeModel({required this.method, required this.symbol, required this.volume});
 
   factory LiveAutomaticTradeModel.fromJson(Map<String, dynamic> json) => _$LiveAutomaticTradeModelFromJson(json);
 
@@ -15,7 +16,7 @@ class LiveAutomaticTradeModel {
 
   @override
   String toString() {
-    return "LiveAutomaticTradeModel{Symbol: $symbol,Volume: $volume}";
+    return "LiveAutomaticTradeModel{Method: $method,Symbol: $symbol,Volume: $volume}";
   }
 }
 
