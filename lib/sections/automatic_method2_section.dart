@@ -38,7 +38,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                     width: MediaQuery.of(context).size.height * 0.7,
                     child: Consumer<ValueProvider>(
                       builder: (context, autoLive, child) {
-                        final items = autoLive.liveAutomaticTradeM1.values.toList();
+                        final items = autoLive.liveAutomaticTradeM2.values.toList();
                         return ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (context, index) {
