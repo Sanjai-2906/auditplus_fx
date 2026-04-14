@@ -7,7 +7,6 @@ Future<LocalValuesModel> getLocalValues() async {
   final dio = Dio();
   final userId = "1";
   final response = await dio.post('$url/get-local/$userId');
-  print(response.data);
   return LocalValuesModel.fromJson(response.data);
 }
 

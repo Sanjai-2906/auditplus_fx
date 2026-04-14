@@ -47,7 +47,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     final now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    // print(formattedDate);
 
     setState(() {
       menuSelectedItem = symbols.first; // "ALL"
@@ -60,9 +59,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Future<void> pickDate({required bool isFromDate}) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      // initialDate: DateTime.now(),
       firstDate: DateTime(2026),
-      // lastDate: DateTime(2035),
       lastDate: DateTime.now(),
     );
 
@@ -85,8 +82,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           toDateController.text = formatted;
         });
       }
-
-      // notifyListeners();
     }
   }
 
@@ -157,7 +152,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: [
             for (var l in liveSymbols)
               ListTile(
-                // title: Text(l.symbol),
                 title: Row(
                   spacing: 10,
                   children: [

@@ -38,17 +38,20 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                     width: MediaQuery.of(context).size.height * 0.7,
                     child: Consumer<ValueProvider>(
                       builder: (context, autoLive, child) {
+                        final items = autoLive.liveAutomaticTradeM2.values.toList();
                         return ListView.builder(
-                          itemCount: autoLive.liveAutomaticTradeM2.length,
+                          itemCount: items.length,
                           itemBuilder: (context, index) {
-                            final symbol = autoLive.liveAutomaticTradeM2[index].symbol;
+                            final symbol = items[index].symbol;
 
                             if (!context.read<CheckedBoxProvider>().am2ValuesPerSymbol.containsKey(symbol)) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Future.microtask(() {
+                                // ignore: use_build_context_synchronously
                                 context.read<CheckedBoxProvider>().loadFromApi(symbol, 'AM2');
                               });
                             }
                             return Padding(
+                              key: ValueKey(items[index].symbol),
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -73,7 +76,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 3.0),
                                                 child: Text(
-                                                  autoLive.liveAutomaticTradeM2[index].symbol,
+                                                  items[index].symbol,
                                                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                                                 ),
                                               ),
@@ -84,7 +87,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 3.0),
                                                 child: Text(
-                                                  autoLive.liveAutomaticTradeM2[index].volume.toString(),
+                                                  items[index].volume.toStringAsFixed(2),
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(37, 99, 235, 1),
                                                     fontSize: 18,
@@ -105,10 +108,8 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                               ),
                                               onPressed: () async {
                                                 final data = CurrentAutomationModel(
-                                                  // symbol: autoLive.amSelectedValue ?? "",
-                                                  symbol: autoLive.liveAutomaticTradeM2[index].symbol,
-                                                  // volume: autoLive.amVolume,
-                                                  volume: autoLive.liveAutomaticTradeM2[index].volume,
+                                                  symbol: items[index].symbol,
+                                                  volume: items[index].volume,
                                                   isEnabled: true,
                                                   action: ActionType.close,
                                                   method: "AM2",
@@ -135,16 +136,13 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                               ),
                                               onPressed: () async {
                                                 final data = CurrentAutomationModel(
-                                                  // symbol: autoLive.amSelectedValue ?? "",
-                                                  symbol: autoLive.liveAutomaticTradeM2[index].symbol,
-                                                  // volume: autoLive.amVolume,
-                                                  volume: autoLive.liveAutomaticTradeM2[index].volume,
+                                                  symbol: items[index].symbol,
+                                                  volume: items[index].volume,
                                                   isEnabled: false,
                                                   action: ActionType.disable,
                                                   method: "AM2",
                                                 );
                                                 await automaticTrading(context, data);
-                                                // autoLive.removeLiveTrade(data.symbol);
                                                 autoLive.removeLiveTrade(data.symbol, data.method);
                                               },
                                               icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
@@ -159,7 +157,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                                 ),
                                               ),
                                               onPressed: () {
-                                                final symbol = autoLive.liveAutomaticTradeM2[index].symbol;
+                                                final symbol = items[index].symbol;
 
                                                 setState(() {
                                                   if (expandedSymbols.contains(symbol)) {
@@ -173,11 +171,8 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                             ),
                                           ],
                                         ),
-                                        if (expandedSymbols.contains(autoLive.liveAutomaticTradeM2[index].symbol))
-                                          AutomaticClosingSection(
-                                            method: 'AM2',
-                                            amSymbol: autoLive.liveAutomaticTradeM2[index].symbol,
-                                          ),
+                                        if (expandedSymbols.contains(items[index].symbol))
+                                          AutomaticClosingSection(method: 'AM2', amSymbol: items[index].symbol),
                                       ],
                                     ),
                                   ),

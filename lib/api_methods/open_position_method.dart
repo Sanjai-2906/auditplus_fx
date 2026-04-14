@@ -28,9 +28,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   Dio dio = Dio();
   final valueProv = Provider.of<ValueProvider>(context, listen: false);
   final checkedProv = Provider.of<CheckedBoxProvider>(context, listen: false);
-  // final symbol = valueProv.selectedValue;
   final symbol = valueProv.manualSelectedValue;
-  // final volume = valueProv.volume;
   final volume = valueProv.manualVolume;
   late bool reversalPlusPlus;
   late bool reversalPlus;
@@ -43,7 +41,6 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
 
   if (method == 'MM1') {
     final prov = Provider.of<ValueProvider>(context, listen: false);
-    // final symbol = prov.selectedValue;
     final symbol = prov.manualSelectedValue;
     final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
     for (final model in crntOpen) {
@@ -56,25 +53,16 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
         }
       }
     }
-    // reversalPlusPlus = checkedProv.isMM1ReversalPlusPlusChecked;
     reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM1ReversalPlusPlusChecked");
-    // reversalPlus = checkedProv.isMM1ReversalPlusChecked;
     reversalPlus = checkedProv.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-    // reversal = checkedProv.isMM1ReversalChecked;
     reversal = checkedProv.getValue(symbol, "MM", "MM1ReversalChecked");
-    // signal = checkedProv.isMM1SignalExitChecked;
     signal = checkedProv.getValue(symbol, "MM", "MM1SignalExitChecked");
-    // tc = checkedProv.isMM1TcChangeChecked;
     tc = checkedProv.getValue(symbol, "MM", "MM1TcChangeChecked");
-    // hw = checkedProv.isMM1HwChecked;
     hw = checkedProv.getValue(symbol, "MM", "MM1HwChecked");
-    // hwTh = checkedProv.isMM1HWTHChecked;
     hwTh = checkedProv.getValue(symbol, "MM", "MM1HWTHChecked");
-    // mf = checkedProv.isMM1MfChecked;
     mf = checkedProv.getValue(symbol, "MM", "MM1MfChecked");
   } else if (method == 'MM2') {
     final prov = Provider.of<ValueProvider>(context, listen: false);
-    // final symbol = prov.selectedValue;
     final symbol = prov.manualSelectedValue;
     final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
     for (final model in crntOpen) {
@@ -87,21 +75,13 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
         }
       }
     }
-    // reversalPlusPlus = checkedProv.isMM2ReversalPlusPlusChecked;
     reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM2ReversalPlusPlusChecked");
-    // reversalPlus = checkedProv.isMM2ReversalPlusChecked;
     reversalPlus = checkedProv.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-    // reversal = checkedProv.isMM2ReversalChecked;
     reversal = checkedProv.getValue(symbol, "MM", "MM2ReversalChecked");
-    // signal = checkedProv.isMM2SignalExitChecked;
     signal = checkedProv.getValue(symbol, "MM", "MM2SignalExitChecked");
-    // tc = checkedProv.isMM2TcChangeChecked;
     tc = checkedProv.getValue(symbol, "MM", "MM2TcChangeChecked");
-    // hw = checkedProv.isMM2HwChecked;
     hw = checkedProv.getValue(symbol, "MM", "MM2HwChecked");
-    // hwTh = checkedProv.isMM2HWTHChecked;
     hwTh = checkedProv.getValue(symbol, "MM", "MM2HWTHChecked");
-    // mf = checkedProv.isMM2MfChecked;
     mf = checkedProv.getValue(symbol, "MM", "MM2MfChecked");
   }
 
@@ -135,38 +115,22 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     late bool hwTh;
 
     if (method == 'MM1') {
-      // reversalPlusPlus = checkedProv.isMM1ReversalPlusPlusChecked;
       reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM1ReversalPlusPlusChecked");
-      // reversalPlus = checkedProv.isMM1ReversalPlusChecked;
       reversalPlus = checkedProv.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-      // reversal = checkedProv.isMM1ReversalChecked;
       reversal = checkedProv.getValue(symbol, "MM", "MM1ReversalChecked");
-      // signal = checkedProv.isMM1SignalExitChecked;
       signal = checkedProv.getValue(symbol, "MM", "MM1SignalExitChecked");
-      // tc = checkedProv.isMM1TcChangeChecked;
       tc = checkedProv.getValue(symbol, "MM", "MM1TcChangeChecked");
-      // hw = checkedProv.isMM1HwChecked;
       hw = checkedProv.getValue(symbol, "MM", "MM1HwChecked");
-      // hwTh = checkedProv.isMM1HWTHChecked;
       hwTh = checkedProv.getValue(symbol, "MM", "MM1HWTHChecked");
-      // mf = checkedProv.isMM1MfChecked;
       mf = checkedProv.getValue(symbol, "MM", "MM1MfChecked");
     } else if (method == 'MM2') {
-      // reversalPlusPlus = checkedProv.isMM2ReversalPlusPlusChecked;
       reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM2ReversalPlusPlusChecked");
-      // reversalPlus = checkedProv.isMM2ReversalPlusChecked;
       reversalPlus = checkedProv.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-      // reversal = checkedProv.isMM2ReversalChecked;
       reversal = checkedProv.getValue(symbol, "MM", "MM2ReversalChecked");
-      // signal = checkedProv.isMM2SignalExitChecked;
       signal = checkedProv.getValue(symbol, "MM", "MM2SignalExitChecked");
-      // tc = checkedProv.isMM2TcChangeChecked;
       tc = checkedProv.getValue(symbol, "MM", "MM2TcChangeChecked");
-      // hw = checkedProv.isMM2HwChecked;
       hw = checkedProv.getValue(symbol, "MM", "MM2HwChecked");
-      // hwTh = checkedProv.isMM2HWTHChecked;
       hwTh = checkedProv.getValue(symbol, "MM", "MM2HWTHChecked");
-      // mf = checkedProv.isMM2MfChecked;
       mf = checkedProv.getValue(symbol, "MM", "MM2MfChecked");
     }
 
