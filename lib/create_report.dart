@@ -1,16 +1,12 @@
 import 'dart:io';
-// import 'dart:typed_data';
 
 import 'package:excel/excel.dart';
-// import 'package:file_saver/file_saver.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'models/models.dart';
 
 Future<void> createExcelFile(List<DbReportModel> reports) async {
-  // print(reports);
-
   var excel = Excel.createExcel();
   Sheet sheetObject = excel['Sheet1'];
 
@@ -39,15 +35,13 @@ Future<void> createExcelFile(List<DbReportModel> reports) async {
 
       await file.writeAsBytes(fileBytes);
 
-      print("Saved at: ${file.path}");
-
       await OpenFilex.open(file.path);
     }
   } catch (e) {
-    print('Error saving file: $e');
+    throw ('Error saving file: $e');
   }
 }
 
 Future<Directory> getProjectDirectory() async {
-  return Directory(Directory.current.path); // current Project folder path
+  return Directory(Directory.current.path);
 }
