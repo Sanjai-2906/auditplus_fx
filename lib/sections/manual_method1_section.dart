@@ -177,7 +177,7 @@ class _ManualMethod1SectionState extends State<ManualMethod1Section> {
               _buildRow("Catcher", "LongTcChecked", "ShortTcChecked"),
               _buildRow("Tracer", "LongTtChecked", "ShortTtChecked"),
               _buildRow("Neo Cloud", "LongNeoChecked", "ShortNeoChecked"),
-              _buildRow("Confirmation", "LongConfChecked", "ShortM1ConfChecked"),
+              _buildRow("Confirmation", "LongConfChecked", "ShortConfChecked"),
               _buildRow("MF", "LongM1MfChecked", "ShortM1MfChecked"),
               _buildRow("Trend", "LongM1TrendChecked", "ShortM1TrendChecked"),
               _buildRow("Reversal", "LongM1ReversalChecked", "ShortM1ReversalChecked"),

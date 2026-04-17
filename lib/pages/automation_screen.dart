@@ -17,10 +17,25 @@ class AutomationScreen extends StatefulWidget {
 
 class _AutomationScreenState extends State<AutomationScreen> {
   late PageController _pageController;
+  int selectedIndex = 0;
   @override
   void initState() {
-    _pageController = PageController();
     super.initState();
+
+    selectedIndex = 0;
+
+    _pageController = PageController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<ValueProvider>(context, listen: false);
+      provider.changeMethodScreen('AM', Method.method1);
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override

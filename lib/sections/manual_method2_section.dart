@@ -180,7 +180,7 @@ class _ManualMethod2SectionState extends State<ManualMethod2Section> {
               _buildRow("Catcher", "LongCatcherChecked", "ShortCatcherChecked"),
               _buildRow("MF", "LongM2MfChecked", "ShortM2MfChecked"),
               _buildRow("HW", "LongM2HwChecked", "ShortM2HwChecked"),
-              _buildRow("HWTH", "LongM2HwThChecked", "ShortM2HwThChecked"),
+              // _buildRow("HWTH", "LongM2HwThChecked", "ShortM2HwThChecked"),
             ],
           ),
           AutomaticClosingSection(method: 'MM2'),

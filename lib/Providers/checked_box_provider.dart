@@ -146,27 +146,16 @@ class CheckedBoxProvider extends ChangeNotifier {
     final v = getValues("MM", symbol);
     return (((v['LongDivergenceChecked'] ?? false) || (v['LongRevPlusChecked'] ?? false)) &&
         (v['LongCatcherChecked'] ?? false) &&
-        ((v['LongM2MfChecked'] ?? false) || (v['LongM2HwChecked'] ?? false) || (v['LongHwThChecked'] ?? false)));
-    // &&(v['LongM2TrendChecked'] ?? false))
-    // ||
-    // (((v['LongDivergenceChecked'] ?? false) || (v['LongRevPlusChecked'] ?? false)) &&
-    //     (v['LongCatcherChecked'] ?? false) &&
-    //     !(v['LongM2MfChecked'] ?? false));
-    // &&(v['LongM2ReversalChecked'] ?? false) &&
-    // (v['LongM2TrendChecked'] ?? false));
+        ((v['LongM2MfChecked'] ?? false) || (v['LongM2HwChecked'] ?? false)));
+    // || (v['LongHwThChecked'] ?? false)));
   }
 
   bool isM2ShortAllChecked(String symbol) {
     final v = getValues("MM", symbol);
     return (((v['ShortDivergenceChecked'] ?? false) || (v['ShortRevChecked'] ?? false)) &&
         (v['ShortCatcherChecked'] ?? false) &&
-        ((v['ShortM2MfChecked'] ?? false) || (v['ShortM2HwChecked'] ?? false) || (v['ShortM2HwThChecked'] ?? false)));
-    // &&(v['ShortM2TrendChecked'] ?? false)) ||
-    // (((v['ShortDivergenceChecked'] ?? false) || (v['ShortRevChecked'] ?? false)) &&
-    //     (v['ShortCatcherChecked'] ?? false) &&
-    //     !(v['ShortM2MfChecked'] ?? false) &&
-    //     (v['ShortM2ReversalChecked'] ?? false) &&
-    //     (v['ShortM2TrendChecked'] ?? false));
+        ((v['ShortM2MfChecked'] ?? false) || (v['ShortM2HwChecked'] ?? false)));
+    // || (v['ShortM2HwThChecked'] ?? false)));
   }
 
   Future<void> loadFromApi(String symbol, String section) async {
