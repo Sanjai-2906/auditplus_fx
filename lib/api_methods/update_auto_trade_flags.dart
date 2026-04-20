@@ -13,47 +13,18 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
-  late bool tc;
+  bool tc = true;
   late bool hw;
   late bool hwTh;
   late bool mf;
-  if (method == 'AM1') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM1ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM1ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM1ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM1SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM1TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM1HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM1HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM1MfChecked');
-  } else if (method == 'AM2') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM2ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM2ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM2ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM2SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM2TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM2HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM2HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM2MfChecked');
-  } else if (method == 'AM3') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM3ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM3ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM3ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM3SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM3TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM3HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM3HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM3MfChecked');
-  } else if (method == 'AM4') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM4ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM4ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM4ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM4SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM4TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM4HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM4HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM4MfChecked');
-  }
+  reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
+  reversalPlus = checked.getValue(symbol, method, "${method}ReversalPlusChecked");
+  reversal = checked.getValue(symbol, method, "${method}ReversalChecked");
+  signal = checked.getValue(symbol, method, "${method}SignalExitChecked");
+  hw = checked.getValue(symbol, method, "${method}HwChecked");
+  hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
+  mf = checked.getValue(symbol, method, "${method}MfChecked");
+
   final data = {
     'symbol': symbol,
     'method': method,

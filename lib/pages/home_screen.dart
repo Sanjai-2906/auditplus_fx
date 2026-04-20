@@ -4,11 +4,9 @@ import 'dart:async';
 
 import 'package:auditplus_fx/pages/automation_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:auditplus_fx/drawer_widget.dart';
-import 'package:auditplus_fx/intent.dart';
 
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
@@ -28,7 +26,7 @@ class HomeScreenState extends State<HomeScreen> {
   List<SearchFieldListItem<String>> symbols = [];
   bool isLoading = true;
   bool _dialogShown = false;
-  // late Future _initFuture;
+  bool _isDialogOpen = false;
 
   late TextEditingController _tokenController;
   late FocusNode _symbolFocusNode;
@@ -46,7 +44,6 @@ class HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeApp(context);
     });
-    // _initFuture = _initializeApp(context);
   }
 
   Future<void> _initializeApp(BuildContext context) async {
@@ -67,8 +64,6 @@ class HomeScreenState extends State<HomeScreen> {
     symbols = list.map((el) {
       return SearchFieldListItem<String>(el, value: el.toString());
     }).toList();
-
-    // context.read<CheckedBoxProvider>().loadForM3Values(context);
 
     if (list.isNotEmpty) {}
 
@@ -106,10 +101,7 @@ class HomeScreenState extends State<HomeScreen> {
               spacing: 15,
               children: [
                 Center(
-                  child: Text(
-                    "Token getting...",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
+                  child: Text("Token getting...", style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
                 CircularProgressIndicator(),
               ],
@@ -141,17 +133,11 @@ class HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 15,
                 children: [
-                  const Text(
-                    'Enter the token',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
+                  const Text('Enter the token', style: TextStyle(fontSize: 16, color: Colors.black)),
                   const SizedBox(height: 10),
                   TextField(
                     controller: _tokenController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Token',
-                    ),
+                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Token'),
                   ),
                   TextButton(
                     style: ElevatedButton.styleFrom(
@@ -191,25 +177,16 @@ class HomeScreenState extends State<HomeScreen> {
                   return TextButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: auto.isAutomaticSectionEnabled
-                          // ? Color.fromRGBO(120, 255, 165, 0.884)
                           ? Color.fromRGBO(44, 187, 104, 1)
                           : Color.fromRGBO(189, 232, 245, 1),
-                      foregroundColor: auto.isAutomaticSectionEnabled
-                          ? Color.fromRGBO(2, 12, 40, 1)
-                          : Colors.black,
+                      foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(color: Colors.white, width: 2),
                       ),
                     ),
                     onPressed: () => auto.setAutomaticEnable(),
-                    child: Text(
-                      'AUTO',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                   );
                 },
               ),
@@ -231,19 +208,14 @@ class HomeScreenState extends State<HomeScreen> {
                             autofocus: true,
                             controller: _tokenController,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
+                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                               labelText: 'Token',
                             ),
                           ),
                           TextButton(
                             onPressed: () {
                               String enteredToken = _tokenController.text;
-                              Provider.of<MytokenProvider>(
-                                context,
-                                listen: false,
-                              ).setToken(enteredToken);
+                              Provider.of<MytokenProvider>(context, listen: false).setToken(enteredToken);
                               Navigator.pop(context);
                             },
                             child: const Text('Submit'),
@@ -253,287 +225,149 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.token_rounded),
-                ),
+                child: Padding(padding: const EdgeInsets.all(8.0), child: Icon(Icons.token_rounded)),
               ),
             ],
             title: Text('Auditplus Fx', style: TextStyle(color: Colors.white)),
           ),
-          body: Shortcuts(
-            shortcuts: {
-              LogicalKeySet(
-                LogicalKeyboardKey.keyL,
-                LogicalKeyboardKey.control,
-              ): const LongIntent(
-                method: 'MM1',
-                actionType: "ORDER_TYPE_BUY",
-              ),
-              LogicalKeySet(
-                LogicalKeyboardKey.keyS,
-                LogicalKeyboardKey.control,
-              ): const ShortIntent(
-                method: 'MM1',
-                actionType: "ORDER_TYPE_SELL",
-              ),
-              LogicalKeySet(
-                LogicalKeyboardKey.keyC,
-                LogicalKeyboardKey.control,
-              ): CloseIntent(
-                actionType: "POSITION_CLOSE_ID",
-              ),
-            },
-            child: Consumer2<ValueProvider, CheckedBoxProvider>(
-              builder: (context, auto, check, child) {
-                final symbol = auto.manualSelectedValue;
+          body: Consumer2<ValueProvider, CheckedBoxProvider>(
+            builder: (context, auto, check, child) {
+              final symbol = auto.manualSelectedValue;
 
-                if (symbol != null) {
-                  final condition =
-                      check.isM1LongAllChecked(symbol) ||
-                      check.isM1ShortAllChecked(symbol) ||
-                      check.isM2LongAllChecked(symbol) ||
-                      check.isM2ShortAllChecked(symbol) ||
-                      check.isM3LongAllChecked(symbol) ||
-                      check.isM3ShortAllChecked(symbol) ||
-                      check.isM4LongAllChecked(symbol) ||
-                      check.isM4ShortAllChecked(symbol);
+              if (symbol != null) {
+                final condition =
+                    check.isM1LongAllChecked(symbol) ||
+                    check.isM1ShortAllChecked(symbol) ||
+                    check.isM2LongAllChecked(symbol) ||
+                    check.isM2ShortAllChecked(symbol) ||
+                    check.isM3LongAllChecked(symbol) ||
+                    check.isM3ShortAllChecked(symbol) ||
+                    check.isM4LongAllChecked(symbol) ||
+                    check.isM4ShortAllChecked(symbol);
 
-                  if (condition && !_dialogShown) {
-                    _dialogShown = true;
+                if (condition && !_dialogShown && !_isDialogOpen) {
+                  _dialogShown = true;
+                  _isDialogOpen = true;
 
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => methodDialog(context),
-                      );
-                    });
-                  }
+                  WidgetsBinding.instance.addPostFrameCallback((_) async {
+                    await showDialog(context: context, builder: (_) => methodDialog(context));
 
-                  if (!condition) {
-                    _dialogShown = false;
-                  }
+                    _isDialogOpen = false;
+                  });
                 }
-                return Actions(
-                  actions: {
-                    LongIntent: CallbackAction<LongIntent>(
-                      onInvoke: (intent) {
-                        openPosition(
-                          intent.method,
-                          'ORDER_TYPE_BUY',
-                          null,
-                          context,
-                        );
-                        return null;
-                      },
-                    ),
-                    ShortIntent: CallbackAction<ShortIntent>(
-                      onInvoke: (intent) {
-                        openPosition(
-                          intent.method,
-                          'ORDER_TYPE_SELL',
-                          null,
-                          context,
-                        );
-                        return null;
-                      },
-                    ),
-                    CloseIntent: CallbackAction<CloseIntent>(
-                      onInvoke: (intent) {
-                        onClosePosition(context, intent.actionType);
-                        return null;
-                      },
-                    ),
-                  },
-                  child: auto.isAutomaticSectionEnabled
-                      ? AutomationScreen(symbols: symbols)
-                      : SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: double.infinity,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(84, 119, 146, 1),
-                                ),
-                                padding: const EdgeInsets.only(
-                                  left: 12.0,
-                                  right: 12.0,
-                                  top: 10,
-                                  bottom: 5,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Consumer<ValueProvider>(
-                                      builder: (context, drop, child) {
-                                        return SizedBox(
-                                          width: 150,
-                                          height: 35,
-                                          child: SearchField<String>(
-                                            focusNode: _symbolFocusNode,
-                                            suggestions: symbols,
-                                            suggestionState: Suggestion.hidden,
-                                            // selectedValue: drop.manualSelectedItem,
-                                            selectedValue:
-                                                symbols.contains(
-                                                  drop.manualSelectedItem,
-                                                )
-                                                ? drop.manualSelectedItem
-                                                : null,
-                                            searchInputDecoration:
-                                                SearchInputDecoration(
-                                                  hintText: "Symbols",
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  isDense: true,
-                                                  contentPadding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 6,
-                                                      ),
 
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                              color:
-                                                                  Colors.grey,
-                                                              width: 1,
-                                                            ),
-                                                      ),
+                if (!condition) {
+                  _dialogShown = false;
+                }
+              }
+              return auto.isAutomaticSectionEnabled
+                  ? AutomationScreen(symbols: symbols)
+                  : SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(maxWidth: double.infinity),
+                            decoration: BoxDecoration(color: Color.fromRGBO(84, 119, 146, 1)),
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Consumer<ValueProvider>(
+                                  builder: (context, drop, child) {
+                                    return SizedBox(
+                                      width: 150,
+                                      height: 35,
+                                      child: SearchField<String>(
+                                        focusNode: _symbolFocusNode,
+                                        suggestions: symbols,
+                                        suggestionState: Suggestion.hidden,
+                                        selectedValue: symbols.contains(drop.manualSelectedItem)
+                                            ? drop.manualSelectedItem
+                                            : null,
+                                        searchInputDecoration: SearchInputDecoration(
+                                          hintText: "Symbols",
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          isDense: true,
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
 
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                              color:
-                                                                  Color.fromRGBO(
-                                                                    33,
-                                                                    52,
-                                                                    72,
-                                                                    1,
-                                                                  ),
-                                                              width: 1.5,
-                                                            ),
-                                                      ),
-                                                ),
-                                            maxSuggestionsInViewPort: 6,
-                                            onSearchTextChanged: (searchText) {
-                                              if (searchText.isEmpty) {
-                                                return List<
-                                                  SearchFieldListItem<String>
-                                                >.from(symbols);
-                                              }
-                                              // context.read<ValueProvider>().clearSelectedValue();
-                                              // context.read<CheckedBoxProvider>().clearState("MM");
-
-                                              final query = searchText
-                                                  .toUpperCase();
-                                              return symbols.where((s) {
-                                                final key = s.searchKey
-                                                    .toUpperCase();
-                                                final value = (s.value ?? '')
-                                                    .toUpperCase();
-                                                return key.contains(query) ||
-                                                    value.contains(query);
-                                              }).toList();
-                                            },
-                                            onSuggestionTap:
-                                                (
-                                                  SearchFieldListItem<String>
-                                                  item,
-                                                ) {
-                                                  _symbolFocusNode.unfocus();
-
-                                                  context
-                                                      .read<ValueProvider>()
-                                                      .setSelectedItem(
-                                                        item,
-                                                        context,
-                                                      );
-                                                  // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
-                                                  context
-                                                      .read<
-                                                        CheckedBoxProvider
-                                                      >()
-                                                      .loadAll(item.value!);
-                                                },
-                                            onSubmit: (item) {
-                                              Provider.of<ValueProvider>(
-                                                context,
-                                                listen: false,
-                                              ).setSelectedItem(
-                                                SearchFieldListItem(item),
-                                                context,
-                                              );
-                                            },
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: const BorderSide(color: Colors.grey, width: 1),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            10,
+
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: const BorderSide(
+                                              color: Color.fromRGBO(33, 52, 72, 1),
+                                              width: 1.5,
+                                            ),
                                           ),
                                         ),
+                                        maxSuggestionsInViewPort: 6,
+                                        onSearchTextChanged: (searchText) {
+                                          if (searchText.isEmpty) {
+                                            return List<SearchFieldListItem<String>>.from(symbols);
+                                          }
+                                          // context.read<ValueProvider>().clearSelectedValue();
+                                          // context.read<CheckedBoxProvider>().clearState("MM");
+
+                                          final query = searchText.toUpperCase();
+                                          return symbols.where((s) {
+                                            final key = s.searchKey.toUpperCase();
+                                            final value = (s.value ?? '').toUpperCase();
+                                            return key.contains(query) || value.contains(query);
+                                          }).toList();
+                                        },
+                                        onSuggestionTap: (SearchFieldListItem<String> item) {
+                                          _symbolFocusNode.unfocus();
+
+                                          context.read<ValueProvider>().setSelectedItem(item, context);
+                                          // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
+                                          context.read<CheckedBoxProvider>().loadAll(item.value!);
+                                        },
+                                        onSubmit: (item) {
+                                          Provider.of<ValueProvider>(
+                                            context,
+                                            listen: false,
+                                          ).setSelectedItem(SearchFieldListItem(item), context);
+                                        },
                                       ),
-                                      onPressed: () => showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (context) =>
-                                            methodDialog(context),
-                                      ),
-                                      child: Text(
-                                        'All Methods',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => settingDialog(),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.settings,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.9,
-                                child: ManualMethodSection(),
-                              ),
-                            ],
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.black,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                  onPressed: () => showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => methodDialog(context),
+                                  ),
+                                  child: Text(
+                                    'All Methods',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(context: context, builder: (context) => settingDialog());
+                                  },
+                                  icon: Icon(Icons.settings, color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                );
-              },
-            ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.9, child: ManualMethodSection()),
+                        ],
+                      ),
+                    );
+            },
           ),
         );
       },
@@ -552,18 +386,12 @@ Widget settingDialog() {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                'Methods',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              const Text('Methods', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Method 1',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  Text('Method 1', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
                     value: val.isM1Checked,
                     onChanged: (_) {
@@ -576,10 +404,7 @@ Widget settingDialog() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Method 2',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  Text('Method 2', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
                     value: val.isM2Checked,
                     onChanged: (_) {
@@ -592,10 +417,7 @@ Widget settingDialog() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Method 3',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  Text('Method 3', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
                     value: val.isM3Checked,
                     onChanged: (value) {
@@ -608,10 +430,7 @@ Widget settingDialog() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Method 4',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
+                  Text('Method 4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
                     value: val.isM4Checked,
                     onChanged: (_) {

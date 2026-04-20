@@ -10,7 +10,6 @@ class ManualMethodSection extends StatefulWidget {
 }
 
 class _ManualMethodSectionState extends State<ManualMethodSection> {
-  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,33 +24,13 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
               _buildRow("Catcher", "LongTcChecked", "ShortTcChecked"),
               _buildRow("Tracer", "LongTtChecked", "ShortTtChecked"),
               _buildRow("Neo Cloud", "LongNeoChecked", "ShortNeoChecked"),
-              _buildRow(
-                "Signal Exit",
-                "LongSignalExitChecked",
-                "ShortSignalExitChecked",
-              ),
+              _buildRow("Signal Exit", "LongSignalExitChecked", "ShortSignalExitChecked"),
               _buildRow("MF", "LongMfChecked", "ShortMfChecked"),
               _buildRow("HW", "LongHwChecked", "ShortHwChecked"),
-              _buildRow(
-                "Signal",
-                "LongSignalChecked",
-                "ShortSignalChecked",
-              ),
-              _buildRow(
-                "Reversal",
-                "LongReversalChecked",
-                "ShortReversalChecked",
-              ),
-              _buildRow(
-                "Reversal Plus",
-                "LongReversalPlusChecked",
-                "ShortReversalPlusChecked",
-              ),
-              _buildRow(
-                "Divergence",
-                "LongDivergenceChecked",
-                "ShortDivergenceChecked",
-              ),
+              _buildRow("Signal", "LongSignalChecked", "ShortSignalChecked"),
+              _buildRow("Reversal", "LongReversalChecked", "ShortReversalChecked"),
+              _buildRow("Reversal Plus", "LongReversalPlusChecked", "ShortReversalPlusChecked"),
+              _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
             ],
           ),
         ],
@@ -86,20 +65,11 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.arrow_upward_rounded,
-                      color: Colors.green,
-                      size: 18,
-                    ),
+                    Icon(Icons.arrow_upward_rounded, color: Colors.green, size: 18),
                     Checkbox(
                       value: checkedBox.getValue(symbol, "MM", longField),
-                      onChanged: (_) {
-                        checkedBox.changeValue(
-                          symbol,
-                          'MM',
-                          longField,
-                          context,
-                        );
+                      onChanged: (_) async {
+                        await checkedBox.changeValue(symbol, 'MM', longField, context);
                       },
                       activeColor: Colors.green,
                     ),
@@ -111,20 +81,11 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.arrow_downward_rounded,
-                      color: Colors.red,
-                      size: 18,
-                    ),
+                    Icon(Icons.arrow_downward_rounded, color: Colors.red, size: 18),
                     Checkbox(
                       value: checkedBox.getValue(symbol, "MM", shortField),
-                      onChanged: (_) {
-                        checkedBox.changeValue(
-                          symbol,
-                          'MM',
-                          shortField,
-                          context,
-                        );
+                      onChanged: (_) async {
+                        await checkedBox.changeValue(symbol, 'MM', shortField, context);
                       },
                       activeColor: Colors.red,
                     ),
@@ -146,10 +107,7 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
         children: [
           SizedBox(
             width: 100,
-            child: Text(
-              title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+            child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
           ),
           SizedBox(
             width: 100,

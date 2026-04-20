@@ -21,17 +21,30 @@ class ValueProvider extends ChangeNotifier {
   bool isM2Checked = false;
   bool isM3Checked = false;
   bool isM4Checked = false;
-  void enableMethod(String method) {
+  void enableMethod(String method) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (method == "MM1") {
       isM1Checked = !isM1Checked;
+      await prefs.setBool('M1Checked', isM1Checked);
     } else if (method == "MM2") {
       isM2Checked = !isM2Checked;
+      await prefs.setBool('M2Checked', isM2Checked);
     } else if (method == "MM3") {
       isM3Checked = !isM3Checked;
+      await prefs.setBool('M3Checked', isM3Checked);
     } else if (method == "MM4") {
       isM4Checked = !isM4Checked;
+      await prefs.setBool('M4Checked', isM4Checked);
     }
     notifyListeners();
+  }
+
+  Future<void> _loadMethod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isM1Checked = prefs.getBool('M1Checked') ?? false;
+    isM2Checked = prefs.getBool('M2Checked') ?? false;
+    isM3Checked = prefs.getBool('M3Checked') ?? false;
+    isM4Checked = prefs.getBool('M4Checked') ?? false;
   }
 
   //new section end
@@ -58,6 +71,7 @@ class ValueProvider extends ChangeNotifier {
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM9 = {};
 
   ValueProvider(BuildContext context) {
+    _loadMethod();
     _loadInitial(context);
   }
 
@@ -91,37 +105,24 @@ class ValueProvider extends ChangeNotifier {
     }
     if (lastSymbol.isNotEmpty) {
       manualSelectedValue = lastSymbol;
-      manualSelectedItem = SearchFieldListItem<String>(
-        lastSymbol,
-        item: lastSymbol,
-      );
+      manualSelectedItem = SearchFieldListItem<String>(lastSymbol, item: lastSymbol);
 
       Future.microtask(() {
         if (!context.mounted) return;
 
-        final checkboxProvider = Provider.of<CheckedBoxProvider>(
-          context,
-          listen: false,
-        );
+        final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
         checkboxProvider.loadAll(lastSymbol);
-        
       });
     }
     if (amLastSymbol.isNotEmpty) {
       amSelectedValue = amLastSymbol;
-      amSelectedItem = SearchFieldListItem<String>(
-        amLastSymbol,
-        item: amLastSymbol,
-      );
+      amSelectedItem = SearchFieldListItem<String>(amLastSymbol, item: amLastSymbol);
 
       Future.microtask(() {
         if (!context.mounted) return;
 
-        final checkboxProvider = Provider.of<CheckedBoxProvider>(
-          context,
-          listen: false,
-        );
+        final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
         checkboxProvider.loadAll(amLastSymbol);
       });
@@ -203,10 +204,7 @@ class ValueProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedItem(
-    SearchFieldListItem<String> item,
-    BuildContext context,
-  ) async {
+  void setSelectedItem(SearchFieldListItem<String> item, BuildContext context) async {
     manualSelectedItem = item;
     manualSelectedValue = item.searchKey;
 
@@ -228,10 +226,7 @@ class ValueProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setAMSelectedItem(
-    SearchFieldListItem<String> item,
-    BuildContext context,
-  ) async {
+  void setAMSelectedItem(SearchFieldListItem<String> item, BuildContext context) async {
     amSelectedItem = item;
     amSelectedValue = item.searchKey;
 
@@ -277,16 +272,7 @@ class ValueProvider extends ChangeNotifier {
     }
   }
 
-  void updateFlags(
-    String symbol,
-    bool rpp,
-    bool rp,
-    bool r,
-    bool s,
-    bool t,
-    bool hw,
-    bool hwTh,
-  ) {
+  void updateFlags(String symbol, bool rpp, bool rp, bool r, bool s, bool t, bool hw, bool hwTh) {
     final open = getOpenBySymbol(symbol);
     if (open != null) {
       open.reversalPlusPlus = rpp;

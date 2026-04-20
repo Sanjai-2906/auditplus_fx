@@ -22,48 +22,19 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
-  late bool tc;
+  bool tc = true;
   late bool hw;
   late bool hwTh;
   late bool mf;
 
-  if (mod.method == 'MM1') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM1ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM1ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM1SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM1TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM1HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM1HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM1MfChecked");
-  } else if (mod.method == 'MM2') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM2ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM2ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM2SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM2TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM2HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM2HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM2MfChecked");
-  } else if (mod.method == 'MM3') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM3ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM3ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM3ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM3SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM3TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM3HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM3HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM3MfChecked");
-  } else if (mod.method == 'MM4') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM4ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM4ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM4ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM4SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM4TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM4HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM4HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM4MfChecked");
-  }
+  final method = mod.method;
+  reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
+  reversalPlus = checked.getValue(symbol, method, "${method}ReversalPlusChecked");
+  reversal = checked.getValue(symbol, method, "${method}ReversalChecked");
+  signal = checked.getValue(symbol, method, "${method}SignalExitChecked");
+  hw = checked.getValue(symbol, method, "${method}HwChecked");
+  hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
+  mf = checked.getValue(symbol, method, "${method}MfChecked");
 
   final data = {
     'symbol': symbol,
