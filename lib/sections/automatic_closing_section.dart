@@ -100,15 +100,15 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM4': 'AM4MfChecked',
   }[widget.method]!;
 
-  String get hwTt => {
-    'MM1': 'MM1HWTTChecked',
-    'MM2': 'MM2HWTTChecked',
-    'MM3': 'MM3HWTTChecked',
-    'MM4': 'MM4HWTTChecked',
-    'AM1': 'AM1HWTTChecked',
-    'AM2': 'AM2HWTTChecked',
-    'AM3': 'AM3HWTTChecked',
-    'AM4': 'AM4HWTTChecked',
+  String get tcTt => {
+    'MM1': 'MM1TCCROSSEDTTChecked',
+    'MM2': 'MM2TCCROSSEDTTChecked',
+    'MM3': 'MM3TCCROSSEDTTChecked',
+    'MM4': 'MM4TCCROSSEDTTChecked',
+    'AM1': 'AM1TCCROSSEDTTChecked',
+    'AM2': 'AM2TCCROSSEDTTChecked',
+    'AM3': 'AM3TCCROSSEDTTChecked',
+    'AM4': 'AM4TCCROSSEDTTChecked',
   }[widget.method]!;
 
   @override
@@ -364,8 +364,10 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                style: checkedbox.getValue(symbol, method, reversalPlus)
+                style: checkedbox.getValue(symbol, method, tcTt)
                     ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -375,6 +377,8 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                         backgroundColor: Color.fromRGBO(33, 52, 72, 1),
                       )
                     : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(),
@@ -384,19 +388,30 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                         backgroundColor: Color.fromRGBO(190, 190, 190, 1),
                       ),
                 onPressed: () async {
-                  await checkedbox.changeValue(symbol, method, reversalPlus, context);
+                  await checkedbox.changeValue(symbol, method, tcTt, context);
                 },
                 child: Row(
                   spacing: 3,
                   children: [
-                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     Icon(
-                      Icons.add,
-                      color: checkedbox.getValue(symbol, method, reversalPlus)
+                      Icons.close,
+                      color: checkedbox.getValue(symbol, method, tcTt) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: checkedbox.getValue(symbol, method, hw)
                           ? Color.fromRGBO(6, 255, 14, 1)
                           : Color.fromRGBO(0, 57, 2, 1),
                       size: 20.0,
                     ),
+                    Icon(
+                      Icons.arrow_downward_rounded,
+                      color: checkedbox.getValue(symbol, method, hw) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
+                      size: 20.0,
+                    ),
+                    Text("TT", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
@@ -584,6 +599,43 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ElevatedButton(
+                style: checkedbox.getValue(symbol, method, reversalPlus)
+                    ? ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                      ),
+                onPressed: () async {
+                  await checkedbox.changeValue(symbol, method, reversalPlus, context);
+                },
+                child: Row(
+                  spacing: 3,
+                  children: [
+                    Text("Rev", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Icon(
+                      Icons.add,
+                      color: checkedbox.getValue(symbol, method, reversalPlus)
+                          ? Color.fromRGBO(6, 255, 14, 1)
+                          : Color.fromRGBO(0, 57, 2, 1),
+                      size: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
                 style: checkedbox.getValue(symbol, method, reversalPlusPlus)
                     ? ElevatedButton.styleFrom(
                         minimumSize: Size.zero,
@@ -671,58 +723,6 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                   ],
                 ),
               ),
-              // ElevatedButton(
-              //   style: checkedbox.getValue(symbol, method, hwTt)
-              //       ? ElevatedButton.styleFrom(
-              //           minimumSize: Size.zero,
-              //           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              //           elevation: 0,
-              //           shape: RoundedRectangleBorder(
-              //             side: BorderSide(),
-              //             borderRadius: BorderRadiusGeometry.circular(10),
-              //           ),
-              //           foregroundColor: Colors.white,
-              //           backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-              //         )
-              //       : ElevatedButton.styleFrom(
-              //           minimumSize: Size.zero,
-              //           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              //           elevation: 0,
-              //           shape: RoundedRectangleBorder(
-              //             side: BorderSide(),
-              //             borderRadius: BorderRadiusGeometry.circular(10),
-              //           ),
-              //           foregroundColor: Colors.black,
-              //           backgroundColor: Color.fromRGBO(190, 190, 190, 1),
-              //         ),
-              //   onPressed: () async {
-              //     await checkedbox.changeValue(symbol, method, hwTt, context);
-              //   },
-              //   child: Row(
-              //     spacing: 3,
-              //     children: [
-              //       Text("HW", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-              //       Icon(
-              //         Icons.close,
-              //         color: checkedbox.getValue(symbol, method, hwTt) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-              //         size: 20.0,
-              //       ),
-              //       Icon(
-              //         Icons.arrow_upward_rounded,
-              //         color: checkedbox.getValue(symbol, method, hw)
-              //             ? Color.fromRGBO(6, 255, 14, 1)
-              //             : Color.fromRGBO(0, 57, 2, 1),
-              //         size: 20.0,
-              //       ),
-              //       Icon(
-              //         Icons.arrow_downward_rounded,
-              //         color: checkedbox.getValue(symbol, method, hw) ? Colors.red : Color.fromRGBO(102, 7, 0, 1),
-              //         size: 20.0,
-              //       ),
-              //       Text("TT", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ],

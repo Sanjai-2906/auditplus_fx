@@ -161,6 +161,8 @@ class ValueProvider extends ChangeNotifier {
   }
 
   void setAMVolume(String method, double newVolume) async {
+    print(method);
+    print(newVolume);
     amVolume = newVolume;
     amVolumeController.text = newVolume.toStringAsFixed(2);
 

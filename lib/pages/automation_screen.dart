@@ -1,5 +1,6 @@
 import 'package:auditplus_fx/sections/sections.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 
@@ -355,6 +356,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                     // drop.setAMVolume('AM', parsedValue);
                                   }
                                 },
+                                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))],
                                 onFieldSubmitted: (value) async {
                                   // String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
                                   String method = "";

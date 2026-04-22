@@ -38,6 +38,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   late bool hw;
   late bool hwTh;
   late bool mf;
+  late bool tcTt;
 
   final prov = Provider.of<ValueProvider>(context, listen: false);
   final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
@@ -56,6 +57,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   hw = checkedProv.getValue(symbol, method, "${method}HwChecked");
   hwTh = checkedProv.getValue(symbol, method, "${method}HWTHChecked");
   mf = checkedProv.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checkedProv.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
 
   final data = OpenRequestModel(
     actionType: actionType,
@@ -72,6 +74,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     hyperWave: hw,
     hyperWaveThreshold: hwTh,
     moneyFlow: mf,
+    tcCrossedTt: tcTt,
   );
   try {
     final _ = await dio.post(

@@ -20,7 +20,7 @@ Future<void> automaticTrading(BuildContext context, CurrentAutomationModel data)
     );
     return;
   }
-
+  print(data);
   Dio dio = Dio();
   try {
     final _ = await dio.post(

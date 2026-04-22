@@ -22,6 +22,7 @@ OpenRequestModel _$OpenRequestModelFromJson(Map<String, dynamic> json) =>
       hyperWave: json['hyperWave'] as bool,
       hyperWaveThreshold: json['hyperWaveThreshold'] as bool,
       moneyFlow: json['moneyFlow'] as bool,
+      tcCrossedTt: json['tcCrossedTt'] as bool,
     );
 
 Map<String, dynamic> _$OpenRequestModelToJson(OpenRequestModel instance) =>
@@ -40,4 +41,5 @@ Map<String, dynamic> _$OpenRequestModelToJson(OpenRequestModel instance) =>
       'hyperWave': instance.hyperWave,
       'hyperWaveThreshold': instance.hyperWaveThreshold,
       'moneyFlow': instance.moneyFlow,
+      'tcCrossedTt': instance.tcCrossedTt,
     };

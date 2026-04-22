@@ -26,6 +26,7 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   late bool hw;
   late bool hwTh;
   late bool mf;
+  late bool tcTt;
 
   final method = mod.method;
   reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
@@ -35,6 +36,7 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   hw = checked.getValue(symbol, method, "${method}HwChecked");
   hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
   mf = checked.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checked.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
 
   final data = {
     'symbol': symbol,
@@ -47,6 +49,7 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
     'hyperWave': hw,
     'hyperWaveThreshold': hwTh,
     'moneyFlow': mf,
+    'tcCrossedTt': tcTt,
   };
 
   final dio = Dio(

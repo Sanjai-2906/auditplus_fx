@@ -17,6 +17,7 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
   late bool hw;
   late bool hwTh;
   late bool mf;
+  late bool tcTt;
   reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
   reversalPlus = checked.getValue(symbol, method, "${method}ReversalPlusChecked");
   reversal = checked.getValue(symbol, method, "${method}ReversalChecked");
@@ -24,6 +25,7 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
   hw = checked.getValue(symbol, method, "${method}HwChecked");
   hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
   mf = checked.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checked.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
 
   final data = {
     'symbol': symbol,
@@ -36,6 +38,7 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
     'hyperWave': hw,
     'hyperWaveThreshold': hwTh,
     'moneyFlow': mf,
+    'tcCrossedTt': tcTt,
   };
 
   final dio = Dio();

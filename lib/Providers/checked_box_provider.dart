@@ -54,6 +54,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM1HwChecked': false,
     'MM1MfChecked': false,
     'MM1HWTHChecked': false,
+    'MM1TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _mm2EmptyValues() => {
@@ -66,6 +67,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM2HwChecked': false,
     'MM2MfChecked': false,
     'MM2HWTHChecked': false,
+    'MM3TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _mm3EmptyValues() => {
@@ -78,6 +80,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM3HwChecked': false,
     'MM3MfChecked': false,
     'MM3HWTHChecked': false,
+    'MM3TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _mm4EmptyValues() => {
@@ -90,6 +93,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM4HwChecked': false,
     'MM4MfChecked': false,
     'MM4HWTHChecked': false,
+    'MM4TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _am1EmptyValues() => {
@@ -102,6 +106,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM1HwChecked': false,
     'AM1MfChecked': false,
     'AM1HWTHChecked': false,
+    'AM1TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _am2EmptyValues() => {
@@ -114,6 +119,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM2HwChecked': false,
     'AM2MfChecked': false,
     'AM2HWTHChecked': false,
+    'AM2TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _am3EmptyValues() => {
@@ -126,6 +132,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM3HwChecked': false,
     'AM3MfChecked': false,
     'AM3HWTHChecked': false,
+    'AM3TCCROSSEDTTChecked': false,
   };
 
   static Map<String, bool> _am4EmptyValues() => {
@@ -138,6 +145,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM4HwChecked': false,
     'AM4MfChecked': false,
     'AM4HWTHChecked': false,
+    'AM4TCCROSSEDTTChecked': false,
   };
 
   //Generic getter
