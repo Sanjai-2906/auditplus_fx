@@ -174,7 +174,10 @@ class CheckedBoxProvider extends ChangeNotifier {
 
   bool getValue(String symbol, String method, String field) {
     final map = getValues(method, symbol);
-    if (method == "AM3" && field == "AM3MfChecked") {
+    if (method == "AM4" && field == "AM4MfChecked") {
+      return true;
+    }
+    if (method == "AM4" && field == "AM4HwChecked") {
       return true;
     }
     return map[field] ?? false;
