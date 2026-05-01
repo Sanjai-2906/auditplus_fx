@@ -451,6 +451,19 @@ Widget settingDialog() {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM5Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM5");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
             ],
           );
         },

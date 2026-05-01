@@ -56,6 +56,36 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     });
   }
 
+  Map<String, List<TradeHistoryModel>> groupTradeHistory() {
+    Map<String, List<TradeHistoryModel>> grouped = {};
+
+    for (var item in tradeHistory) {
+      if (!grouped.containsKey(item.symbol)) {
+        grouped[item.symbol] = [];
+      }
+      grouped[item.symbol]!.add(item);
+    }
+
+    return grouped;
+  }
+
+  Map<String, List<ActiveSymbolModel>> groupLiveSymbols() {
+    Map<String, List<ActiveSymbolModel>> grouped = {};
+
+    for (var item in liveSymbols) {
+      if (!grouped.containsKey(item.symbol)) {
+        grouped[item.symbol] = [];
+      }
+      grouped[item.symbol]!.add(item);
+    }
+
+    return grouped;
+  }
+
+  // double calculateTotalProfit(List<TradeHistoryModel> list) {
+  //   return list.fold(0, (sum, item) => sum + item.profit);
+  // }
+
   Future<void> pickDate({required bool isFromDate}) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -90,101 +120,164 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Column(
       children: [
         SizedBox(
-          height: 64.0,
+          height: 80.0,
           child: DrawerHeader(
             margin: EdgeInsets.zero,
-            padding: EdgeInsets.only(top: 5),
-            child: Text(
-              'Auditplus Fx',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black, fontSize: 24),
-            ),
+            padding: EdgeInsets.only(top: 10),
+            child: Text('Auditplus Fx', style: TextStyle(color: Colors.black, fontSize: 24)),
           ),
         ),
 
+        // ExpansionTile(
+        //   onExpansionChanged: (value) async {
+        //     if (!value) return;
+        //     final data = await fetchTradeHistory();
+        //     if (!mounted) return;
+        //     setState(() {
+        //       tradeHistory = data;
+        //     });
+        //   },
+        //   leading: const Icon(Icons.history),
+        //   title: const Text('Today History'),
+        //   children: [
+        //     for (var l in tradeHistory)
+        //       ListTile(
+        //         title: Text(l.symbol),
+        //         trailing: Text(
+        //           l.profit.toStringAsFixed(2),
+        //           style: TextStyle(
+        //             color: (l.profit > 0) ? Colors.green : Colors.red,
+        //             fontSize: 17,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //         ),
+        //         onTap: () {
+        //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.symbol} clicked')));
+        //         },
+        //       ),
+        //   ],
+        // ),
         ExpansionTile(
           onExpansionChanged: (value) async {
             if (!value) return;
-
             final data = await fetchTradeHistory();
-
             if (!mounted) return;
-
             setState(() {
               tradeHistory = data;
             });
           },
-
           leading: const Icon(Icons.history),
           title: const Text('Today History'),
           children: [
-            for (var l in tradeHistory)
-              ListTile(
-                title: Text(l.symbol),
+            ...groupTradeHistory().entries.map((entry) {
+              final symbol = entry.key;
+              final methods = entry.value;
+              // final totalProfit = calculateTotalProfit(methods);
+              num totalProfit = methods.fold(0, (sum, item) => sum + item.profit);
+
+              return ExpansionTile(
+                title: Text(symbol),
                 trailing: Text(
-                  l.profit.toStringAsFixed(2),
-                  style: TextStyle(
-                    color: (l.profit > 0) ? Colors.green : Colors.red,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  totalProfit.toStringAsFixed(2),
+                  style: TextStyle(color: totalProfit > 0 ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
                 ),
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.symbol} clicked')));
-                },
-              ),
+                children: methods.map((m) {
+                  return ListTile(
+                    title: Text(m.method),
+                    trailing: Text(
+                      m.profit.toStringAsFixed(2),
+                      style: TextStyle(color: m.profit > 0 ? Colors.green : Colors.red),
+                    ),
+                  );
+                }).toList(),
+              );
+            }),
           ],
         ),
+
+        // ExpansionTile(
+        //   onExpansionChanged: (value) async {
+        //     if (!value) return; // only load when expanded
+        //     final data = await fetchLiveSymbols();
+        //     if (!mounted) return;
+        //     setState(() {
+        //       liveSymbols = data;
+        //     });
+        //   },
+        //   leading: const Icon(Icons.check_circle, color: Colors.green),
+        //   title: const Text('Live Symbol'),
+        //   children: [
+        //     for (var l in liveSymbols)
+        //       ListTile(
+        //         title: Row(
+        //           spacing: 10,
+        //           children: [
+        //             SizedBox(width: 80, child: Text(l.symbol)),
+        //             Row(
+        //               spacing: 1,
+        //               children: [
+        //                 Text('-'),
+        //                 SizedBox(
+        //                   width: 40,
+        //                   child: Text(l.method, style: TextStyle(color: Color.fromRGBO(45, 95, 233, 1))),
+        //                 ),
+        //               ],
+        //             ),
+        //           ],
+        //         ),
+        //         trailing: Text(
+        //           l.profit.toStringAsFixed(2),
+        //           style: TextStyle(
+        //             color: (l.profit > 0) ? Colors.green : Colors.red,
+        //             fontSize: 17,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //         ),
+        //         onTap: () {
+        //           SearchFieldListItem<String> val = SearchFieldListItem<String>(l.symbol, value: l.symbol);
+        //           Provider.of<ValueProvider>(context, listen: false).setSelectedItem(val, context);
+        //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.symbol} clicked')));
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //   ],
+        // ),
         ExpansionTile(
-          onExpansionChanged: (value) async {
-            if (!value) return; // only load when expanded
-
-            final data = await fetchLiveSymbols();
-
-            if (!mounted) return;
-
-            setState(() {
-              liveSymbols = data;
-            });
-          },
           leading: const Icon(Icons.check_circle, color: Colors.green),
           title: const Text('Live Symbol'),
           children: [
-            for (var l in liveSymbols)
-              ListTile(
-                title: Row(
-                  spacing: 10,
-                  children: [
-                    SizedBox(width: 80, child: Text(l.symbol)),
-                    Row(
-                      spacing: 1,
-                      children: [
-                        Text('-'),
-                        SizedBox(
-                          width: 40,
-                          child: Text(l.method, style: TextStyle(color: Color.fromRGBO(45, 95, 233, 1))),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+            ...groupLiveSymbols().entries.map((entry) {
+              final symbol = entry.key;
+              final methods = entry.value;
+
+              num totalProfit = methods.fold(0, (sum, item) => sum + item.profit);
+
+              return ExpansionTile(
+                title: Text(symbol),
                 trailing: Text(
-                  l.profit.toStringAsFixed(2),
-                  style: TextStyle(
-                    color: (l.profit > 0) ? Colors.green : Colors.red,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  totalProfit.toStringAsFixed(2),
+                  style: TextStyle(color: totalProfit > 0 ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
                 ),
-                onTap: () {
-                  SearchFieldListItem<String> val = SearchFieldListItem<String>(l.symbol, value: l.symbol);
-                  Provider.of<ValueProvider>(context, listen: false).setSelectedItem(val, context);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${l.symbol} clicked')));
-                  Navigator.pop(context);
-                },
-              ),
+                children: methods.map((m) {
+                  return ListTile(
+                    title: Text(m.method),
+                    trailing: Text(
+                      m.profit.toStringAsFixed(2),
+                      style: TextStyle(color: m.profit > 0 ? Colors.green : Colors.red),
+                    ),
+                    onTap: () {
+                      SearchFieldListItem<String> val = SearchFieldListItem<String>(m.symbol, value: m.symbol);
+                      Provider.of<ValueProvider>(context, listen: false).setSelectedItem(val, context);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${m.symbol} clicked')));
+                      Navigator.pop(context);
+                    },
+                  );
+                }).toList(),
+              );
+            }),
           ],
         ),
+
         ExpansionTile(
           maintainState: true,
           leading: const Icon(Icons.article),
@@ -265,12 +358,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        // ListTile(
-        //   title: Text('Get Log File'),
-        //   onTap: () async {
-        //     await downloadLogFile();
-        //   },
-        // ),
       ],
     );
   }

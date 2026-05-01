@@ -21,6 +21,7 @@ class ValueProvider extends ChangeNotifier {
   bool isM2Checked = false;
   bool isM3Checked = false;
   bool isM4Checked = false;
+  bool isM5Checked = false;
   void enableMethod(String method) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (method == "MM1") {
@@ -35,6 +36,9 @@ class ValueProvider extends ChangeNotifier {
     } else if (method == "MM4") {
       isM4Checked = !isM4Checked;
       await prefs.setBool('M4Checked', isM4Checked);
+    } else if (method == "MM5") {
+      isM5Checked = !isM5Checked;
+      await prefs.setBool('M5Checked', isM5Checked);
     }
     notifyListeners();
   }
@@ -45,6 +49,7 @@ class ValueProvider extends ChangeNotifier {
     isM2Checked = prefs.getBool('M2Checked') ?? false;
     isM3Checked = prefs.getBool('M3Checked') ?? false;
     isM4Checked = prefs.getBool('M4Checked') ?? false;
+    isM5Checked = prefs.getBool('M5Checked') ?? false;
   }
 
   //new section end
