@@ -6,9 +6,10 @@ part 'close_request_model.g.dart';
 class CloseRequestModel {
   String actionType;
   String? symbol;
+  String method;
   String description;
 
-  CloseRequestModel({required this.actionType, required this.symbol, required this.description});
+  CloseRequestModel({required this.actionType, required this.symbol, required this.method, required this.description});
 
   factory CloseRequestModel.fromJson(Map<String, dynamic> json) => _$CloseRequestModelFromJson(json);
 
@@ -16,6 +17,6 @@ class CloseRequestModel {
 
   @override
   String toString() {
-    return "CloseRequestModel{Action type: $actionType,Position Id: $symbol,Description : $description}";
+    return "CloseRequestModel{Action type: $actionType,Symbol: $symbol, Method: $method,Description : $description}";
   }
 }

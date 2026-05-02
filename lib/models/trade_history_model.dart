@@ -6,8 +6,9 @@ part 'trade_history_model.g.dart';
 class TradeHistoryModel {
   String symbol;
   num profit;
+  String method;
 
-  TradeHistoryModel({required this.symbol, required this.profit});
+  TradeHistoryModel({required this.symbol, required this.profit, required this.method});
 
   factory TradeHistoryModel.fromJson(Map<String, dynamic> json) => _$TradeHistoryModelFromJson(json);
 
@@ -15,6 +16,6 @@ class TradeHistoryModel {
 
   @override
   String toString() {
-    return "TradeHistoryModel{Symbol : $symbol,Profit: $profit}";
+    return "TradeHistoryModel{Symbol : $symbol,Profit: $profit,Method: $method}";
   }
 }

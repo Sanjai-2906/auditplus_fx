@@ -4,12 +4,9 @@ import 'dart:async';
 
 import 'package:auditplus_fx/pages/automation_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:toastification/toastification.dart';
 import 'package:auditplus_fx/drawer_widget.dart';
-import 'package:auditplus_fx/intent.dart';
 
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
@@ -28,8 +25,10 @@ class HomeScreenState extends State<HomeScreen> {
   List<String> list = [];
   List<SearchFieldListItem<String>> symbols = [];
   bool isLoading = true;
-  // late Future _initFuture;
-  late PageController _pageController;
+  bool _isDialogOpen = false;
+  String? _lastTriggeredMethod;
+  bool _frameScheduled = false;
+  late Future<void> _initFuture;
 
   late TextEditingController _tokenController;
   late FocusNode _symbolFocusNode;
@@ -41,14 +40,10 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
     _symbolFocusNode = FocusNode();
     _tokenController = TextEditingController();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeApp(context);
-    });
-    // _initFuture = _initializeApp(context);
+    _initFuture = _initializeApp(context);
   }
 
   Future<void> _initializeApp(BuildContext context) async {
@@ -69,8 +64,6 @@ class HomeScreenState extends State<HomeScreen> {
     symbols = list.map((el) {
       return SearchFieldListItem<String>(el, value: el.toString());
     }).toList();
-
-    // context.read<CheckedBoxProvider>().loadForM3Values(context);
 
     if (list.isNotEmpty) {}
 
@@ -95,7 +88,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initializeApp(context),
+      future: _initFuture,
       builder: (context, snapshot) {
         final myTokenProvider = Provider.of<MytokenProvider>(context);
 
@@ -184,7 +177,6 @@ class HomeScreenState extends State<HomeScreen> {
                   return TextButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: auto.isAutomaticSectionEnabled
-                          // ? Color.fromRGBO(120, 255, 165, 0.884)
                           ? Color.fromRGBO(44, 187, 104, 1)
                           : Color.fromRGBO(189, 232, 245, 1),
                       foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
@@ -233,335 +225,249 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                child: Padding(padding: const EdgeInsets.all(8.0), child: Icon(Icons.settings)),
+                child: Padding(padding: const EdgeInsets.all(8.0), child: Icon(Icons.token_rounded)),
               ),
             ],
             title: Text('Auditplus Fx', style: TextStyle(color: Colors.white)),
           ),
-          body: Shortcuts(
-            shortcuts: {
-              LogicalKeySet(LogicalKeyboardKey.keyL, LogicalKeyboardKey.control): const LongIntent(
-                method: 'MM1',
-                actionType: "ORDER_TYPE_BUY",
-              ),
-              LogicalKeySet(LogicalKeyboardKey.keyS, LogicalKeyboardKey.control): const ShortIntent(
-                method: 'MM1',
-                actionType: "ORDER_TYPE_SELL",
-              ),
-              LogicalKeySet(LogicalKeyboardKey.keyC, LogicalKeyboardKey.control): CloseIntent(
-                actionType: "POSITION_CLOSE_ID",
-              ),
-            },
-            child: Consumer<ValueProvider>(
-              builder: (context, auto, child) {
-                return Actions(
-                  actions: {
-                    LongIntent: CallbackAction<LongIntent>(
-                      onInvoke: (intent) {
-                        openPosition(intent.method, 'ORDER_TYPE_BUY', null, context);
-                        return null;
-                      },
-                    ),
-                    ShortIntent: CallbackAction<ShortIntent>(
-                      onInvoke: (intent) {
-                        openPosition(intent.method, 'ORDER_TYPE_SELL', null, context);
-                        return null;
-                      },
-                    ),
-                    CloseIntent: CallbackAction<CloseIntent>(
-                      onInvoke: (intent) {
-                        onClosePosition(context, intent.actionType);
-                        return null;
-                      },
-                    ),
-                  },
-                  child: auto.isAutomaticSectionEnabled
-                      ? AutomationScreen(symbols: symbols)
-                      : SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                constraints: BoxConstraints(maxWidth: double.infinity),
-                                decoration: BoxDecoration(color: Color.fromRGBO(84, 119, 146, 1)),
-                                padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10, bottom: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Consumer<ValueProvider>(
-                                      builder: (context, drop, child) {
-                                        return SizedBox(
-                                          width: 150,
-                                          height: 35,
-                                          child: SearchField<String>(
-                                            focusNode: _symbolFocusNode,
-                                            suggestions: symbols,
-                                            suggestionState: Suggestion.hidden,
-                                            // selectedValue: drop.manualSelectedItem,
-                                            selectedValue: symbols.contains(drop.manualSelectedItem)
-                                                ? drop.manualSelectedItem
-                                                : null,
-                                            searchInputDecoration: SearchInputDecoration(
-                                              hintText: "Symbols",
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              isDense: true,
-                                              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          body: Consumer2<ValueProvider, CheckedBoxProvider>(
+            builder: (context, auto, check, child) {
+              final symbol = auto.manualSelectedValue;
+              List<String> triggeredMethods = [];
 
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                                borderSide: const BorderSide(color: Colors.grey, width: 1),
-                                              ),
+              if (symbol != null) {
+                if (check.isM1LongAllChecked(symbol)) triggeredMethods.add("M1_LONG");
+                if (check.isM1ShortAllChecked(symbol)) triggeredMethods.add("M1_SHORT");
+                if (check.isM2LongAllChecked(symbol)) triggeredMethods.add("M2_LONG");
+                if (check.isM2ShortAllChecked(symbol)) triggeredMethods.add("M2_SHORT");
+                if (check.isM3LongAllChecked(symbol)) triggeredMethods.add("M3_LONG");
+                if (check.isM3ShortAllChecked(symbol)) triggeredMethods.add("M3_SHORT");
+                if (check.isM4LongAllChecked(symbol)) triggeredMethods.add("M4_LONG");
+                if (check.isM4ShortAllChecked(symbol)) triggeredMethods.add("M4_SHORT");
+                if (!_frameScheduled) {
+                  _frameScheduled = true;
 
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                                borderSide: const BorderSide(
-                                                  color: Color.fromRGBO(33, 52, 72, 1),
-                                                  width: 1.5,
-                                                ),
-                                              ),
-                                            ),
-                                            maxSuggestionsInViewPort: 6,
-                                            onSearchTextChanged: (searchText) {
-                                              if (searchText.isEmpty) {
-                                                return List<SearchFieldListItem<String>>.from(symbols);
-                                              }
-                                              // context.read<ValueProvider>().clearSelectedValue();
-                                              // context.read<CheckedBoxProvider>().clearState("MM");
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _frameScheduled = false;
 
-                                              final query = searchText.toUpperCase();
-                                              return symbols.where((s) {
-                                                final key = s.searchKey.toUpperCase();
-                                                final value = (s.value ?? '').toUpperCase();
-                                                return key.contains(query) || value.contains(query);
-                                              }).toList();
-                                            },
-                                            onSuggestionTap: (SearchFieldListItem<String> item) {
-                                              _symbolFocusNode.unfocus();
+                    if (!mounted) return;
 
-                                              context.read<ValueProvider>().setSelectedItem(item, context);
-                                              // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
-                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!, 'MM');
-                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!, 'AM1');
-                                              context.read<CheckedBoxProvider>().loadFromApi(item.value!, 'AM2');
-                                            },
-                                            onSubmit: (item) {
-                                              Provider.of<ValueProvider>(
-                                                context,
-                                                listen: false,
-                                              ).setSelectedItem(SearchFieldListItem(item), context);
-                                            },
+                    final sorted = [...triggeredMethods]..sort();
+                    final key = sorted.join(",");
+
+                    if (triggeredMethods.isNotEmpty && key != _lastTriggeredMethod && !_isDialogOpen) {
+                      _isDialogOpen = true;
+
+                      showDialog(context: context, builder: (_) => methodDialog(context)).then((_) {
+                        if (mounted) {
+                          setState(() {
+                            _isDialogOpen = false;
+                          });
+                        }
+                      });
+                    }
+
+                    _lastTriggeredMethod = key;
+                  });
+                }
+              }
+              return auto.isAutomaticSectionEnabled
+                  ? AutomationScreen(symbols: symbols)
+                  : SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(maxWidth: double.infinity),
+                            decoration: BoxDecoration(color: Color.fromRGBO(84, 119, 146, 1)),
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Consumer<ValueProvider>(
+                                  builder: (context, drop, child) {
+                                    return SizedBox(
+                                      width: 150,
+                                      height: 35,
+                                      child: SearchField<String>(
+                                        focusNode: _symbolFocusNode,
+                                        suggestions: symbols,
+                                        suggestionState: Suggestion.hidden,
+                                        selectedValue: symbols.contains(drop.manualSelectedItem)
+                                            ? drop.manualSelectedItem
+                                            : null,
+                                        searchInputDecoration: SearchInputDecoration(
+                                          hintText: "Symbols",
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          isDense: true,
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: const BorderSide(color: Colors.grey, width: 1),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    Consumer<ValueProvider>(
-                                      builder: (context, drop, child) {
-                                        return SizedBox(
-                                          height: 35,
-                                          width: 90,
-                                          child: TextFormField(
-                                            controller: drop.manualVolumeController,
-                                            keyboardType: TextInputType.number,
-                                            textAlign: TextAlign.center,
-                                            onChanged: (newValue) {
-                                              final parsedValue = double.tryParse(newValue);
-                                              if (parsedValue != null) {
-                                                drop.setManualVolume(parsedValue);
-                                              }
-                                            },
-                                            textAlignVertical: TextAlignVertical.center,
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              isDense: true,
-                                              contentPadding: const EdgeInsets.symmetric(vertical: 6),
 
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                                borderSide: const BorderSide(color: Colors.grey),
-                                              ),
-
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                                borderSide: const BorderSide(
-                                                  color: Color.fromRGBO(33, 52, 72, 1),
-                                                  width: 1.5,
-                                                ),
-                                              ),
-                                            ),
-
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    Consumer<MytokenProvider>(
-                                      builder: (context, myToken, child) {
-                                        return ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            fixedSize: Size(100, 22),
-                                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            elevation: 0.0,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              side: BorderSide(color: Color.fromRGBO(27, 29, 29, 1), width: 2),
-                                            ),
-                                            foregroundColor: Colors.white,
-                                            textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                          ),
-                                          onPressed: () {
-                                            final token = Provider.of<MytokenProvider>(listen: false, context).token;
-                                            if (token != null) {
-                                              var symbol = context.read<ValueProvider>().manualSelectedValue;
-                                              Actions.invoke(context, CloseIntent(actionType: "POSITION_CLOSE_ID"));
-                                              if (symbol == null) {
-                                                toastification.show(
-                                                  backgroundColor: Color.fromRGBO(235, 225, 171, 1),
-                                                  context: context,
-                                                  title: const Text('Symbol!'),
-                                                  description: const Text('Select a symbol'),
-                                                  type: ToastificationType.info,
-                                                  alignment: Alignment.center,
-                                                  autoCloseDuration: const Duration(seconds: 1),
-                                                );
-                                              }
-                                            } else {
-                                              toastification.show(
-                                                backgroundColor: Color.fromRGBO(242, 186, 185, 1),
-                                                context: context,
-                                                title: const Text('Error!'),
-                                                description: const Text('Your token is empty'),
-                                                type: ToastificationType.error,
-                                                alignment: Alignment.center,
-                                                autoCloseDuration: const Duration(seconds: 1),
-                                              );
-                                            }
-                                          },
-                                          child: Text('Close'),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Consumer<ValueProvider>(
-                                builder: (context, mm, child) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromRGBO(209, 238, 250, 1),
-                                      border: Border.all(color: Colors.black, width: 1.0),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => {
-                                              mm.changeMethodScreen('MM', Method.method1),
-                                              _pageController.animateToPage(
-                                                0,
-                                                duration: Duration(milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              ),
-                                            },
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: mm.manualScreenView == Method.method1
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    // : Colors.transparent,
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method1",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: mm.manualScreenView == Method.method1
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                            borderSide: const BorderSide(
+                                              color: Color.fromRGBO(33, 52, 72, 1),
+                                              width: 1.5,
                                             ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () => {
-                                              mm.changeMethodScreen('MM', Method.method2),
-                                              _pageController.animateToPage(
-                                                1,
-                                                duration: Duration(milliseconds: 300),
-                                                curve: Curves.easeInOut,
-                                              ),
-                                            },
-                                            child: AnimatedContainer(
-                                              duration: const Duration(milliseconds: 200),
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              decoration: BoxDecoration(
-                                                color: mm.manualScreenView == Method.method2
-                                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                                    : Color.fromRGBO(209, 238, 250, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Method2",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: mm.manualScreenView == Method.method2
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.8,
-                                child: Consumer<ValueProvider>(
-                                  builder: (context, screen, child) {
-                                    return PageView(
-                                      controller: _pageController,
-                                      onPageChanged: (index) {
-                                        final method = index == 0 ? Method.method1 : Method.method2;
-                                        screen.changeMethodScreen('MM', method);
-                                      },
-                                      physics: const BouncingScrollPhysics(),
-                                      children: [ManualMethod1Section(), ManualMethod2Section()],
+                                        maxSuggestionsInViewPort: 6,
+                                        onSearchTextChanged: (searchText) {
+                                          if (searchText.isEmpty) {
+                                            return List<SearchFieldListItem<String>>.from(symbols);
+                                          }
+                                          // context.read<ValueProvider>().clearSelectedValue();
+                                          // context.read<CheckedBoxProvider>().clearState("MM");
+
+                                          final query = searchText.toUpperCase();
+                                          return symbols.where((s) {
+                                            final key = s.searchKey.toUpperCase();
+                                            final value = (s.value ?? '').toUpperCase();
+                                            return key.contains(query) || value.contains(query);
+                                          }).toList();
+                                        },
+                                        onSuggestionTap: (SearchFieldListItem<String> item) {
+                                          _symbolFocusNode.unfocus();
+
+                                          context.read<ValueProvider>().setSelectedItem(item, context);
+                                          // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
+                                          context.read<CheckedBoxProvider>().loadAll(item.value!);
+                                        },
+                                        onSubmit: (item) {
+                                          Provider.of<ValueProvider>(
+                                            context,
+                                            listen: false,
+                                          ).setSelectedItem(SearchFieldListItem(item), context);
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
-                              ),
-                            ],
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.black,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                  onPressed: () => showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => methodDialog(context),
+                                  ),
+                                  child: Text(
+                                    'All Methods',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(context: context, builder: (context) => settingDialog());
+                                  },
+                                  icon: Icon(Icons.settings, color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                );
-              },
-            ),
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.9, child: ManualMethodSection()),
+                        ],
+                      ),
+                    );
+            },
           ),
         );
       },
     );
   }
+}
+
+Widget settingDialog() {
+  return Dialog(
+    child: Container(
+      color: Color.fromRGBO(189, 232, 245, 1),
+      padding: const EdgeInsets.all(8.0),
+      child: Consumer<ValueProvider>(
+        builder: (context, val, child) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Methods', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 1', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM1Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM1");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 2', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM2Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM2");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 3', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM3Checked,
+                    onChanged: (value) {
+                      val.enableMethod("MM3");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM4Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM4");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Method 5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM5Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM5");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    ),
+  );
 }

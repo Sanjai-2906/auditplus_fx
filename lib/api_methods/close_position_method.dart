@@ -10,7 +10,7 @@ import 'package:auditplus_fx/Providers/providers.dart';
 import '../models/models.dart';
 import 'contants.dart';
 
-Future<void> onClosePosition(BuildContext context, String actionType) async {
+Future<void> onClosePosition(BuildContext context, String actionType, String method) async {
   final token = Provider.of<MytokenProvider>(context, listen: false).token;
   if (token == null) {
     toastification.show(
@@ -25,10 +25,9 @@ Future<void> onClosePosition(BuildContext context, String actionType) async {
   }
 
   Dio dio = Dio();
-  // final symbol = Provider.of<ValueProvider>(context, listen: false).selectedValue;
   final symbol = Provider.of<ValueProvider>(context, listen: false).manualSelectedValue;
   String description = "Manual Close";
-  final data = CloseRequestModel(actionType: actionType, symbol: symbol, description: description);
+  final data = CloseRequestModel(actionType: actionType, symbol: symbol, method: method, description: description);
   try {
     await dio.post(
       '$url/close',

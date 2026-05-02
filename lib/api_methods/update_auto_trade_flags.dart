@@ -13,29 +13,20 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
-  late bool tc;
+  bool tc = true;
   late bool hw;
   late bool hwTh;
   late bool mf;
-  if (method == 'AM1') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM1ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM1ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM1ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM1SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM1TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM1HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM1HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM1MfChecked');
-  } else if (method == 'AM2') {
-    reversalPlusPlus = checked.getValue(symbol, method, 'AM2ReversalPlusPlusChecked');
-    reversalPlus = checked.getValue(symbol, method, 'AM2ReversalPlusChecked');
-    reversal = checked.getValue(symbol, method, 'AM2ReversalChecked');
-    signal = checked.getValue(symbol, method, 'AM2SignalExitChecked');
-    tc = checked.getValue(symbol, method, 'AM2TcChangeChecked');
-    hw = checked.getValue(symbol, method, 'AM2HwChecked');
-    hwTh = checked.getValue(symbol, method, 'AM2HWTHChecked');
-    mf = checked.getValue(symbol, method, 'AM2MfChecked');
-  }
+  late bool tcTt;
+  reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
+  reversalPlus = checked.getValue(symbol, method, "${method}ReversalPlusChecked");
+  reversal = checked.getValue(symbol, method, "${method}ReversalChecked");
+  signal = checked.getValue(symbol, method, "${method}SignalExitChecked");
+  hw = checked.getValue(symbol, method, "${method}HwChecked");
+  hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
+  mf = checked.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checked.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
+
   final data = {
     'symbol': symbol,
     'method': method,
@@ -47,6 +38,7 @@ Future<void> updateAutoTradeFlags(String symbol, String method, BuildContext con
     'hyperWave': hw,
     'hyperWaveThreshold': hwTh,
     'moneyFlow': mf,
+    'tcCrossedTt': tcTt,
   };
 
   final dio = Dio();

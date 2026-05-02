@@ -32,8 +32,8 @@ class LocalValuesModel {
   String userId;
   String lastActiveSymbol;
   String amLastSymbol;
-  num manualVolume;
-  num automaticVolume;
+  String manualVolume;
+  String automaticVolume;
   List<LiveAutomaticTradeModel> liveAutomaticTrade;
 
   LocalValuesModel({

@@ -27,8 +27,8 @@ LocalValuesModel _$LocalValuesModelFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String,
       lastActiveSymbol: json['lastActiveSymbol'] as String,
       amLastSymbol: json['amLastSymbol'] as String,
-      automaticVolume: json['automaticVolume'] as num,
-      manualVolume: json['manualVolume'] as num,
+      automaticVolume: json['automaticVolume'] as String,
+      manualVolume: json['manualVolume'] as String,
       liveAutomaticTrade: (json['liveAutomaticTrade'] as List<dynamic>)
           .map(
             (e) => LiveAutomaticTradeModel.fromJson(e as Map<String, dynamic>),

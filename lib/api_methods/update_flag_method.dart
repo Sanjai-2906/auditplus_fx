@@ -22,30 +22,21 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
   late bool reversalPlus;
   late bool reversal;
   late bool signal;
-  late bool tc;
+  bool tc = true;
   late bool hw;
   late bool hwTh;
   late bool mf;
+  late bool tcTt;
 
-  if (mod.method == 'MM1') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM1ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM1ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM1SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM1TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM1HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM1HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM1MfChecked");
-  } else if (mod.method == 'MM2') {
-    reversalPlusPlus = checked.getValue(symbol, "MM", "MM2ReversalPlusPlusChecked");
-    reversalPlus = checked.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-    reversal = checked.getValue(symbol, "MM", "MM2ReversalChecked");
-    signal = checked.getValue(symbol, "MM", "MM2SignalExitChecked");
-    tc = checked.getValue(symbol, "MM", "MM2TcChangeChecked");
-    hw = checked.getValue(symbol, "MM", "MM2HwChecked");
-    hwTh = checked.getValue(symbol, "MM", "MM2HWTHChecked");
-    mf = checked.getValue(symbol, "MM", "MM2MfChecked");
-  }
+  final method = mod.method;
+  reversalPlusPlus = checked.getValue(symbol, method, "${method}ReversalPlusPlusChecked");
+  reversalPlus = checked.getValue(symbol, method, "${method}ReversalPlusChecked");
+  reversal = checked.getValue(symbol, method, "${method}ReversalChecked");
+  signal = checked.getValue(symbol, method, "${method}SignalExitChecked");
+  hw = checked.getValue(symbol, method, "${method}HwChecked");
+  hwTh = checked.getValue(symbol, method, "${method}HWTHChecked");
+  mf = checked.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checked.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
 
   final data = {
     'symbol': symbol,
@@ -58,6 +49,7 @@ Future<void> updateTradeFlags(CurrentOpenModel mod, BuildContext context) async 
     'hyperWave': hw,
     'hyperWaveThreshold': hwTh,
     'moneyFlow': mf,
+    'tcCrossedTt': tcTt,
   };
 
   final dio = Dio(

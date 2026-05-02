@@ -38,52 +38,26 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   late bool hw;
   late bool hwTh;
   late bool mf;
+  late bool tcTt;
 
-  if (method == 'MM1') {
-    final prov = Provider.of<ValueProvider>(context, listen: false);
-    final symbol = prov.manualSelectedValue;
-    final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
-    for (final model in crntOpen) {
-      if (model.symbol != symbol) continue;
+  final prov = Provider.of<ValueProvider>(context, listen: false);
+  final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
+  for (final model in crntOpen) {
+    if (model.symbol != symbol) continue;
 
-      if (model.method == 'MM2') {
-        if (model.actionType != actionType) {
-          await onClosePosition(context, "POSITION_CLOSE_ID");
-          break;
-        }
-      }
+    if (model.method != method && model.actionType != actionType) {
+      await onClosePosition(context, "POSITION_CLOSE_ID", model.method);
     }
-    reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM1ReversalPlusPlusChecked");
-    reversalPlus = checkedProv.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-    reversal = checkedProv.getValue(symbol, "MM", "MM1ReversalChecked");
-    signal = checkedProv.getValue(symbol, "MM", "MM1SignalExitChecked");
-    tc = checkedProv.getValue(symbol, "MM", "MM1TcChangeChecked");
-    hw = checkedProv.getValue(symbol, "MM", "MM1HwChecked");
-    hwTh = checkedProv.getValue(symbol, "MM", "MM1HWTHChecked");
-    mf = checkedProv.getValue(symbol, "MM", "MM1MfChecked");
-  } else if (method == 'MM2') {
-    final prov = Provider.of<ValueProvider>(context, listen: false);
-    final symbol = prov.manualSelectedValue;
-    final Set<CurrentOpenModel> crntOpen = prov.currentOpening;
-    for (final model in crntOpen) {
-      if (model.symbol != symbol) continue;
-
-      if (model.method == 'MM1') {
-        if (model.actionType != actionType) {
-          await onClosePosition(context, "POSITION_CLOSE_ID");
-          break;
-        }
-      }
-    }
-    reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM2ReversalPlusPlusChecked");
-    reversalPlus = checkedProv.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-    reversal = checkedProv.getValue(symbol, "MM", "MM2ReversalChecked");
-    signal = checkedProv.getValue(symbol, "MM", "MM2SignalExitChecked");
-    tc = checkedProv.getValue(symbol, "MM", "MM2TcChangeChecked");
-    hw = checkedProv.getValue(symbol, "MM", "MM2HwChecked");
-    hwTh = checkedProv.getValue(symbol, "MM", "MM2HWTHChecked");
-    mf = checkedProv.getValue(symbol, "MM", "MM2MfChecked");
   }
+  reversalPlusPlus = checkedProv.getValue(symbol!, method, "${method}ReversalPlusPlusChecked");
+  reversalPlus = checkedProv.getValue(symbol, method, "${method}ReversalPlusChecked");
+  reversal = checkedProv.getValue(symbol, method, "${method}ReversalChecked");
+  signal = checkedProv.getValue(symbol, method, "${method}SignalExitChecked");
+  tc = checkedProv.getValue(symbol, method, "${method}TcChangeChecked");
+  hw = checkedProv.getValue(symbol, method, "${method}HwChecked");
+  hwTh = checkedProv.getValue(symbol, method, "${method}HWTHChecked");
+  mf = checkedProv.getValue(symbol, method, "${method}MfChecked");
+  tcTt = checkedProv.getValue(symbol, method, "${method}TCCROSSEDTTChecked");
 
   final data = OpenRequestModel(
     actionType: actionType,
@@ -100,6 +74,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     hyperWave: hw,
     hyperWaveThreshold: hwTh,
     moneyFlow: mf,
+    tcCrossedTt: tcTt,
   );
   try {
     final _ = await dio.post(
@@ -115,28 +90,17 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     late bool hw;
     late bool hwTh;
 
-    if (method == 'MM1') {
-      reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM1ReversalPlusPlusChecked");
-      reversalPlus = checkedProv.getValue(symbol, "MM", "MM1ReversalPlusChecked");
-      reversal = checkedProv.getValue(symbol, "MM", "MM1ReversalChecked");
-      signal = checkedProv.getValue(symbol, "MM", "MM1SignalExitChecked");
-      tc = checkedProv.getValue(symbol, "MM", "MM1TcChangeChecked");
-      hw = checkedProv.getValue(symbol, "MM", "MM1HwChecked");
-      hwTh = checkedProv.getValue(symbol, "MM", "MM1HWTHChecked");
-      mf = checkedProv.getValue(symbol, "MM", "MM1MfChecked");
-    } else if (method == 'MM2') {
-      reversalPlusPlus = checkedProv.getValue(symbol!, "MM", "MM2ReversalPlusPlusChecked");
-      reversalPlus = checkedProv.getValue(symbol, "MM", "MM2ReversalPlusChecked");
-      reversal = checkedProv.getValue(symbol, "MM", "MM2ReversalChecked");
-      signal = checkedProv.getValue(symbol, "MM", "MM2SignalExitChecked");
-      tc = checkedProv.getValue(symbol, "MM", "MM2TcChangeChecked");
-      hw = checkedProv.getValue(symbol, "MM", "MM2HwChecked");
-      hwTh = checkedProv.getValue(symbol, "MM", "MM2HWTHChecked");
-      mf = checkedProv.getValue(symbol, "MM", "MM2MfChecked");
-    }
+    reversalPlusPlus = checkedProv.getValue(symbol, "MM", "${method}ReversalPlusPlusChecked");
+    reversalPlus = checkedProv.getValue(symbol, "MM", "${method}ReversalPlusChecked");
+    reversal = checkedProv.getValue(symbol, "MM", "${method}ReversalChecked");
+    signal = checkedProv.getValue(symbol, "MM", "${method}SignalExitChecked");
+    tc = checkedProv.getValue(symbol, "MM", "${method}TcChangeChecked");
+    hw = checkedProv.getValue(symbol, "MM", "${method}HwChecked");
+    hwTh = checkedProv.getValue(symbol, "MM", "${method}HWTHChecked");
+    mf = checkedProv.getValue(symbol, "MM", "${method}MfChecked");
 
     final mod = CurrentOpenModel(
-      symbol: symbol!,
+      symbol: symbol,
       method: data.method!,
       actionType: actionType,
       reversalPlusPlus: reversalPlusPlus,

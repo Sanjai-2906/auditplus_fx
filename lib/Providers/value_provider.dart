@@ -9,13 +9,50 @@ import '../models/models.dart';
 import 'providers.dart';
 
 //Screen Selection
-enum Method { method1, method2, method3 }
+enum Method { method1, method2, method3, method4, method5, method9 }
 
 class ValueProvider extends ChangeNotifier {
   //Screen Changes
   Method manualScreenView = Method.method1;
   Method autoScreenView = Method.method1;
 
+  //new section start
+  bool isM1Checked = false;
+  bool isM2Checked = false;
+  bool isM3Checked = false;
+  bool isM4Checked = false;
+  bool isM5Checked = false;
+  void enableMethod(String method) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (method == "MM1") {
+      isM1Checked = !isM1Checked;
+      await prefs.setBool('M1Checked', isM1Checked);
+    } else if (method == "MM2") {
+      isM2Checked = !isM2Checked;
+      await prefs.setBool('M2Checked', isM2Checked);
+    } else if (method == "MM3") {
+      isM3Checked = !isM3Checked;
+      await prefs.setBool('M3Checked', isM3Checked);
+    } else if (method == "MM4") {
+      isM4Checked = !isM4Checked;
+      await prefs.setBool('M4Checked', isM4Checked);
+    } else if (method == "MM5") {
+      isM5Checked = !isM5Checked;
+      await prefs.setBool('M5Checked', isM5Checked);
+    }
+    notifyListeners();
+  }
+
+  Future<void> _loadMethod() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isM1Checked = prefs.getBool('M1Checked') ?? false;
+    isM2Checked = prefs.getBool('M2Checked') ?? false;
+    isM3Checked = prefs.getBool('M3Checked') ?? false;
+    isM4Checked = prefs.getBool('M4Checked') ?? false;
+    isM5Checked = prefs.getBool('M5Checked') ?? false;
+  }
+
+  //new section end
   String? manualSelectedValue;
   String? amSelectedValue;
   bool isAutomaticSectionEnabled = false;
@@ -35,8 +72,12 @@ class ValueProvider extends ChangeNotifier {
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM1 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM2 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM3 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM4 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM5 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM9 = {};
 
   ValueProvider(BuildContext context) {
+    _loadMethod();
     _loadInitial(context);
   }
 
@@ -48,10 +89,10 @@ class ValueProvider extends ChangeNotifier {
 
   Future<void> _loadInitial(BuildContext context) async {
     final response = await getLocalValues();
-    manualVolume = response.manualVolume;
-    manualVolumeController.text = manualVolume.toString();
-    amVolume = response.automaticVolume;
-    amVolumeController.text = amVolume.toStringAsFixed(2);
+    manualVolume = num.tryParse(response.manualVolume) ?? 0.01;
+    manualVolumeController.text = response.manualVolume;
+    amVolume = num.tryParse(response.automaticVolume) ?? 0.01;
+    amVolumeController.text = response.automaticVolume;
     final lastSymbol = response.lastActiveSymbol;
     final amLastSymbol = response.amLastSymbol;
     var liveAmData = response.liveAutomaticTrade;
@@ -62,6 +103,12 @@ class ValueProvider extends ChangeNotifier {
         liveAutomaticTradeM2[item.symbol] = item;
       } else if (item.method == 'AM3') {
         liveAutomaticTradeM3[item.symbol] = item;
+      } else if (item.method == 'AM4') {
+        liveAutomaticTradeM4[item.symbol] = item;
+      } else if (item.method == 'AM5') {
+        liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM9') {
+        liveAutomaticTradeM9[item.symbol] = item;
       }
     }
     if (lastSymbol.isNotEmpty) {
@@ -73,9 +120,7 @@ class ValueProvider extends ChangeNotifier {
 
         final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
-        checkboxProvider.loadFromApi(lastSymbol, 'MM');
-        checkboxProvider.loadFromApi(lastSymbol, 'AM1');
-        checkboxProvider.loadFromApi(lastSymbol, 'AM2');
+        checkboxProvider.loadAll(lastSymbol);
       });
     }
     if (amLastSymbol.isNotEmpty) {
@@ -87,9 +132,7 @@ class ValueProvider extends ChangeNotifier {
 
         final checkboxProvider = Provider.of<CheckedBoxProvider>(context, listen: false);
 
-        checkboxProvider.loadFromApi(amLastSymbol, 'MM');
-        checkboxProvider.loadFromApi(amLastSymbol, 'AM1');
-        checkboxProvider.loadFromApi(amLastSymbol, 'AM2');
+        checkboxProvider.loadAll(amLastSymbol);
       });
     }
 
@@ -111,12 +154,15 @@ class ValueProvider extends ChangeNotifier {
       userId: "1",
       lastActiveSymbol: manualSelectedValue ?? "",
       amLastSymbol: amSelectedValue ?? "",
-      automaticVolume: amVolume,
-      manualVolume: manualVolume,
+      automaticVolume: amVolume.toStringAsFixed(2),
+      manualVolume: manualVolume.toStringAsFixed(2),
       liveAutomaticTrade: [
         ...liveAutomaticTradeM1.values,
         ...liveAutomaticTradeM2.values,
         ...liveAutomaticTradeM3.values,
+        ...liveAutomaticTradeM4.values,
+        ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM9.values,
       ],
     );
     await setLocalValues(data);
@@ -131,12 +177,15 @@ class ValueProvider extends ChangeNotifier {
       userId: "1",
       lastActiveSymbol: manualSelectedValue ?? "",
       amLastSymbol: amSelectedValue ?? "",
-      automaticVolume: amVolume,
-      manualVolume: manualVolume,
+      automaticVolume: amVolume.toStringAsFixed(2),
+      manualVolume: manualVolume.toStringAsFixed(2),
       liveAutomaticTrade: [
         ...liveAutomaticTradeM1.values,
         ...liveAutomaticTradeM2.values,
         ...liveAutomaticTradeM3.values,
+        ...liveAutomaticTradeM4.values,
+        ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM9.values,
       ],
     );
     await setLocalValues(data);
@@ -173,12 +222,15 @@ class ValueProvider extends ChangeNotifier {
       userId: "1",
       lastActiveSymbol: manualSelectedValue ?? "",
       amLastSymbol: amSelectedValue ?? "",
-      automaticVolume: amVolume,
-      manualVolume: manualVolume,
+      automaticVolume: amVolume.toStringAsFixed(2),
+      manualVolume: manualVolume.toStringAsFixed(2),
       liveAutomaticTrade: [
         ...liveAutomaticTradeM1.values,
         ...liveAutomaticTradeM2.values,
         ...liveAutomaticTradeM3.values,
+        ...liveAutomaticTradeM4.values,
+        ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM9.values,
       ],
     );
     await setLocalValues(data);
@@ -193,12 +245,15 @@ class ValueProvider extends ChangeNotifier {
       userId: "1",
       lastActiveSymbol: manualSelectedValue ?? "",
       amLastSymbol: amSelectedValue ?? "",
-      automaticVolume: amVolume,
-      manualVolume: manualVolume,
+      automaticVolume: amVolume.toStringAsFixed(2),
+      manualVolume: manualVolume.toStringAsFixed(2),
       liveAutomaticTrade: [
         ...liveAutomaticTradeM1.values,
         ...liveAutomaticTradeM2.values,
         ...liveAutomaticTradeM3.values,
+        ...liveAutomaticTradeM4.values,
+        ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM9.values,
       ],
     );
     await setLocalValues(data);
@@ -250,6 +305,12 @@ class ValueProvider extends ChangeNotifier {
       liveAutomaticTradeM2.remove(symbol);
     } else if (method == 'AM3') {
       liveAutomaticTradeM3.remove(symbol);
+    } else if (method == 'AM4') {
+      liveAutomaticTradeM4.remove(symbol);
+    } else if (method == 'AM5') {
+      liveAutomaticTradeM5.remove(symbol);
+    } else if (method == 'AM9') {
+      liveAutomaticTradeM9.remove(symbol);
     }
     notifyListeners();
   }
@@ -269,6 +330,24 @@ class ValueProvider extends ChangeNotifier {
       );
     } else if (mod.method == 'AM3') {
       liveAutomaticTradeM3[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM4') {
+      liveAutomaticTradeM4[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM5') {
+      liveAutomaticTradeM5[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM9') {
+      liveAutomaticTradeM9[mod.symbol] = LiveAutomaticTradeModel(
         method: mod.method,
         symbol: mod.symbol,
         volume: mod.volume,

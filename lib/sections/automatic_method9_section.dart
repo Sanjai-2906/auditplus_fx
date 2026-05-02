@@ -4,17 +4,15 @@ import 'package:provider/provider.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
-import 'sections.dart';
 
-class AutomaticMethod3Section extends StatefulWidget {
-  const AutomaticMethod3Section({super.key});
+class AutomaticMethod9Section extends StatefulWidget {
+  const AutomaticMethod9Section({super.key});
 
   @override
-  State<AutomaticMethod3Section> createState() => _AutomaticMethod3SectionState();
+  State<AutomaticMethod9Section> createState() => _AutomaticMethod9SectionState();
 }
 
-class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
-  Set<String> expandedSymbols = {};
+class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +23,7 @@ class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
         children: [
           Consumer<ValueProvider>(
             builder: (context, autoLive, child) {
-              if (autoLive.liveAutomaticTradeM3.isEmpty) {
+              if (autoLive.liveAutomaticTradeM9.isEmpty) {
                 return Text("No items found");
               } else {
                 return SingleChildScrollView(
@@ -38,21 +36,13 @@ class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
                     width: MediaQuery.of(context).size.height * 0.7,
                     child: Consumer<ValueProvider>(
                       builder: (context, autoLive, child) {
-                        final items = autoLive.liveAutomaticTradeM3.values.toList();
+                        final items = autoLive.liveAutomaticTradeM9.values.toList();
                         return ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (context, index) {
-                            final symbol = items[index].symbol;
-
-                            if (!context.read<CheckedBoxProvider>().am3ValuesPerSymbol.containsKey(symbol)) {
-                              Future.microtask(() {
-                                // ignore: use_build_context_synchronously
-                                context.read<CheckedBoxProvider>().loadAll(symbol);
-                              });
-                            }
                             return Padding(
                               key: ValueKey(items[index].symbol),
-                              padding: const EdgeInsets.all(4.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +94,7 @@ class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
                                                     volume: items[index].volume,
                                                     isEnabled: true,
                                                     action: ActionType.close,
-                                                    method: "AM3",
+                                                    method: "AM9",
                                                   );
                                                   await automaticTrading(context, data);
                                                 },
@@ -133,39 +123,15 @@ class _AutomaticMethod3SectionState extends State<AutomaticMethod3Section> {
                                                   volume: items[index].volume,
                                                   isEnabled: false,
                                                   action: ActionType.disable,
-                                                  method: "AM3",
+                                                  method: "AM9",
                                                 );
                                                 await automaticTrading(context, data);
                                                 autoLive.removeLiveTrade(data.symbol, data.method);
                                               },
                                               icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
                                             ),
-                                            IconButton(
-                                              style: ElevatedButton.styleFrom(
-                                                maximumSize: Size(45, 40),
-                                                backgroundColor: Color.fromRGBO(50, 187, 221, 1),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadiusGeometry.circular(5),
-                                                  side: BorderSide(color: Colors.black, width: 1),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                final symbol = items[index].symbol;
-
-                                                setState(() {
-                                                  if (expandedSymbols.contains(symbol)) {
-                                                    expandedSymbols.remove(symbol);
-                                                  } else {
-                                                    expandedSymbols.add(symbol);
-                                                  }
-                                                });
-                                              },
-                                              icon: Icon(Icons.add, color: Color.fromRGBO(12, 9, 56, 1)),
-                                            ),
                                           ],
                                         ),
-                                        if (expandedSymbols.contains(items[index].symbol))
-                                          AutomaticClosingSection(method: 'AM3', amSymbol: items[index].symbol),
                                       ],
                                     ),
                                   ),
