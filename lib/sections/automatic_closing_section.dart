@@ -17,6 +17,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2ReversalPlusPlusChecked',
     'MM3': 'MM3ReversalPlusPlusChecked',
     'MM4': 'MM4ReversalPlusPlusChecked',
+    'MM5': 'MM5ReversalPlusPlusChecked',
     'AM1': 'AM1ReversalPlusPlusChecked',
     'AM2': 'AM2ReversalPlusPlusChecked',
     'AM3': 'AM3ReversalPlusPlusChecked',
@@ -29,6 +30,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2ReversalPlusChecked',
     'MM3': 'MM3ReversalPlusChecked',
     'MM4': 'MM4ReversalPlusChecked',
+    'MM5': 'MM5ReversalPlusChecked',
     'AM1': 'AM1ReversalPlusChecked',
     'AM2': 'AM2ReversalPlusChecked',
     'AM3': 'AM3ReversalPlusChecked',
@@ -41,6 +43,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2ReversalChecked',
     'MM3': 'MM3ReversalChecked',
     'MM4': 'MM4ReversalChecked',
+    'MM5': 'MM5ReversalChecked',
     'AM1': 'AM1ReversalChecked',
     'AM2': 'AM2ReversalChecked',
     'AM3': 'AM3ReversalChecked',
@@ -53,6 +56,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2SignalExitChecked',
     'MM3': 'MM3SignalExitChecked',
     'MM4': 'MM4SignalExitChecked',
+    'MM5': 'MM5SignalExitChecked',
     'AM1': 'AM1SignalExitChecked',
     'AM2': 'AM2SignalExitChecked',
     'AM3': 'AM3SignalExitChecked',
@@ -65,6 +69,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2TcChangeChecked',
     'MM3': 'MM3TcChangeChecked',
     'MM4': 'MM4TcChangeChecked',
+    'MM5': 'MM5TcChangeChecked',
     'AM1': 'AM1TcChangeChecked',
     'AM2': 'AM2TcChangeChecked',
     'AM3': 'AM3TcChangeChecked',
@@ -77,6 +82,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2HwChecked',
     'MM3': 'MM3HwChecked',
     'MM4': 'MM4HwChecked',
+    'MM5': 'MM5HwChecked',
     'AM1': 'AM1HwChecked',
     'AM2': 'AM2HwChecked',
     'AM3': 'AM3HwChecked',
@@ -89,6 +95,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2HWTHChecked',
     'MM3': 'MM3HWTHChecked',
     'MM4': 'MM4HWTHChecked',
+    'MM5': 'MM5HWTHChecked',
     'AM1': 'AM1HWTHChecked',
     'AM2': 'AM2HWTHChecked',
     'AM3': 'AM3HWTHChecked',
@@ -101,6 +108,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2MfChecked',
     'MM3': 'MM3MfChecked',
     'MM4': 'MM4MfChecked',
+    'MM5': 'MM5MfChecked',
     'AM1': 'AM1MfChecked',
     'AM2': 'AM2MfChecked',
     'AM3': 'AM3MfChecked',
@@ -113,6 +121,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM2': 'MM2TCCROSSEDTTChecked',
     'MM3': 'MM3TCCROSSEDTTChecked',
     'MM4': 'MM4TCCROSSEDTTChecked',
+    'MM5': 'MM5TCCROSSEDTTChecked',
     'AM1': 'AM1TCCROSSEDTTChecked',
     'AM2': 'AM2TCCROSSEDTTChecked',
     'AM3': 'AM3TCCROSSEDTTChecked',
@@ -141,6 +150,8 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
           method = "MM3";
         } else if (widget.method == "MM4") {
           method = "MM4";
+        } else if (widget.method == "MM5") {
+          method = "MM5";
         } else if (widget.method == "AM1") {
           method = "AM1";
         } else if (widget.method == "AM2") {

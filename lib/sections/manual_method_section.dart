@@ -31,6 +31,7 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
               _buildRow("Reversal", "LongReversalChecked", "ShortReversalChecked"),
               _buildRow("Reversal Plus", "LongReversalPlusChecked", "ShortReversalPlusChecked"),
               _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
+              _buildRow("Tc Cross Tt", "LongTcCrossTtChecked", "ShortTcCrossTtChecked"),
             ],
           ),
         ],

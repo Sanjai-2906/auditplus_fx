@@ -244,6 +244,8 @@ class HomeScreenState extends State<HomeScreen> {
                 if (check.isM3ShortAllChecked(symbol)) triggeredMethods.add("M3_SHORT");
                 if (check.isM4LongAllChecked(symbol)) triggeredMethods.add("M4_LONG");
                 if (check.isM4ShortAllChecked(symbol)) triggeredMethods.add("M4_SHORT");
+                if (check.isM5LongAllChecked(symbol)) triggeredMethods.add("M5_LONG");
+                if (check.isM5ShortAllChecked(symbol)) triggeredMethods.add("M5_SHORT");
                 if (!_frameScheduled) {
                   _frameScheduled = true;
 
@@ -323,8 +325,6 @@ class HomeScreenState extends State<HomeScreen> {
                                           if (searchText.isEmpty) {
                                             return List<SearchFieldListItem<String>>.from(symbols);
                                           }
-                                          // context.read<ValueProvider>().clearSelectedValue();
-                                          // context.read<CheckedBoxProvider>().clearState("MM");
 
                                           final query = searchText.toUpperCase();
                                           return symbols.where((s) {
@@ -337,7 +337,6 @@ class HomeScreenState extends State<HomeScreen> {
                                           _symbolFocusNode.unfocus();
 
                                           context.read<ValueProvider>().setSelectedItem(item, context);
-                                          // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
                                           context.read<CheckedBoxProvider>().loadAll(item.value!);
                                         },
                                         onSubmit: (item) {
