@@ -143,14 +143,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               return ExpansionTile(
                 title: Text(symbol),
                 trailing: Text(
-                  totalProfit.toStringAsFixed(2),
+                  totalProfit.toStringAsFixed(5),
                   style: TextStyle(color: totalProfit > 0 ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
                 ),
                 children: methods.map((m) {
                   return ListTile(
                     title: Text(m.method),
                     trailing: Text(
-                      m.profit.toStringAsFixed(2),
+                      m.profit.toStringAsFixed(6),
                       style: TextStyle(color: m.profit > 0 ? Colors.green : Colors.red),
                     ),
                   );
@@ -180,14 +180,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               return ExpansionTile(
                 title: Text(symbol),
                 trailing: Text(
-                  totalProfit.toStringAsFixed(2),
+                  totalProfit.toStringAsFixed(6),
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: totalProfit > 0 ? Colors.green : Colors.red, fontWeight: FontWeight.bold),
                 ),
                 children: methods.map((m) {
                   return ListTile(
                     title: Text(m.method),
                     trailing: Text(
-                      m.profit.toStringAsFixed(2),
+                      m.profit.toStringAsFixed(6),
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: m.profit > 0 ? Colors.green : Colors.red),
                     ),
                     onTap: () {

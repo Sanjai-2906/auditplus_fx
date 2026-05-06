@@ -290,14 +290,14 @@ class CheckedBoxProvider extends ChangeNotifier {
 
   bool isM4LongAllChecked(String symbol) {
     final v = getValues("MM", symbol);
-    return ((v['LongSignalExitChecked'] ?? false) &&
+    return ((v['ShortSignalExitChecked'] ?? false) &&
         (v['LongTcChecked'] ?? false) &&
         (v['LongSignalChecked'] ?? false));
   }
 
   bool isM4ShortAllChecked(String symbol) {
     final v = getValues("MM", symbol);
-    return ((v['ShortSignalExitChecked'] ?? false)) &&
+    return ((v['LongSignalExitChecked'] ?? false)) &&
         (v['ShortTcChecked'] ?? false) &&
         (v['ShortSignalChecked'] ?? false);
   }
