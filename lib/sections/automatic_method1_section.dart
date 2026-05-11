@@ -17,11 +17,6 @@ class AutomaticMethod1Section extends StatefulWidget {
 
 class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
   Set<String> expandedSymbols = {};
-
-  Future<TimeOfDay?> _selectTime(BuildContext context) async {
-    return await showTimePicker(context: context, initialTime: TimeOfDay.now());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -96,59 +91,26 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                                             IconButton(
                                               style: ElevatedButton.styleFrom(
                                                 maximumSize: Size(45, 40),
-                                                backgroundColor: Color.fromRGBO(254, 226, 226, 1),
+                                                backgroundColor: Color.fromRGBO(137, 207, 253, 1),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadiusGeometry.circular(5),
                                                   side: BorderSide(color: Colors.black, width: 1),
                                                 ),
                                               ),
                                               onPressed: () async {
-                                                final start = await _selectTime(context);
-                                                if (start == null) return;
-                                                final end = await _selectTime(context);
-                                                if (end == null) return;
-                                                final now = DateTime.now();
-                                                final startDateTime = DateTime(
-                                                  now.year,
-                                                  now.month,
-                                                  now.day,
-                                                  start.hour,
-                                                  start.minute,
-                                                );
-
-                                                DateTime endDateTime = DateTime(
-                                                  now.year,
-                                                  now.month,
-                                                  now.day,
-                                                  end.hour,
-                                                  end.minute,
-                                                );
-
-                                                // overnight range
-                                                if (endDateTime.isBefore(startDateTime)) {
-                                                  endDateTime = endDateTime.add(Duration(days: 1));
-                                                }
-                                                final data = CurrentAutomationModel(
-                                                  symbol: items[index].symbol,
-                                                  volume: items[index].volume,
-                                                  isEnabled: false,
-                                                  action: ActionType.add,
-                                                  method: "AM1",
-                                                  startTime: startDateTime,
-                                                  endTime: endDateTime,
-                                                );
-
-                                                await automaticTrading(context, data);
-
-                                                autoLive.removeLiveTrade(data.symbol, data.method);
+                                                await timeDialog(context, items[index], "AM1");
+                                                await Provider.of<ValueProvider>(
+                                                  context,
+                                                  listen: false,
+                                                ).updateTradeRange();
                                               },
-                                              icon: Icon(Icons.hourglass_bottom, color: Color.fromRGBO(239, 68, 68, 1)),
+                                              icon: Icon(Icons.hourglass_bottom, color: Colors.black),
                                             ),
                                             Expanded(
-                                              flex: 2,
+                                              flex: 3,
                                               child: TextButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  maximumSize: Size(75, 40),
+                                                  fixedSize: Size(75, 40),
                                                   backgroundColor: Color.fromRGBO(229, 231, 235, 1),
                                                   foregroundColor: Colors.black,
                                                   shape: RoundedRectangleBorder(

@@ -86,8 +86,22 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                                 ),
                                               ),
                                             ),
+                                            IconButton(
+                                              style: ElevatedButton.styleFrom(
+                                                maximumSize: Size(45, 40),
+                                                backgroundColor: Color.fromRGBO(137, 207, 253, 1),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadiusGeometry.circular(5),
+                                                  side: BorderSide(color: Colors.black, width: 1),
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                await timeDialog(context, items[index], "AM2");
+                                              },
+                                              icon: Icon(Icons.hourglass_bottom, color: Colors.black),
+                                            ),
                                             Expanded(
-                                              flex: 2,
+                                              flex: 3,
                                               child: TextButton(
                                                 style: ElevatedButton.styleFrom(
                                                   maximumSize: Size(75, 40),

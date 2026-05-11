@@ -12,6 +12,12 @@ LiveAutomaticTradeModel _$LiveAutomaticTradeModelFromJson(
   method: json['method'] as String,
   symbol: json['symbol'] as String,
   volume: json['volume'] as num,
+  startTime: json['startTime'] == null
+      ? null
+      : DateTime.parse(json['startTime'] as String),
+  endTime: json['endTime'] == null
+      ? null
+      : DateTime.parse(json['endTime'] as String),
 );
 
 Map<String, dynamic> _$LiveAutomaticTradeModelToJson(
@@ -20,6 +26,8 @@ Map<String, dynamic> _$LiveAutomaticTradeModelToJson(
   'method': instance.method,
   'symbol': instance.symbol,
   'volume': instance.volume,
+  'startTime': instance.startTime?.toIso8601String(),
+  'endTime': instance.endTime?.toIso8601String(),
 };
 
 LocalValuesModel _$LocalValuesModelFromJson(Map<String, dynamic> json) =>

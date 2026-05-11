@@ -12,7 +12,7 @@ class CurrentAutomationModel {
   bool isEnabled;
   DateTime? startTime;
   DateTime? endTime;
-  ActionType action; // ✅ FIXED
+  ActionType action;
 
   CurrentAutomationModel({
     required this.method,

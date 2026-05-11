@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
+import 'sections.dart';
 
 class AutomaticMethod9Section extends StatefulWidget {
   const AutomaticMethod9Section({super.key});
@@ -76,8 +77,22 @@ class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
                                                 ),
                                               ),
                                             ),
+                                            IconButton(
+                                              style: ElevatedButton.styleFrom(
+                                                maximumSize: Size(45, 40),
+                                                backgroundColor: Color.fromRGBO(137, 207, 253, 1),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadiusGeometry.circular(5),
+                                                  side: BorderSide(color: Colors.black, width: 1),
+                                                ),
+                                              ),
+                                              onPressed: () async {
+                                                await timeDialog(context, items[index], "AM9");
+                                              },
+                                              icon: Icon(Icons.hourglass_bottom, color: Colors.black),
+                                            ),
                                             Expanded(
-                                              flex: 2,
+                                              flex: 3,
                                               child: TextButton(
                                                 style: ElevatedButton.styleFrom(
                                                   maximumSize: Size(75, 40),

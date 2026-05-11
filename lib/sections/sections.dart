@@ -7,3 +7,4 @@ export 'automatic_method4_section.dart';
 export 'automatic_method5_section.dart';
 export 'automatic_method9_section.dart';
 export 'method_dialog.dart';
+export 'time_dialog.dart';

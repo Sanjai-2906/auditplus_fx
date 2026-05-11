@@ -356,4 +356,33 @@ class ValueProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> updateTradeRange() async {
+    final response = await getLocalValues();
+
+    liveAutomaticTradeM1.clear();
+    liveAutomaticTradeM2.clear();
+    liveAutomaticTradeM3.clear();
+    liveAutomaticTradeM4.clear();
+    liveAutomaticTradeM5.clear();
+    liveAutomaticTradeM9.clear();
+
+    for (var item in response.liveAutomaticTrade) {
+      if (item.method == 'AM1') {
+        liveAutomaticTradeM1[item.symbol] = item;
+      } else if (item.method == 'AM2') {
+        liveAutomaticTradeM2[item.symbol] = item;
+      } else if (item.method == 'AM3') {
+        liveAutomaticTradeM3[item.symbol] = item;
+      } else if (item.method == 'AM4') {
+        liveAutomaticTradeM4[item.symbol] = item;
+      } else if (item.method == 'AM5') {
+        liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM9') {
+        liveAutomaticTradeM9[item.symbol] = item;
+      }
+    }
+
+    notifyListeners();
+  }
 }

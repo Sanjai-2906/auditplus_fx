@@ -7,8 +7,16 @@ class LiveAutomaticTradeModel {
   String method;
   String symbol;
   num volume;
+  DateTime? startTime;
+  DateTime? endTime;
 
-  LiveAutomaticTradeModel({required this.method, required this.symbol, required this.volume});
+  LiveAutomaticTradeModel({
+    required this.method,
+    required this.symbol,
+    required this.volume,
+    this.startTime,
+    this.endTime,
+  });
 
   factory LiveAutomaticTradeModel.fromJson(Map<String, dynamic> json) => _$LiveAutomaticTradeModelFromJson(json);
 
@@ -23,7 +31,7 @@ class LiveAutomaticTradeModel {
 
   @override
   String toString() {
-    return "LiveAutomaticTradeModel{Method: $method,Symbol: $symbol,Volume: $volume}";
+    return "LiveAutomaticTradeModel{Method: $method,Symbol: $symbol,Volume: $volume,Start Time: $startTime, End Time: $endTime}";
   }
 }
 
