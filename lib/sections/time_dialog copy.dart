@@ -1,14 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:async';
-
 import 'package:auditplus_fx/models/models.dart';
 import 'package:flutter/material.dart';
 import '../api_methods/api_methods.dart';
 
 Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String method) {
-  DateTime? startTime;
-  DateTime? endTime;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
   return showDialog(
     context: context,
     builder: (context) {
@@ -23,23 +21,18 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    Row(
                       spacing: 5,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Start Time: ", style: TextStyle(fontSize: 14)),
                         Text(
-                          style: TextStyle(fontWeight: FontWeight.bold),
                           startTime != null
-                              ? "${startTime!.day}/${startTime!.month}/${startTime!.year} "
-                                    "${startTime!.hour.toString().padLeft(2, '0')}:"
-                                    "${startTime!.minute.toString().padLeft(2, '0')}"
+                              // ? startTime!.format(context)
+                              ? format24(startTime!)
                               : item.startTime == null
-                              ? "No Time"
+                              ? "No Start Time"
                               // : TimeOfDay.fromDateTime(item.startTime!).format(context),
-                              : "${item.startTime!.day}/${item.startTime!.month}/${item.startTime!.year} "
-                                    "${item.startTime!.hour.toString().padLeft(2, '0')}:"
-                                    "${item.startTime!.minute.toString().padLeft(2, '0')}",
+                              : format24(TimeOfDay.fromDateTime(item.startTime!)),
                         ),
                       ],
                     ),
@@ -54,7 +47,8 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         ),
                       ),
                       onPressed: () async {
-                        final picked = await _openDateTimePicker(context);
+                        final picked = await _selectTime(context);
+
                         if (picked != null) {
                           setStateDialog(() {
                             startTime = picked;
@@ -69,23 +63,18 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       spacing: 5,
                       children: [
                         Text("End Time: ", style: TextStyle(fontSize: 14)),
                         Text(
-                          style: TextStyle(fontWeight: FontWeight.bold),
                           endTime != null
-                              ? "${endTime!.day}/${endTime!.month}/${endTime!.year} "
-                                    "${endTime!.hour.toString().padLeft(2, '0')}:"
-                                    "${endTime!.minute.toString().padLeft(2, '0')}"
+                              // ? endTime!.format(context)
+                              ? format24(endTime!)
                               : item.endTime == null
-                              ? "No Time"
+                              ? "No end Time"
                               // : TimeOfDay.fromDateTime(item.endTime!).format(context),
-                              : "${item.endTime!.day}/${item.endTime!.month}/${item.endTime!.year} "
-                                    "${item.endTime!.hour.toString().padLeft(2, '0')}:"
-                                    "${item.endTime!.minute.toString().padLeft(2, '0')}",
+                              : format24(TimeOfDay.fromDateTime(item.endTime!)),
                         ),
                       ],
                     ),
@@ -100,7 +89,8 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         ),
                       ),
                       onPressed: () async {
-                        final picked = await _openDateTimePicker(context);
+                        final picked = await _selectTime(context);
+
                         if (picked != null) {
                           setStateDialog(() {
                             endTime = picked;
@@ -139,13 +129,27 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                   ),
                 ),
                 onPressed: () async {
+                  final existingStart = item.startTime;
+                  final existingEnd = item.endTime;
                   DateTime? finalStart;
                   DateTime? finalEnd;
-                  finalStart = startTime ?? item.startTime;
-                  finalEnd = endTime ?? item.endTime;
-
+                  final now = DateTime.now();
+                  if (startTime != null) {
+                    finalStart = DateTime(now.year, now.month, now.day, startTime!.hour, startTime!.minute);
+                  } else {
+                    finalStart = existingStart;
+                  }
+                  if (endTime != null) {
+                    finalEnd = DateTime(now.year, now.month, now.day, endTime!.hour, endTime!.minute);
+                  } else {
+                    finalEnd = existingEnd;
+                  }
                   if (finalStart == null || finalEnd == null) {
                     return;
+                  }
+                  // overnight support
+                  if (finalEnd.isBefore(finalStart)) {
+                    finalEnd = finalEnd.add(Duration(days: 1));
                   }
                   final data = CurrentAutomationModel(
                     symbol: item.symbol,
@@ -172,26 +176,64 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
   );
 }
 
-Future<DateTime?> _openDateTimePicker(BuildContext context) async {
-  final date = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime.now(),
-    lastDate: DateTime.now().add(Duration(days: 3)),
-  );
-
-  if (date == null) return null;
-
-  final time = await showTimePicker(
+// Future<TimeOfDay?> _selectTime(BuildContext context) async {
+//   return await showTimePicker(
+//     context: context,
+//     initialTime: TimeOfDay.now(),
+//     builder: (BuildContext context, Widget? child) {
+//       return Theme(
+//         data: Theme.of(context).copyWith(
+//           timePickerTheme: TimePickerThemeData(
+//             backgroundColor: const Color.fromARGB(255, 201, 237, 243),
+//             dialBackgroundColor: Colors.white,
+//             dialHandColor: Colors.black,
+//             hourMinuteColor: Colors.white,
+//             hourMinuteTextColor: Colors.black,
+//             hourMinuteShape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               side: const BorderSide(color: Colors.black, width: 2),
+//             ),
+//             dayPeriodColor: Colors.white,
+//             dayPeriodTextColor: Colors.black,
+//             dayPeriodShape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(10),
+//               side: const BorderSide(color: Colors.black, width: 2),
+//             ),
+//           ),
+//         ),
+//         child: child!,
+//       );
+//     },
+//   );
+// }
+Future<TimeOfDay?> _selectTime(BuildContext context) async {
+  return await showTimePicker(
     context: context,
     initialTime: TimeOfDay.now(),
-
-    builder: (context, child) {
-      return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+    builder: (BuildContext context, Widget? child) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          alwaysUse24HourFormat: true, // <-- railway format
+        ),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: const Color.fromARGB(255, 201, 237, 243),
+              dialBackgroundColor: Colors.white,
+              dialHandColor: Colors.black,
+              hourMinuteColor: Colors.white,
+              hourMinuteTextColor: Colors.black,
+            ),
+          ),
+          child: child!,
+        ),
+      );
     },
   );
+}
 
-  if (time == null) return null;
-
-  return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+String format24(TimeOfDay time) {
+  final hour = time.hour.toString().padLeft(2, '0');
+  final minute = time.minute.toString().padLeft(2, '0');
+  return "$hour:$minute";
 }
