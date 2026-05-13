@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
+import '../utils/utils.dart';
 import 'sections.dart';
 
 class AutomaticMethod1Section extends StatefulWidget {

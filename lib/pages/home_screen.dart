@@ -6,10 +6,10 @@ import 'package:auditplus_fx/pages/automation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:auditplus_fx/drawer_widget.dart';
 
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
+import '../utils/utils.dart';
 import '../sections/sections.dart';
 
 class HomeScreen extends StatefulWidget {

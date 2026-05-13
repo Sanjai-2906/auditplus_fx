@@ -16,7 +16,7 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
         builder: (context, setStateDialog) {
           return AlertDialog(
             backgroundColor: Color.fromRGBO(189, 232, 245, 1),
-            title: Text("Trade Range"),
+            title: Text("Exceptional Range"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

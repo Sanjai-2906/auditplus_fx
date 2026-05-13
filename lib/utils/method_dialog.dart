@@ -4,7 +4,7 @@ import 'package:toastification/toastification.dart';
 
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
-import 'sections.dart';
+import '../sections/sections.dart';
 
 Widget methodDialog(BuildContext context) {
   return Dialog(

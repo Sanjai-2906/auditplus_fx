@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
-import 'sections.dart';
+import '../utils/utils.dart';
 
 class AutomaticMethod9Section extends StatefulWidget {
   const AutomaticMethod9Section({super.key});
