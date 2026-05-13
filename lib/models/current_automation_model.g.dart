@@ -12,8 +12,8 @@ CurrentAutomationModel _$CurrentAutomationModelFromJson(Map<String, dynamic> jso
   volume: json['volume'] as num,
   action: $enumDecode(_$ActionTypeEnumMap, json['action']),
   isEnabled: json['isEnabled'] as bool,
-  startTime: json['startTime'] == null ? null : DateTime.parse(json['startTime'] as String),
-  endTime: json['endTime'] == null ? null : DateTime.parse(json['endTime'] as String),
+  startTime: CurrentAutomationModel._timeFromJson(json['startTime'] as String?),
+  endTime: CurrentAutomationModel._timeFromJson(json['endTime'] as String?),
 );
 
 Map<String, dynamic> _$CurrentAutomationModelToJson(CurrentAutomationModel instance) => <String, dynamic>{
@@ -21,8 +21,8 @@ Map<String, dynamic> _$CurrentAutomationModelToJson(CurrentAutomationModel insta
   'symbol': instance.symbol,
   'volume': instance.volume,
   'isEnabled': instance.isEnabled,
-  'startTime': instance.startTime?.toIso8601String(),
-  'endTime': instance.endTime?.toIso8601String(),
+  'startTime': CurrentAutomationModel._timeToJson(instance.startTime),
+  'endTime': CurrentAutomationModel._timeToJson(instance.endTime),
   'action': _$ActionTypeEnumMap[instance.action]!,
 };
 

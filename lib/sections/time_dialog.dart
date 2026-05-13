@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import '../api_methods/api_methods.dart';
 
 Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String method) {
-  DateTime? startTime;
-  DateTime? endTime;
+  TimeOfDay? startTime = item.startTime;
+  TimeOfDay? endTime = item.endTime;
   return showDialog(
     context: context,
     builder: (context) {
@@ -31,14 +31,11 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         Text(
                           style: TextStyle(fontWeight: FontWeight.bold),
                           startTime != null
-                              ? "${startTime!.day}/${startTime!.month}/${startTime!.year} "
-                                    "${startTime!.hour.toString().padLeft(2, '0')}:"
+                              ? "${startTime!.hour.toString().padLeft(2, '0')}:"
                                     "${startTime!.minute.toString().padLeft(2, '0')}"
                               : item.startTime == null
                               ? "No Time"
-                              // : TimeOfDay.fromDateTime(item.startTime!).format(context),
-                              : "${item.startTime!.day}/${item.startTime!.month}/${item.startTime!.year} "
-                                    "${item.startTime!.hour.toString().padLeft(2, '0')}:"
+                              : "${item.startTime!.hour.toString().padLeft(2, '0')}:"
                                     "${item.startTime!.minute.toString().padLeft(2, '0')}",
                         ),
                       ],
@@ -54,7 +51,7 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         ),
                       ),
                       onPressed: () async {
-                        final picked = await _openDateTimePicker(context);
+                        final picked = await pickTime(context, startTime);
                         if (picked != null) {
                           setStateDialog(() {
                             startTime = picked;
@@ -77,14 +74,11 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         Text(
                           style: TextStyle(fontWeight: FontWeight.bold),
                           endTime != null
-                              ? "${endTime!.day}/${endTime!.month}/${endTime!.year} "
-                                    "${endTime!.hour.toString().padLeft(2, '0')}:"
+                              ? "${endTime!.hour.toString().padLeft(2, '0')}:"
                                     "${endTime!.minute.toString().padLeft(2, '0')}"
                               : item.endTime == null
                               ? "No Time"
-                              // : TimeOfDay.fromDateTime(item.endTime!).format(context),
-                              : "${item.endTime!.day}/${item.endTime!.month}/${item.endTime!.year} "
-                                    "${item.endTime!.hour.toString().padLeft(2, '0')}:"
+                              : "${item.endTime!.hour.toString().padLeft(2, '0')}:"
                                     "${item.endTime!.minute.toString().padLeft(2, '0')}",
                         ),
                       ],
@@ -100,7 +94,7 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                         ),
                       ),
                       onPressed: () async {
-                        final picked = await _openDateTimePicker(context);
+                        final picked = await pickTime(context, endTime);
                         if (picked != null) {
                           setStateDialog(() {
                             endTime = picked;
@@ -139,12 +133,7 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                   ),
                 ),
                 onPressed: () async {
-                  DateTime? finalStart;
-                  DateTime? finalEnd;
-                  finalStart = startTime ?? item.startTime;
-                  finalEnd = endTime ?? item.endTime;
-
-                  if (finalStart == null || finalEnd == null) {
+                  if (startTime == null || endTime == null) {
                     return;
                   }
                   final data = CurrentAutomationModel(
@@ -153,8 +142,8 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
                     isEnabled: true,
                     action: ActionType.add,
                     method: method,
-                    startTime: finalStart,
-                    endTime: finalEnd,
+                    startTime: startTime,
+                    endTime: endTime,
                   );
                   await automaticTrading(context, data);
                   Navigator.pop(context);
@@ -172,26 +161,12 @@ Future timeDialog(BuildContext context, LiveAutomaticTradeModel item, String met
   );
 }
 
-Future<DateTime?> _openDateTimePicker(BuildContext context) async {
-  final date = await showDatePicker(
+Future<TimeOfDay?> pickTime(BuildContext context, TimeOfDay? time) async {
+  return await showTimePicker(
     context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime.now(),
-    lastDate: DateTime.now().add(Duration(days: 3)),
-  );
-
-  if (date == null) return null;
-
-  final time = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-
+    initialTime: time ?? TimeOfDay.now(),
     builder: (context, child) {
       return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
     },
   );
-
-  if (time == null) return null;
-
-  return DateTime(date.year, date.month, date.day, time.hour, time.minute);
 }

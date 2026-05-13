@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'current_automation_model.g.dart';
 
@@ -10,8 +11,11 @@ class CurrentAutomationModel {
   String symbol;
   num volume;
   bool isEnabled;
-  DateTime? startTime;
-  DateTime? endTime;
+  @JsonKey(fromJson: _timeFromJson, toJson: _timeToJson)
+  TimeOfDay? startTime;
+
+  @JsonKey(fromJson: _timeFromJson, toJson: _timeToJson)
+  TimeOfDay? endTime;
   ActionType action;
 
   CurrentAutomationModel({
@@ -32,9 +36,25 @@ class CurrentAutomationModel {
     "volume": volume,
     "isEnabled": isEnabled,
     "action": action.name,
+
     if (startTime != null && endTime != null)
-      "timeRange": {"start": startTime!.toIso8601String(), "end": endTime!.toIso8601String()},
+      "timeRange": {"start": _timeToJson(startTime!), "end": _timeToJson(endTime!)},
   };
+
+  static TimeOfDay? _timeFromJson(String? time) {
+    if (time == null) return null;
+
+    final parts = time.split(":");
+
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+  }
+
+  static String? _timeToJson(TimeOfDay? time) {
+    if (time == null) return null;
+
+    return "${time.hour.toString().padLeft(2, '0')}:"
+        "${time.minute.toString().padLeft(2, '0')}:00";
+  }
 
   @override
   String toString() {
