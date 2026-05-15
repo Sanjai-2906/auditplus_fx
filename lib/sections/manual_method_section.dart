@@ -14,27 +14,36 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5, top: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: Consumer<ValueProvider>(
+        builder: (context, val, child) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _buildRow("Catcher", "LongTcChecked", "ShortTcChecked"),
-              _buildRow("Tracer", "LongTtChecked", "ShortTtChecked"),
-              _buildRow("Neo Cloud", "LongNeoChecked", "ShortNeoChecked"),
-              _buildRow("Signal Exit", "LongSignalExitChecked", "ShortSignalExitChecked"),
-              _buildRow("MF", "LongMfChecked", "ShortMfChecked"),
-              _buildRow("HW", "LongHwChecked", "ShortHwChecked"),
-              _buildRow("Signal", "LongSignalChecked", "ShortSignalChecked"),
-              _buildRow("Reversal", "LongReversalChecked", "ShortReversalChecked"),
-              _buildRow("Reversal Plus", "LongReversalPlusChecked", "ShortReversalPlusChecked"),
-              _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
-              _buildRow("Tc Cross Tt", "LongTcCrossTtChecked", "ShortTcCrossTtChecked"),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildRow("Catcher", "LongTcChecked", "ShortTcChecked"),
+                  if (!(val.isM4Checked || val.isM5Checked)) _buildRow("Tracer", "LongTtChecked", "ShortTtChecked"),
+                  if (val.isM1Checked || val.isM2Checked || val.isM3Checked)
+                    _buildRow("Neo Cloud", "LongNeoChecked", "ShortNeoChecked"),
+                  if (val.isM3Checked || val.isM8Checked)
+                    _buildRow("Signal Exit", "LongSignalExitChecked", "ShortSignalExitChecked"),
+                  if (val.isM1Checked || val.isM2Checked) _buildRow("MF", "LongMfChecked", "ShortMfChecked"),
+                  // _buildRow("HW", "LongHwChecked", "ShortHwChecked"),
+                  if (val.isM1Checked || val.isM4Checked || val.isM5Checked)
+                    _buildRow("Signal", "LongSignalChecked", "ShortSignalChecked"),
+                  if (val.isM2Checked || val.isM6Checked || val.isM7Checked || val.isM8Checked)
+                    _buildRow("Reversal", "LongReversalChecked", "ShortReversalChecked"),
+                  if (val.isM2Checked || val.isM6Checked || val.isM7Checked || val.isM8Checked)
+                    _buildRow("Reversal Plus", "LongReversalPlusChecked", "ShortReversalPlusChecked"),
+                  if (val.isM5Checked) _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
+                  if (val.isM1Checked) _buildRow("Tc Cross Tt", "LongTcCrossTtChecked", "ShortTcCrossTtChecked"),
+                ],
+              ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -49,7 +58,7 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
         }
 
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

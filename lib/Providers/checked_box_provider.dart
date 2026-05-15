@@ -316,6 +316,50 @@ class CheckedBoxProvider extends ChangeNotifier {
         (v['ShortSignalChecked'] ?? false);
   }
 
+  bool isM6LongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['LongTcChecked'] ?? false) &&
+        (v['LongTtChecked'] ?? false) &&
+        ((v['LongReversalPlusChecked'] ?? false) || (v['LongReversalChecked'] ?? false));
+  }
+
+  bool isM6ShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['ShortTcChecked'] ?? false) &&
+        (v['ShortTtChecked'] ?? false) &&
+        ((v['ShortReversalPlusChecked'] ?? false) || (v['ShortReversalChecked'] ?? false));
+  }
+
+  bool isM7LongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['LongTcChecked'] ?? false) &&
+        (v['LongTtChecked'] ?? false) &&
+        ((v['LongReversalPlusChecked'] ?? false) || (v['LongReversalChecked'] ?? false));
+  }
+
+  bool isM7ShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['ShortTcChecked'] ?? false) &&
+        (v['ShortTtChecked'] ?? false) &&
+        ((v['ShortReversalPlusChecked'] ?? false) || (v['ShortReversalChecked'] ?? false));
+  }
+
+  bool isM8LongAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['ShortTcChecked'] ?? false) &&
+        (v['LongTtChecked'] ?? false) &&
+        ((v['LongReversalPlusChecked'] ?? false) || (v['LongReversalChecked'] ?? false)) &&
+        (v['LongSignalExitChecked'] ?? false);
+  }
+
+  bool isM8ShortAllChecked(String symbol) {
+    final v = getValues("MM", symbol);
+    return (v['LongTcChecked'] ?? false) &&
+        (v['ShortTtChecked'] ?? false) &&
+        ((v['ShortReversalPlusChecked'] ?? false) || (v['ShortReversalChecked'] ?? false)) &&
+        (v['ShortSignalExitChecked'] ?? false);
+  }
+
   Future<void> loadAll(String symbol) async {
     _isLoading = true;
     notifyListeners();

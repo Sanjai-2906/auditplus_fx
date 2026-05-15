@@ -259,8 +259,35 @@ class HomeScreenState extends State<HomeScreen> {
 
                     if (triggeredMethods.isNotEmpty && key != _lastTriggeredMethod && !_isDialogOpen) {
                       _isDialogOpen = true;
-
-                      showDialog(context: context, builder: (_) => methodDialog(context)).then((_) {
+                      String method = "ALL";
+                      // showDialog(context: context, builder: (_) => methodDialog(context)).then((_) {
+                      //   if (mounted) {
+                      //     setState(() {
+                      //       _isDialogOpen = false;
+                      //     });
+                      //   }
+                      // });
+                      if (triggeredMethods.any((el) => (el == "M1_LONG") || (el == "M1_SHORT"))) {
+                        method = "M1";
+                      } else if (triggeredMethods.any((el) => (el == "M2_LONG") || (el == "M2_SHORT"))) {
+                        method = "M2";
+                      } else if (triggeredMethods.any((el) => (el == "M3_LONG") || (el == "M3_SHORT"))) {
+                        method = "M3";
+                      } else if (triggeredMethods.any((el) => (el == "M4_LONG") || (el == "M4_SHORT"))) {
+                        method = "M4";
+                      } else if (triggeredMethods.any((el) => (el == "M5_LONG") || (el == "M5_SHORT"))) {
+                        method = "M5";
+                      } else if (triggeredMethods.any((el) => (el == "M6_LONG") || (el == "M6_SHORT"))) {
+                        method = "M6";
+                      } else if (triggeredMethods.any((el) => (el == "M7_LONG") || (el == "M7_SHORT"))) {
+                        method = "M7";
+                      } else if (triggeredMethods.any((el) => (el == "M8_LONG") || (el == "M8_SHORT"))) {
+                        method = "M8";
+                      }
+                      showDialog(
+                        context: context,
+                        builder: (_) => MethodDialog(method: method),
+                      ).then((_) {
                         if (mounted) {
                           setState(() {
                             _isDialogOpen = false;
@@ -357,7 +384,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   onPressed: () => showDialog(
                                     barrierDismissible: false,
                                     context: context,
-                                    builder: (context) => methodDialog(context),
+                                    builder: (context) => MethodDialog(method: "ALL"),
                                   ),
                                   child: Text(
                                     'All Methods',
@@ -388,7 +415,7 @@ class HomeScreenState extends State<HomeScreen> {
 Widget settingDialog() {
   return Dialog(
     child: Container(
-      color: Color.fromRGBO(189, 232, 245, 1),
+      decoration: BoxDecoration(color: Color.fromRGBO(189, 232, 245, 1), borderRadius: BorderRadius.circular(15)),
       padding: const EdgeInsets.all(8.0),
       child: Consumer<ValueProvider>(
         builder: (context, val, child) {
@@ -399,7 +426,7 @@ Widget settingDialog() {
               const Text('Methods', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 1', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -412,7 +439,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 2', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -425,7 +452,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 3', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -438,7 +465,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -451,13 +478,52 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
                     value: val.isM5Checked,
                     onChanged: (_) {
                       val.enableMethod("MM5");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 6', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM6Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM6");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM7Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM7");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 8', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM8Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM8");
                     },
                     activeColor: Colors.green,
                   ),
