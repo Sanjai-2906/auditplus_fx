@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -42,13 +44,14 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                             builder: (context, autoLive, child) {
                               final items = autoLive.liveAutomaticTradeM5.values.toList();
                               return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
                                   final symbol = items[index].symbol;
 
                                   if (!context.read<CheckedBoxProvider>().am5ValuesPerSymbol.containsKey(symbol)) {
                                     Future.microtask(() {
-                                      // ignore: use_build_context_synchronously
                                       context.read<CheckedBoxProvider>().loadAll(symbol);
                                     });
                                   }
@@ -60,12 +63,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12.0,
-                                            top: 5.0,
-                                            bottom: 5.0,
-                                          ),
+                                          padding: const EdgeInsets.only(left: 6.0, right: 6.0, top: 5.0, bottom: 5.0),
                                           decoration: BoxDecoration(
                                             color: Color.fromARGB(255, 255, 255, 255),
                                             borderRadius: BorderRadius.circular(15),
@@ -104,6 +102,10 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                                     ),
                                                     onPressed: () async {
                                                       await timeDialog(context, items[index], "AM5");
+                                                      await Provider.of<ValueProvider>(
+                                                        context,
+                                                        listen: false,
+                                                      ).updateTradeRange();
                                                     },
                                                     icon: Icon(Icons.hourglass_bottom, color: Colors.black),
                                                   ),

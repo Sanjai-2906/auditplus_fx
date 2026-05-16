@@ -523,6 +523,12 @@ class _AutomationScreenState extends State<AutomationScreen> {
                     } else if (index == 4) {
                       method = Method.method5;
                     } else if (index == 5) {
+                      method = Method.method6;
+                    } else if (index == 6) {
+                      method = Method.method7;
+                    } else if (index == 7) {
+                      method = Method.method8;
+                    } else if (index == 8) {
                       method = Method.method9;
                     }
                     screen.changeMethodScreen('AM', method);

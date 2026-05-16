@@ -6,7 +6,9 @@ part of 'current_automation_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CurrentAutomationModel _$CurrentAutomationModelFromJson(Map<String, dynamic> json) => CurrentAutomationModel(
+CurrentAutomationModel _$CurrentAutomationModelFromJson(
+  Map<String, dynamic> json,
+) => CurrentAutomationModel(
   method: json['method'] as String,
   symbol: json['symbol'] as String,
   volume: json['volume'] as num,
@@ -16,7 +18,9 @@ CurrentAutomationModel _$CurrentAutomationModelFromJson(Map<String, dynamic> jso
   endTime: CurrentAutomationModel._timeFromJson(json['endTime'] as String?),
 );
 
-Map<String, dynamic> _$CurrentAutomationModelToJson(CurrentAutomationModel instance) => <String, dynamic>{
+Map<String, dynamic> _$CurrentAutomationModelToJson(
+  CurrentAutomationModel instance,
+) => <String, dynamic>{
   'method': instance.method,
   'symbol': instance.symbol,
   'volume': instance.volume,
@@ -26,4 +30,8 @@ Map<String, dynamic> _$CurrentAutomationModelToJson(CurrentAutomationModel insta
   'action': _$ActionTypeEnumMap[instance.action]!,
 };
 
-const _$ActionTypeEnumMap = {ActionType.add: 'add', ActionType.disable: 'disable', ActionType.close: 'close'};
+const _$ActionTypeEnumMap = {
+  ActionType.add: 'add',
+  ActionType.disable: 'disable',
+  ActionType.close: 'close',
+};

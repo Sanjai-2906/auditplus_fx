@@ -15,6 +15,7 @@ class OpenRequestModel {
   bool reversal;
   bool signalExit;
   bool tcChange;
+  bool tt;
   bool hyperWave;
   bool hyperWaveThreshold;
   bool moneyFlow;
@@ -32,6 +33,7 @@ class OpenRequestModel {
     required this.reversal,
     required this.signalExit,
     required this.tcChange,
+    required this.tt,
     required this.hyperWave,
     required this.hyperWaveThreshold,
     required this.moneyFlow,
@@ -44,6 +46,6 @@ class OpenRequestModel {
 
   @override
   String toString() {
-    return "OpenRequestModel{Action type: $actionType,Symbol : $symbol,Volume: $volume,Take profit: $takeProfit,Info: $info,Reversal Plus Plus: $reversalPlusPlus,Reversal Plus: $reversalPlus,Reversal: $reversal,Signal Exit: $signalExit,Tc Change: $tcChange,Hyper Wave: $hyperWave,Hyper Wave Threshold: $hyperWaveThreshold,Money Flow: $moneyFlow,TC Crossed TT: $tcCrossedTt}";
+    return "OpenRequestModel{Action type: $actionType,Symbol : $symbol,Volume: $volume,Take profit: $takeProfit,Info: $info,Reversal Plus Plus: $reversalPlusPlus,Reversal Plus: $reversalPlus,Reversal: $reversal,Signal Exit: $signalExit,Tc Change: $tcChange,Tt: $tt, Hyper Wave: $hyperWave,Hyper Wave Threshold: $hyperWaveThreshold,Money Flow: $moneyFlow,TC Crossed TT: $tcCrossedTt}";
   }
 }

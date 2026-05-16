@@ -41,6 +41,8 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                             builder: (context, autoLive, child) {
                               final items = autoLive.liveAutomaticTradeM2.values.toList();
                               return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
                                   final symbol = items[index].symbol;
@@ -59,12 +61,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12.0,
-                                            top: 5.0,
-                                            bottom: 5.0,
-                                          ),
+                                          padding: const EdgeInsets.only(left: 6.0, right: 6.0, top: 5.0, bottom: 5.0),
                                           decoration: BoxDecoration(
                                             color: Color.fromARGB(255, 255, 255, 255),
                                             borderRadius: BorderRadius.circular(15),
@@ -73,6 +70,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                           child: Column(
                                             children: [
                                               Row(
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Expanded(
                                                     flex: 3,
@@ -103,6 +101,11 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                                     ),
                                                     onPressed: () async {
                                                       await timeDialog(context, items[index], "AM2");
+
+                                                      await Provider.of<ValueProvider>(
+                                                        context,
+                                                        listen: false,
+                                                      ).updateTradeRange();
                                                     },
                                                     icon: Icon(Icons.hourglass_bottom, color: Colors.black),
                                                   ),
@@ -110,7 +113,7 @@ class _AutomaticMethod2SectionState extends State<AutomaticMethod2Section> {
                                                     flex: 3,
                                                     child: TextButton(
                                                       style: ElevatedButton.styleFrom(
-                                                        maximumSize: Size(75, 40),
+                                                        fixedSize: Size(75, 40),
                                                         backgroundColor: Color.fromRGBO(229, 231, 235, 1),
                                                         foregroundColor: Colors.black,
                                                         shape: RoundedRectangleBorder(

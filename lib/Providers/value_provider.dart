@@ -9,7 +9,7 @@ import '../models/models.dart';
 import 'providers.dart';
 
 //Screen Selection
-enum Method { method1, method2, method3, method4, method5, method9 }
+enum Method { method1, method2, method3, method4, method5, method6, method7, method8, method9 }
 
 class ValueProvider extends ChangeNotifier {
   //Screen Changes
@@ -86,6 +86,9 @@ class ValueProvider extends ChangeNotifier {
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM3 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM4 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM5 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM6 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM7 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM8 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM9 = {};
 
   ValueProvider(BuildContext context) {
@@ -119,6 +122,12 @@ class ValueProvider extends ChangeNotifier {
         liveAutomaticTradeM4[item.symbol] = item;
       } else if (item.method == 'AM5') {
         liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM6') {
+        liveAutomaticTradeM6[item.symbol] = item;
+      } else if (item.method == 'AM7') {
+        liveAutomaticTradeM7[item.symbol] = item;
+      } else if (item.method == 'AM8') {
+        liveAutomaticTradeM8[item.symbol] = item;
       } else if (item.method == 'AM9') {
         liveAutomaticTradeM9[item.symbol] = item;
       }
@@ -174,6 +183,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -197,6 +209,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -242,6 +257,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -265,6 +283,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -321,6 +342,12 @@ class ValueProvider extends ChangeNotifier {
       liveAutomaticTradeM4.remove(symbol);
     } else if (method == 'AM5') {
       liveAutomaticTradeM5.remove(symbol);
+    } else if (method == 'AM6') {
+      liveAutomaticTradeM6.remove(symbol);
+    } else if (method == 'AM7') {
+      liveAutomaticTradeM7.remove(symbol);
+    } else if (method == 'AM8') {
+      liveAutomaticTradeM8.remove(symbol);
     } else if (method == 'AM9') {
       liveAutomaticTradeM9.remove(symbol);
     }
@@ -358,6 +385,24 @@ class ValueProvider extends ChangeNotifier {
         symbol: mod.symbol,
         volume: mod.volume,
       );
+    } else if (mod.method == 'AM6') {
+      liveAutomaticTradeM6[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM7') {
+      liveAutomaticTradeM7[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM8') {
+      liveAutomaticTradeM8[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
     } else if (mod.method == 'AM9') {
       liveAutomaticTradeM9[mod.symbol] = LiveAutomaticTradeModel(
         method: mod.method,
@@ -377,6 +422,9 @@ class ValueProvider extends ChangeNotifier {
     liveAutomaticTradeM3.clear();
     liveAutomaticTradeM4.clear();
     liveAutomaticTradeM5.clear();
+    liveAutomaticTradeM6.clear();
+    liveAutomaticTradeM7.clear();
+    liveAutomaticTradeM8.clear();
     liveAutomaticTradeM9.clear();
 
     for (var item in response.liveAutomaticTrade) {
@@ -390,6 +438,12 @@ class ValueProvider extends ChangeNotifier {
         liveAutomaticTradeM4[item.symbol] = item;
       } else if (item.method == 'AM5') {
         liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM6') {
+        liveAutomaticTradeM6[item.symbol] = item;
+      } else if (item.method == 'AM7') {
+        liveAutomaticTradeM7[item.symbol] = item;
+      } else if (item.method == 'AM8') {
+        liveAutomaticTradeM8[item.symbol] = item;
       } else if (item.method == 'AM9') {
         liveAutomaticTradeM9[item.symbol] = item;
       }

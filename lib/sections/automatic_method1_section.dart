@@ -62,12 +62,7 @@ class _AutomaticMethod1SectionState extends State<AutomaticMethod1Section> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.only(
-                                            left: 12.0,
-                                            right: 12.0,
-                                            top: 5.0,
-                                            bottom: 5.0,
-                                          ),
+                                          padding: const EdgeInsets.only(left: 6.0, right: 6.0, top: 5.0, bottom: 5.0),
                                           decoration: BoxDecoration(
                                             color: Color.fromARGB(255, 255, 255, 255),
                                             borderRadius: BorderRadius.circular(15),
