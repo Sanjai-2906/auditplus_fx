@@ -597,14 +597,29 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadiusGeometry.circular(10)),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                ),
+                style: checkedbox.getValue(symbol, method, tc)
+                    ? ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                      )
+                    : ElevatedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        foregroundColor: Colors.black,
+                        backgroundColor: Color.fromRGBO(190, 190, 190, 1),
+                      ),
                 onPressed: () {},
                 child: Row(
                   spacing: 3,

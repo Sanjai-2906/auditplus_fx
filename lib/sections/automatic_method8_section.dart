@@ -9,14 +9,14 @@ import '../models/models.dart';
 import '../utils/utils.dart';
 import 'sections.dart';
 
-class AutomaticMethod5Section extends StatefulWidget {
-  const AutomaticMethod5Section({super.key});
+class AutomaticMethod8Section extends StatefulWidget {
+  const AutomaticMethod8Section({super.key});
 
   @override
-  State<AutomaticMethod5Section> createState() => _AutomaticMethod5SectionState();
+  State<AutomaticMethod8Section> createState() => _AutomaticMethod8SectionState();
 }
 
-class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
+class _AutomaticMethod8SectionState extends State<AutomaticMethod8Section> {
   Set<String> expandedSymbols = {};
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                 children: [
                   Consumer<ValueProvider>(
                     builder: (context, autoLive, child) {
-                      if (autoLive.liveAutomaticTradeM5.isEmpty) {
+                      if (autoLive.liveAutomaticTradeM8.isEmpty) {
                         return Text("No items found");
                       } else {
                         return SizedBox(
                           width: double.infinity,
                           child: Consumer<ValueProvider>(
                             builder: (context, autoLive, child) {
-                              final items = autoLive.liveAutomaticTradeM5.values.toList();
+                              final items = autoLive.liveAutomaticTradeM8.values.toList();
                               return ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -49,7 +49,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                 itemBuilder: (context, index) {
                                   final symbol = items[index].symbol;
 
-                                  if (!context.read<CheckedBoxProvider>().am5ValuesPerSymbol.containsKey(symbol)) {
+                                  if (!context.read<CheckedBoxProvider>().am8ValuesPerSymbol.containsKey(symbol)) {
                                     Future.microtask(() {
                                       context.read<CheckedBoxProvider>().loadAll(symbol);
                                     });
@@ -71,6 +71,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                           child: Column(
                                             children: [
                                               Row(
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Expanded(
                                                     flex: 3,
@@ -100,7 +101,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                                       ),
                                                     ),
                                                     onPressed: () async {
-                                                      await timeDialog(context, items[index], "AM5");
+                                                      await timeDialog(context, items[index], "AM8");
                                                       await Provider.of<ValueProvider>(
                                                         context,
                                                         listen: false,
@@ -126,7 +127,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                                           volume: items[index].volume,
                                                           isEnabled: true,
                                                           action: ActionType.close,
-                                                          method: "AM5",
+                                                          method: "AM8",
                                                         );
                                                         await automaticTrading(context, data);
                                                       },
@@ -155,7 +156,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                                         volume: items[index].volume,
                                                         isEnabled: false,
                                                         action: ActionType.disable,
-                                                        method: "AM5",
+                                                        method: "AM8",
                                                       );
                                                       await automaticTrading(context, data);
                                                       autoLive.removeLiveTrade(data.symbol, data.method);
@@ -187,7 +188,7 @@ class _AutomaticMethod5SectionState extends State<AutomaticMethod5Section> {
                                                 ],
                                               ),
                                               if (expandedSymbols.contains(items[index].symbol))
-                                                AutomaticClosingSection(method: 'AM5', amSymbol: items[index].symbol),
+                                                AutomaticClosingSection(method: 'AM8', amSymbol: items[index].symbol),
                                             ],
                                           ),
                                         ),

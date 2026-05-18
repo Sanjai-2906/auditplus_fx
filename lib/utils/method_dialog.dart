@@ -22,7 +22,7 @@ class _MethodDialogState extends State<MethodDialog> {
 
   @override
   Widget build(BuildContext context) {
-    print("method in method dialog: ${widget.method}");
+    // print("method in method dialog: ${widget.method}");
     return Dialog(
       insetPadding: EdgeInsets.zero,
       child: Container(
@@ -31,109 +31,115 @@ class _MethodDialogState extends State<MethodDialog> {
         // height: MediaQuery.of(context).size.height * 0.8,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(color: Color.fromRGBO(189, 232, 245, 1), borderRadius: BorderRadius.circular(12)),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Consumer2<CheckedBoxProvider, ValueProvider>(
-            builder: (context, check, val, child) {
-              final symbol = val.manualSelectedValue ?? "";
-              return Column(
-                spacing: 10,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.close, color: Colors.red, size: 25),
-                      ),
-                    ],
+        child: Consumer2<CheckedBoxProvider, ValueProvider>(
+          builder: (context, check, val, child) {
+            final symbol = val.manualSelectedValue ?? "";
+            return Column(
+              spacing: 10,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close, color: Colors.red, size: 25),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        if ((widget.method == "M1" && val.isM1Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM1LongAllChecked,
+                            shortAllChecked: check.isM1ShortAllChecked,
+                            isMethodChecked: val.isM1Checked,
+                            methodId: "MM1",
+                            title: "Method 1",
+                          ),
+                        if ((widget.method == "M2" && val.isM2Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM2LongAllChecked,
+                            shortAllChecked: check.isM2ShortAllChecked,
+                            isMethodChecked: val.isM2Checked,
+                            methodId: "MM2",
+                            title: "Method 2",
+                          ),
+                        if ((widget.method == "M3" && val.isM3Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM3LongAllChecked,
+                            shortAllChecked: check.isM3ShortAllChecked,
+                            isMethodChecked: val.isM3Checked,
+                            methodId: "MM3",
+                            title: "Method 3",
+                          ),
+                        if ((widget.method == "M4" && val.isM4Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM4LongAllChecked,
+                            shortAllChecked: check.isM4ShortAllChecked,
+                            isMethodChecked: val.isM4Checked,
+                            methodId: "MM4",
+                            title: "Method 4",
+                          ),
+                        if ((widget.method == "M5" && val.isM5Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM5LongAllChecked,
+                            shortAllChecked: check.isM5ShortAllChecked,
+                            isMethodChecked: val.isM5Checked,
+                            methodId: "MM5",
+                            title: "Method 5",
+                          ),
+                        if ((widget.method == "M6" && val.isM6Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM6LongAllChecked,
+                            shortAllChecked: check.isM6ShortAllChecked,
+                            isMethodChecked: val.isM6Checked,
+                            methodId: "MM6",
+                            title: "Method 6",
+                          ),
+                        if ((widget.method == "M7" && val.isM7Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM7LongAllChecked,
+                            shortAllChecked: check.isM7ShortAllChecked,
+                            isMethodChecked: val.isM7Checked,
+                            methodId: "MM7",
+                            title: "Method 7",
+                          ),
+                        if ((widget.method == "M8" && val.isM8Checked) || widget.method == "ALL")
+                          _buildMethodContainer(
+                            context: context,
+                            symbol: symbol,
+                            longAllChecked: check.isM8LongAllChecked,
+                            shortAllChecked: check.isM8ShortAllChecked,
+                            isMethodChecked: val.isM8Checked,
+                            methodId: "MM8",
+                            title: "Method 8",
+                          ),
+                      ],
+                    ),
                   ),
-                  if ((widget.method == "M1" && val.isM1Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM1LongAllChecked,
-                      shortAllChecked: check.isM1ShortAllChecked,
-                      isMethodChecked: val.isM1Checked,
-                      methodId: "MM1",
-                      title: "Method 1",
-                    ),
-                  if ((widget.method == "M2" && val.isM2Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM2LongAllChecked,
-                      shortAllChecked: check.isM2ShortAllChecked,
-                      isMethodChecked: val.isM2Checked,
-                      methodId: "MM2",
-                      title: "Method 2",
-                    ),
-                  if ((widget.method == "M3" && val.isM3Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM3LongAllChecked,
-                      shortAllChecked: check.isM3ShortAllChecked,
-                      isMethodChecked: val.isM3Checked,
-                      methodId: "MM3",
-                      title: "Method 3",
-                    ),
-                  if ((widget.method == "M4" && val.isM4Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM4LongAllChecked,
-                      shortAllChecked: check.isM4ShortAllChecked,
-                      isMethodChecked: val.isM4Checked,
-                      methodId: "MM4",
-                      title: "Method 4",
-                    ),
-                  if ((widget.method == "M5" && val.isM5Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM5LongAllChecked,
-                      shortAllChecked: check.isM5ShortAllChecked,
-                      isMethodChecked: val.isM5Checked,
-                      methodId: "MM5",
-                      title: "Method 5",
-                    ),
-                  if ((widget.method == "M6" && val.isM6Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM6LongAllChecked,
-                      shortAllChecked: check.isM6ShortAllChecked,
-                      isMethodChecked: val.isM6Checked,
-                      methodId: "MM6",
-                      title: "Method 6",
-                    ),
-                  if ((widget.method == "M7" && val.isM7Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM7LongAllChecked,
-                      shortAllChecked: check.isM7ShortAllChecked,
-                      isMethodChecked: val.isM7Checked,
-                      methodId: "MM7",
-                      title: "Method 7",
-                    ),
-                  if ((widget.method == "M8" && val.isM8Checked) || widget.method == "ALL")
-                    _buildMethodContainer(
-                      context: context,
-                      symbol: symbol,
-                      longAllChecked: check.isM8LongAllChecked,
-                      shortAllChecked: check.isM8ShortAllChecked,
-                      isMethodChecked: val.isM8Checked,
-                      methodId: "MM8",
-                      title: "Method 8",
-                    ),
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

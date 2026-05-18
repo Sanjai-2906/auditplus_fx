@@ -233,9 +233,108 @@ class _AutomationScreenState extends State<AutomationScreen> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () => {
-                              am.changeMethodScreen('AM', Method.method9),
+                              am.changeMethodScreen('AM', Method.method6),
                               _pageController.animateToPage(
                                 5,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: am.autoScreenView == Method.method6
+                                    ? const Color.fromRGBO(33, 52, 72, 1)
+                                    // : Colors.transparent,
+                                    : Color.fromRGBO(209, 238, 250, 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "M6",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: am.autoScreenView == Method.method6 ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => {
+                              am.changeMethodScreen('AM', Method.method7),
+                              _pageController.animateToPage(
+                                6,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: am.autoScreenView == Method.method7
+                                    ? const Color.fromRGBO(33, 52, 72, 1)
+                                    // : Colors.transparent,
+                                    : Color.fromRGBO(209, 238, 250, 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "M7",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: am.autoScreenView == Method.method7 ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => {
+                              am.changeMethodScreen('AM', Method.method8),
+                              _pageController.animateToPage(
+                                7,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: am.autoScreenView == Method.method8
+                                    ? const Color.fromRGBO(33, 52, 72, 1)
+                                    // : Colors.transparent,
+                                    : Color.fromRGBO(209, 238, 250, 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "M8",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: am.autoScreenView == Method.method8 ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => {
+                              am.changeMethodScreen('AM', Method.method9),
+                              _pageController.animateToPage(
+                                8,
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               ),
@@ -342,6 +441,12 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM4";
                                     } else if (drop.autoScreenView == Method.method5) {
                                       method = "AM5";
+                                    } else if (drop.autoScreenView == Method.method6) {
+                                      method = "AM6";
+                                    } else if (drop.autoScreenView == Method.method7) {
+                                      method = "AM7";
+                                    } else if (drop.autoScreenView == Method.method8) {
+                                      method = "AM8";
                                     } else if (drop.autoScreenView == Method.method9) {
                                       method = "AM9";
                                     }
@@ -352,7 +457,6 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                         volume: drop.amVolume,
                                         isEnabled: true,
                                         action: ActionType.add,
-                                        // method: "AM",
                                         method: method,
                                       );
                                       await automaticTrading(context, data);
@@ -385,17 +489,21 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM4";
                                     } else if (drop.autoScreenView == Method.method5) {
                                       method = "AM5";
+                                    } else if (drop.autoScreenView == Method.method6) {
+                                      method = "AM6";
+                                    } else if (drop.autoScreenView == Method.method7) {
+                                      method = "AM7";
+                                    } else if (drop.autoScreenView == Method.method8) {
+                                      method = "AM8";
                                     } else if (drop.autoScreenView == Method.method9) {
                                       method = "AM9";
                                     }
                                     if (parsedValue != null) {
                                       drop.setAMVolume(method, parsedValue);
-                                      // drop.setAMVolume('AM', parsedValue);
                                     }
                                   },
                                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))],
                                   onFieldSubmitted: (value) async {
-                                    // String method = drop.autoScreenView == Method.method1 ? "AM1" : "AM2";
                                     String method = "";
                                     if (drop.autoScreenView == Method.method1) {
                                       method = "AM1";
@@ -407,6 +515,12 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM4";
                                     } else if (drop.autoScreenView == Method.method5) {
                                       method = "AM5";
+                                    } else if (drop.autoScreenView == Method.method6) {
+                                      method = "AM6";
+                                    } else if (drop.autoScreenView == Method.method7) {
+                                      method = "AM7";
+                                    } else if (drop.autoScreenView == Method.method8) {
+                                      method = "AM8";
                                     } else if (drop.autoScreenView == Method.method9) {
                                       method = "AM9";
                                     }
@@ -417,7 +531,6 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                         volume: drop.amVolume,
                                         isEnabled: true,
                                         action: ActionType.add,
-                                        // method: "AM",
                                         method: method,
                                       );
                                       await automaticTrading(context, data);
@@ -464,7 +577,6 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  // String method = autoLive.autoScreenView == Method.method1 ? 'AM1' : 'AM2';
                                   String method = "";
                                   if (autoLive.autoScreenView == Method.method1) {
                                     method = "AM1";
@@ -476,6 +588,12 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                     method = "AM4";
                                   } else if (autoLive.autoScreenView == Method.method5) {
                                     method = "AM5";
+                                  } else if (autoLive.autoScreenView == Method.method6) {
+                                    method = "AM6";
+                                  } else if (autoLive.autoScreenView == Method.method7) {
+                                    method = "AM7";
+                                  } else if (autoLive.autoScreenView == Method.method8) {
+                                    method = "AM8";
                                   } else if (autoLive.autoScreenView == Method.method9) {
                                     method = "AM9";
                                   }
@@ -486,7 +604,6 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       volume: autoLive.amVolume,
                                       isEnabled: true,
                                       action: ActionType.add,
-                                      // method: "AM",
                                       method: method,
                                     );
                                     await automaticTrading(context, data);
@@ -540,6 +657,9 @@ class _AutomationScreenState extends State<AutomationScreen> {
                     AutomaticMethod3Section(),
                     AutomaticMethod4Section(),
                     AutomaticMethod5Section(),
+                    AutomaticMethod6Section(),
+                    AutomaticMethod7Section(),
+                    AutomaticMethod8Section(),
                     AutomaticMethod9Section(),
                   ],
                 );

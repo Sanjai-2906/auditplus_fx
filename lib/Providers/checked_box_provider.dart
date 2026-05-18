@@ -157,13 +157,13 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM8ReversalPlusChecked': false,
     'MM8ReversalChecked': false,
     'MM8SignalExitChecked': false,
-    // 'MM8TcChangeChecked': false,
-    'MM8TcChangeChecked': true,
+    'MM8TcChangeChecked': false,
     'MM8HwChecked': false,
     'MM8MfChecked': false,
     'MM8HWTHChecked': false,
     'MM8TCCROSSEDTTChecked': false,
-    'MM8TtChecked': false,
+    // 'MM8TtChecked': false,
+    'MM8TtChecked': true,
   };
 
   static Map<String, bool> _am1EmptyValues() => {
@@ -266,13 +266,13 @@ class CheckedBoxProvider extends ChangeNotifier {
     'AM8ReversalPlusChecked': false,
     'AM8ReversalChecked': false,
     'AM8SignalExitChecked': false,
-    // 'AM8TcChangeChecked': false,
-    'AM8TcChangeChecked': true,
+    'AM8TcChangeChecked': false,
     'AM8HwChecked': false,
     'AM8MfChecked': false,
     'AM8HWTHChecked': false,
     'AM8TCCROSSEDTTChecked': false,
-    'AM8TtChecked': false,
+    // 'AM8TtChecked': false,
+    'AM8TtChecked': true,
   };
 
   //Generic getter
