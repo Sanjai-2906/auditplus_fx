@@ -220,28 +220,6 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 widget.method == "MM8"
             ? value.manualSelectedValue
             : widget.amSymbol;
-        // String method = "";
-        // if (widget.method == "MM1") {
-        //   method = "MM1";
-        // } else if (widget.method == "MM2") {
-        //   method = "MM2";
-        // } else if (widget.method == "MM3") {
-        //   method = "MM3";
-        // } else if (widget.method == "MM4") {
-        //   method = "MM4";
-        // } else if (widget.method == "MM5") {
-        //   method = "MM5";
-        // } else if (widget.method == "AM1") {
-        //   method = "AM1";
-        // } else if (widget.method == "AM2") {
-        //   method = "AM2";
-        // } else if (widget.method == "AM3") {
-        //   method = "AM3";
-        // } else if (widget.method == "AM4") {
-        //   method = "AM4";
-        // } else if (widget.method == "AM5") {
-        //   method = "AM5";
-        // }
         return Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: _buildRealUI(symbol ?? "", widget.method, checkedbox),
