@@ -21,7 +21,7 @@ DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
       profit: json['profit'] as num,
       actionType: json['actionType'] as String,
       info: json['info'] as String,
-      volume: json['volume'] as num,
+      volume: json['volume'] as String,
       positionId: json['positionId'] as String,
       status: json['status'] as String,
       description: json['description'] as String,

@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 import 'package:auditplus_fx/Providers/providers.dart';
-import 'package:auditplus_fx/utils/utils.dart';
+// import 'package:auditplus_fx/utils/utils.dart';
 import '../models/models.dart';
 import 'contants.dart';
 
-Future<void> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
+// Future<void> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
+Future<List<DbReportModel>> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
   final token = Provider.of<MytokenProvider>(context, listen: false).token;
   if (token == null) {
     toastification.show(
@@ -20,15 +21,16 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
       alignment: Alignment.center,
       autoCloseDuration: const Duration(seconds: 2),
     );
-    return;
+    return [];
   }
   final dio = Dio();
   final data = GetReportModel(symbol: symbol, startDate: startDate, endDate: endDate);
   try {
     final response = await dio.post('$url/report', data: jsonEncode(data));
     final List<DbReportModel> reportList = (response.data as List).map((e) => DbReportModel.fromJson(e)).toList();
-
-    await createExcelFile(reportList);
+    print(reportList);
+    return reportList;
+    // await createExcelFile(reportList);
   } on DioException catch (e) {
     final statusCode = e.response?.statusCode;
 
@@ -61,4 +63,5 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
       autoCloseDuration: const Duration(seconds: 2),
     );
   }
+  return [];
 }

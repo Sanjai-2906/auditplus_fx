@@ -12,7 +12,7 @@ class DbReportModel {
   num closePrice;
   num profit;
   String actionType;
-  num volume;
+  String volume;
   String positionId;
   String info;
   String status;
