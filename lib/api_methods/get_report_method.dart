@@ -28,7 +28,6 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
   try {
     final response = await dio.post('$url/report', data: jsonEncode(data));
     final List<DbReportModel> reportList = (response.data as List).map((e) => DbReportModel.fromJson(e)).toList();
-    print(reportList);
     return reportList;
     // await createExcelFile(reportList);
   } on DioException catch (e) {

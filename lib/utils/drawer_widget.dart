@@ -1,6 +1,5 @@
 import 'package:auditplus_fx/pages/report_screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:auditplus_fx/Providers/value_provider.dart';
@@ -15,47 +14,10 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  late List<String> list;
-  // final TextEditingController fromDateController = TextEditingController();
-  // final TextEditingController toDateController = TextEditingController();
-  // String menuSelectedValue = "ALL";
-  // SearchFieldListItem<String>? menuSelectedItem;
-  // late FocusNode _menuSymbolFocusNode;
-  List<SearchFieldListItem<String>> symbols = [];
   List<ActiveSymbolModel> liveSymbols = [];
   List<TradeHistoryModel> tradeHistory = [];
   String? startDate;
   String? endDate;
-  SearchFieldListItem<String> get allItem => symbols.first;
-  @override
-  void initState() {
-    super.initState();
-
-    // _menuSymbolFocusNode = FocusNode();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeApp(context);
-    });
-  }
-
-  Future<void> _initializeApp(BuildContext context) async {
-    list = await getList(context);
-
-    symbols = [
-      SearchFieldListItem<String>("ALL", value: "ALL"),
-      ...list.map((el) => SearchFieldListItem<String>(el, value: el)),
-    ];
-
-    // final now = DateTime.now();
-    // final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-
-    // setState(() {
-    //   menuSelectedItem = symbols.first; // "ALL"
-    //   menuSelectedValue = "ALL";
-    //   fromDateController.text = formattedDate;
-    //   toDateController.text = formattedDate;
-    // });
-  }
 
   Map<String, List<TradeHistoryModel>> groupTradeHistory() {
     Map<String, List<TradeHistoryModel>> grouped = {};
@@ -82,35 +44,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
     return grouped;
   }
-
-  // Future<void> pickDate({required bool isFromDate}) async {
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     firstDate: DateTime(2026),
-  //     lastDate: DateTime.now(),
-  //   );
-
-  //   if (pickedDate != null) {
-  //     final formatted =
-  //         '${pickedDate.day.toString().padLeft(2, '0')}-'
-  //         '${pickedDate.month.toString().padLeft(2, '0')}-'
-  //         '${pickedDate.year}';
-
-  //     final apiFormat = DateFormat('yyyy-MM-dd').format(pickedDate);
-
-  //     if (isFromDate) {
-  //       startDate = apiFormat;
-  //       setState(() {
-  //         fromDateController.text = formatted;
-  //       });
-  //     } else {
-  //       endDate = apiFormat;
-  //       setState(() {
-  //         toDateController.text = formatted;
-  //       });
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -209,107 +142,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ListTile(
           title: Text("Report"),
           leading: Icon(Icons.table_view),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ReportScreen(symbols: symbols))),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ReportScreen())),
         ),
-        // ExpansionTile(
-        //   maintainState: true,
-        //   leading: const Icon(Icons.article),
-        //   title: const Text('Report'),
-        //   children: [
-        //     Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Column(
-        //         children: [
-        //           SizedBox(
-        //             height: 40,
-        //             child: SearchField<String>(
-        //               focusNode: _menuSymbolFocusNode,
-        //               suggestions: symbols,
-        //               suggestionState: Suggestion.hidden,
-        //               selectedValue: menuSelectedItem,
-        //               searchInputDecoration: SearchInputDecoration(hintText: 'Symbols', border: OutlineInputBorder()),
-        //               maxSuggestionsInViewPort: 4,
-        //               onSearchTextChanged: (searchText) {
-        //                 if (searchText.isEmpty) {
-        //                   return List<SearchFieldListItem<String>>.from(symbols);
-        //                 }
-        //                 setState(() {
-        //                   menuSelectedItem = allItem;
-        //                   menuSelectedValue = "ALL";
-        //                 });
-        //                 final query = searchText.toUpperCase();
-        //                 return symbols.where((s) {
-        //                   final key = s.searchKey.toUpperCase();
-        //                   final value = (s.value ?? '').toUpperCase();
-        //                   return key.contains(query) || value.contains(query);
-        //                 }).toList();
-        //               },
-        //               onSuggestionTap: (SearchFieldListItem<String> item) {
-        //                 _menuSymbolFocusNode.unfocus();
-        //                 setState(() {
-        //                   menuSelectedItem = item; // ✅ already in symbols
-        //                   menuSelectedValue = item.searchKey;
-        //                 });
-        //               },
-        //               onSubmit: (item) {
-        //                 final found = symbols.firstWhere((s) => s.searchKey == item, orElse: () => allItem);
-        //                 setState(() {
-        //                   menuSelectedItem = found;
-        //                   menuSelectedValue = found.searchKey;
-        //                 });
-        //               },
-        //             ),
-        //           ),
-        //           const SizedBox(height: 10),
-        //           dateField(
-        //             label: 'From Date *',
-        //             controller: fromDateController,
-        //             onTap: () {
-        //               pickDate(isFromDate: true);
-        //             },
-        //           ),
-        //           const SizedBox(height: 10),
-        //           dateField(
-        //             label: 'To Date *',
-        //             controller: toDateController,
-        //             onTap: () {
-        //               pickDate(isFromDate: false);
-        //             },
-        //           ),
-        //           const SizedBox(height: 10),
-        //           ElevatedButton(
-        //             style: ElevatedButton.styleFrom(backgroundColor: Colors.brown[700], foregroundColor: Colors.white),
-        //             onPressed: () => getReport(context, menuSelectedValue, startDate!, endDate!),
-        //             child: Text('Get Report', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
 }
-
-// Widget dateField({required String label, required TextEditingController controller, required VoidCallback onTap}) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.start,
-//     children: [
-//       Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-//       const SizedBox(height: 6),
-//       InkWell(
-//         onTap: onTap,
-//         child: TextFormField(
-//           controller: controller,
-//           enabled: false,
-//           decoration: const InputDecoration(
-//             border: OutlineInputBorder(),
-//             suffixIcon: Icon(Icons.calendar_today, size: 18),
-//             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//           ),
-//         ),
-//       ),
-//     ],
-//   );
-// }

@@ -8,14 +8,14 @@ import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 
 class ReportScreen extends StatefulWidget {
-  final List<SearchFieldListItem<String>> symbols;
-  const ReportScreen({required this.symbols, super.key});
+  const ReportScreen({super.key});
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  late List<String> list;
   String? startDate;
   String? endDate;
   final TextEditingController fromDateController = TextEditingController();
@@ -23,8 +23,15 @@ class _ReportScreenState extends State<ReportScreen> {
   SearchFieldListItem<String>? menuSelectedItem;
   late FocusNode _menuSymbolFocusNode;
   String menuSelectedValue = "ALL";
-  SearchFieldListItem<String>? get allItem => widget.symbols.isNotEmpty ? widget.symbols.first : null; // report List
+  List<SearchFieldListItem<String>> symbols = [];
+  SearchFieldListItem<String>? get allItem => symbols.isNotEmpty ? symbols.first : null; // report List
   List<DbReportModel> reportList = [];
+
+  // new logic
+  List<DbReportModel> allReportList = [];
+  List<DbReportModel> filteredReportList = [];
+
+  String selectedSymbol = "ALL";
   @override
   void initState() {
     super.initState();
@@ -37,18 +44,29 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   Future<void> _initializeApp(BuildContext context) async {
+    list = await getList(context);
+
+    symbols = [
+      SearchFieldListItem<String>("ALL", value: "ALL"),
+      ...list.map((el) => SearchFieldListItem<String>(el, value: el)),
+    ];
     final now = DateTime.now();
     final String formattedDate = DateFormat('yyyy-MM-dd').format(now);
 
-    print("Formatted Date: $formattedDate");
+    // ignore: use_build_context_synchronously
     final res = await getReport(context, "ALL", formattedDate, formattedDate);
-    reportList = res;
 
     setState(() {
-      if (widget.symbols.isNotEmpty) {
-        menuSelectedItem = widget.symbols.first;
+      allReportList = res;
+      filteredReportList = res;
+
+      if (symbols.isNotEmpty) {
+        menuSelectedItem = symbols.first;
       }
+
       menuSelectedValue = "ALL";
+      selectedSymbol = "ALL";
+
       fromDateController.text = formattedDate;
       toDateController.text = formattedDate;
     });
@@ -63,9 +81,9 @@ class _ReportScreenState extends State<ReportScreen> {
 
     if (pickedDate != null) {
       final formatted =
-          '${pickedDate.day.toString().padLeft(2, '0')}-'
+          '${pickedDate.year}-'
           '${pickedDate.month.toString().padLeft(2, '0')}-'
-          '${pickedDate.year}';
+          '${pickedDate.day.toString().padLeft(2, '0')}';
 
       final apiFormat = DateFormat('yyyy-MM-dd').format(pickedDate);
 
@@ -81,6 +99,36 @@ class _ReportScreenState extends State<ReportScreen> {
         });
       }
     }
+  }
+
+  void applyFilters() {
+    List<DbReportModel> tempList = List.from(allReportList);
+
+    /// SYMBOL FILTER
+    if (selectedSymbol != "ALL") {
+      tempList = tempList.where((e) => e.symbol == selectedSymbol).toList();
+    }
+
+    /// DATE FILTER
+    if (startDate != null && endDate != null) {
+      final from = DateTime.parse(startDate!);
+      final to = DateTime.parse(endDate!);
+
+      tempList = tempList.where((e) {
+        if (e.closedAt == null) return false;
+
+        final date = e.closedAt!;
+
+        return date.isAfter(from.subtract(const Duration(days: 1))) && date.isBefore(to.add(const Duration(days: 1)));
+      }).toList();
+    }
+
+    /// GROUP BY SYMBOL
+    tempList.sort((a, b) => a.symbol.compareTo(b.symbol));
+
+    setState(() {
+      filteredReportList = tempList;
+    });
   }
 
   @override
@@ -112,7 +160,6 @@ class _ReportScreenState extends State<ReportScreen> {
         ],
         title: Text('Auditplus Fx', style: TextStyle(color: Colors.white)),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -125,63 +172,133 @@ class _ReportScreenState extends State<ReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Consumer<ValueProvider>(
-                    builder: (context, drop, child) {
-                      return SizedBox(
-                        width: 135,
-                        height: 35,
-                        child: SearchField<String>(
-                          focusNode: _menuSymbolFocusNode,
-                          suggestions: widget.symbols,
-                          suggestionState: Suggestion.hidden,
-                          selectedValue: widget.symbols.contains(drop.manualSelectedItem)
-                              ? drop.manualSelectedItem
-                              : null,
-                          searchInputDecoration: SearchInputDecoration(
-                            hintText: "Symbols",
-                            filled: true,
-                            fillColor: Colors.white,
-                            isDense: true,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  // Consumer<ValueProvider>(
+                  //   builder: (context, drop, child) {
+                  //     return SizedBox(
+                  //       width: 135,
+                  //       height: 35,
+                  //       child: SearchField<String>(
+                  //         focusNode: _menuSymbolFocusNode,
+                  //         suggestions: symbols,
+                  //         suggestionState: Suggestion.hidden,
+                  //         selectedValue: symbols.contains(drop.manualSelectedItem) ? drop.manualSelectedItem : null,
+                  //         searchInputDecoration: SearchInputDecoration(
+                  //           hintText: "Symbols",
+                  //           filled: true,
+                  //           fillColor: Colors.white,
+                  //           isDense: true,
+                  //           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
 
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Colors.grey, width: 1),
-                            ),
+                  //           enabledBorder: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(8),
+                  //             borderSide: const BorderSide(color: Colors.grey, width: 1),
+                  //           ),
 
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: Color.fromRGBO(33, 52, 72, 1), width: 1.5),
-                            ),
-                          ),
-                          maxSuggestionsInViewPort: 6,
-                          onSearchTextChanged: (searchText) {
-                            if (searchText.isEmpty) {
-                              return List<SearchFieldListItem<String>>.from(widget.symbols);
-                            }
+                  //           focusedBorder: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(8),
+                  //             borderSide: const BorderSide(color: Color.fromRGBO(33, 52, 72, 1), width: 1.5),
+                  //           ),
+                  //         ),
+                  //         maxSuggestionsInViewPort: 6,
+                  //         onSearchTextChanged: (searchText) {
+                  //           if (searchText.isEmpty) {
+                  //             return List<SearchFieldListItem<String>>.from(symbols);
+                  //           }
 
-                            final query = searchText.toUpperCase();
-                            return widget.symbols.where((s) {
-                              final key = s.searchKey.toUpperCase();
-                              final value = (s.value ?? '').toUpperCase();
-                              return key.contains(query) || value.contains(query);
-                            }).toList();
-                          },
-                          onSuggestionTap: (SearchFieldListItem<String> item) {
-                            _menuSymbolFocusNode.unfocus();
+                  //           final query = searchText.toUpperCase();
+                  //           return symbols.where((s) {
+                  //             final key = s.searchKey.toUpperCase();
+                  //             final value = (s.value ?? '').toUpperCase();
+                  //             return key.contains(query) || value.contains(query);
+                  //           }).toList();
+                  //         },
+                  //         // onSuggestionTap: (SearchFieldListItem<String> item) {
+                  //         //   _menuSymbolFocusNode.unfocus();
 
-                            context.read<ValueProvider>().setSelectedItem(item, context);
-                            context.read<CheckedBoxProvider>().loadAll(item.value!);
-                          },
-                          onSubmit: (item) {
-                            Provider.of<ValueProvider>(
-                              context,
-                              listen: false,
-                            ).setSelectedItem(SearchFieldListItem(item), context);
-                          },
+                  //         //   context.read<ValueProvider>().setSelectedItem(item, context);
+                  //         //   context.read<CheckedBoxProvider>().loadAll(item.value!);
+                  //         // },
+                  //         onSuggestionTap: (SearchFieldListItem<String> item) {
+                  //           _menuSymbolFocusNode.unfocus();
+
+                  //           setState(() {
+                  //             selectedSymbol = item.value!;
+                  //             menuSelectedValue = item.value!;
+                  //           });
+
+                  //           applyFilters();
+                  //         },
+                  //         onSubmit: (item) {
+                  //           Provider.of<ValueProvider>(
+                  //             context,
+                  //             listen: false,
+                  //           ).setSelectedItem(SearchFieldListItem(item), context);
+                  //         },
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  SizedBox(
+                    width: 135,
+                    height: 35,
+                    child: SearchField<String>(
+                      focusNode: _menuSymbolFocusNode,
+                      suggestions: symbols,
+                      suggestionState: Suggestion.hidden,
+                      selectedValue: symbols.isNotEmpty ? symbols.first : null,
+                      searchInputDecoration: SearchInputDecoration(
+                        hintText: "Symbols",
+                        filled: true,
+                        fillColor: Colors.white,
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Colors.grey, width: 1),
                         ),
-                      );
-                    },
+
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Color.fromRGBO(33, 52, 72, 1), width: 1.5),
+                        ),
+                      ),
+                      maxSuggestionsInViewPort: 6,
+                      onSearchTextChanged: (searchText) {
+                        if (searchText.isEmpty) {
+                          return List<SearchFieldListItem<String>>.from(symbols);
+                        }
+
+                        final query = searchText.toUpperCase();
+                        return symbols.where((s) {
+                          final key = s.searchKey.toUpperCase();
+                          final value = (s.value ?? '').toUpperCase();
+                          return key.contains(query) || value.contains(query);
+                        }).toList();
+                      },
+                      // onSuggestionTap: (SearchFieldListItem<String> item) {
+                      //   _menuSymbolFocusNode.unfocus();
+
+                      //   context.read<ValueProvider>().setSelectedItem(item, context);
+                      //   context.read<CheckedBoxProvider>().loadAll(item.value!);
+                      // },
+                      onSuggestionTap: (SearchFieldListItem<String> item) {
+                        _menuSymbolFocusNode.unfocus();
+
+                        setState(() {
+                          selectedSymbol = item.value!;
+                          menuSelectedValue = item.value!;
+                        });
+
+                        applyFilters();
+                      },
+                      onSubmit: (item) {
+                        Provider.of<ValueProvider>(
+                          context,
+                          listen: false,
+                        ).setSelectedItem(SearchFieldListItem(item), context);
+                      },
+                    ),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -218,6 +335,46 @@ class _ReportScreenState extends State<ReportScreen> {
                                 onTap: () {
                                   pickDate(isFromDate: false);
                                 },
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.zero,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(),
+                                        borderRadius: BorderRadiusGeometry.circular(5),
+                                      ),
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Color.fromRGBO(29, 98, 228, 1),
+                                    ),
+                                    // onPressed: () {
+                                    //   applyFilters();
+                                    //   Navigator.pop(context);
+                                    // },
+                                    onPressed: () async {
+                                      final from = startDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+                                      final to = endDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+                                      /// API CALL WITH DATE
+                                      final res = await getReport(context, "ALL", from, to);
+
+                                      setState(() {
+                                        allReportList = res;
+                                      });
+
+                                      /// APPLY SYMBOL FILTER ON NEW DATA
+                                      applyFilters();
+
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Submit", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -265,54 +422,92 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
             ),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.6,
                 width: MediaQuery.sizeOf(context).width * 0.95,
-                decoration: BoxDecoration(border: BoxBorder.all(width: 0.5, color: Colors.blue)),
                 child: ListView.builder(
-                  itemCount: reportList.length,
+                  // itemCount: reportList.length,
+                  itemCount: filteredReportList.length,
                   itemBuilder: (context, index) {
-                    // return ListTile(title: Text(reportList[index].symbol));
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height * 0.3,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(189, 232, 245, 1),
+                                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                                  ),
+                                  padding: EdgeInsets.all(12),
+                                  // child: bottomModalWidget(reportList[index]),
+                                  child: bottomModalWidget(filteredReportList[index]),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Column(
                           children: [
                             Row(
-                              spacing: 3,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(reportList[index].symbol),
-                                Text(typeConveter(reportList[index].actionType)),
-                                Text(reportList[index].volume),
-                              ],
-                            ),
-                            Text(reportList[index].profit.toStringAsFixed(2)),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(reportList[index].openPrice.toStringAsFixed(2)),
-                                Icon(Icons.trending_flat),
-                                Text(reportList[index].closePrice.toStringAsFixed(2)),
-                              ],
-                            ),
-                            Row(
-                              spacing: 2,
-                              children: [
-                                Text(
-                                  "${reportList[index].closedAt!.year}: ${reportList[index].closedAt!.month}: ${reportList[index].closedAt!.day}",
+                                Row(
+                                  spacing: 3,
+                                  children: [
+                                    // Text(reportList[index].symbol),
+                                    Text(filteredReportList[index].symbol),
+                                    // typeWidget(reportList[index].actionType),
+                                    typeWidget(filteredReportList[index].actionType),
+                                    // Text(reportList[index].volume),
+                                    Text(filteredReportList[index].volume),
+                                  ],
                                 ),
                                 Text(
-                                  "${reportList[index].closedAt!.hour}: ${reportList[index].closedAt!.minute}: ${reportList[index].closedAt!.second}",
+                                  // reportList[index].profit.toStringAsFixed(2),
+                                  filteredReportList[index].profit.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    // color: reportList[index].profit > 0
+                                    color: filteredReportList[index].profit > 0
+                                        ? Color.fromARGB(255, 24, 105, 255)
+                                        : Colors.red,
+                                  ),
                                 ),
                               ],
                             ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    // Text(reportList[index].openPrice.toStringAsFixed(2)),
+                                    Text(filteredReportList[index].openPrice.toStringAsFixed(2)),
+                                    Icon(Icons.trending_flat),
+                                    // Text(reportList[index].closePrice.toStringAsFixed(2)),
+                                    Text(filteredReportList[index].closePrice.toStringAsFixed(2)),
+                                  ],
+                                ),
+                                Row(
+                                  spacing: 5,
+                                  children: [
+                                    // Text(DateFormat('yyyy.MM.dd').format(reportList[index].closedAt!)),
+                                    Text(DateFormat('yyyy.MM.dd').format(filteredReportList[index].closedAt!)),
+                                    // Text(DateFormat('hh:mm:ss').format(reportList[index].closedAt!)),
+                                    Text(DateFormat('hh:mm:ss').format(filteredReportList[index].closedAt!)),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
+                      ),
                     );
                   },
                 ),
@@ -325,11 +520,11 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 }
 
-String typeConveter(String type) {
+Widget typeWidget(String type) {
   if (type == "ORDER_TYPE_BUY") {
-    return "buy";
+    return Text("buy", style: TextStyle(color: const Color.fromARGB(255, 24, 105, 255)));
   }
-  return "sell";
+  return Text("sell", style: TextStyle(color: Colors.red));
 }
 
 Widget dateField({required String label, required TextEditingController controller, required VoidCallback onTap}) {
@@ -349,6 +544,64 @@ Widget dateField({required String label, required TextEditingController controll
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
         ),
+      ),
+    ],
+  );
+}
+
+Widget bottomModalWidget(DbReportModel item) {
+  return Column(
+    spacing: 10,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(spacing: 3, children: [Text(item.symbol), typeWidget(item.actionType), Text(item.volume)]),
+          Text(item.positionId, style: TextStyle(color: Color.fromARGB(255, 24, 105, 255))),
+        ],
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text(item.openPrice.toStringAsFixed(2)),
+                Icon(Icons.trending_flat),
+                Text(item.closePrice.toStringAsFixed(2)),
+              ],
+            ),
+            Text(
+              item.profit.toStringAsFixed(2),
+              style: TextStyle(color: item.profit > 0 ? Color.fromARGB(255, 24, 105, 255) : Colors.red),
+            ),
+          ],
+        ),
+      ),
+      Row(
+        children: [
+          Row(
+            spacing: 5,
+            children: [
+              Text(DateFormat('yyyy.MM.dd').format(item.openedAt!)),
+              Text(DateFormat('hh:mm:ss').format(item.openedAt!)),
+            ],
+          ),
+          Icon(Icons.trending_flat),
+          Row(
+            spacing: 5,
+            children: [
+              Text(DateFormat('yyyy.MM.dd').format(item.closedAt!)),
+              Text(DateFormat('hh:mm:ss').format(item.closedAt!)),
+            ],
+          ),
+        ],
+      ),
+      Row(children: [Text("Method: ${item.info}", softWrap: true)]),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Expanded(child: Text("Description: ${item.description}", softWrap: true, maxLines: 3))],
       ),
     ],
   );
