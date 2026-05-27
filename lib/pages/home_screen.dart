@@ -174,58 +174,24 @@ class HomeScreenState extends State<HomeScreen> {
             actions: <Widget>[
               Consumer<ValueProvider>(
                 builder: (context, auto, child) {
-                  return TextButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: auto.isAutomaticSectionEnabled
-                          ? Color.fromRGBO(44, 187, 104, 1)
-                          : Color.fromRGBO(189, 232, 245, 1),
-                      foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.white, width: 2),
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: TextButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: auto.isAutomaticSectionEnabled
+                            ? Color.fromRGBO(44, 187, 104, 1)
+                            : Color.fromRGBO(189, 232, 245, 1),
+                        foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.white, width: 2),
+                        ),
                       ),
+                      onPressed: () => auto.setAutomaticEnable(),
+                      child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () => auto.setAutomaticEnable(),
-                    child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                   );
                 },
-              ),
-              GestureDetector(
-                onTap: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    child: Container(
-                      color: Color.fromRGBO(189, 232, 245, 1),
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text('Enter the token'),
-                          const SizedBox(height: 15),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            autofocus: true,
-                            controller: _tokenController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                              labelText: 'Token',
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              String enteredToken = _tokenController.text;
-                              Provider.of<MytokenProvider>(context, listen: false).setToken(enteredToken);
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Submit'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                child: Padding(padding: const EdgeInsets.all(8.0), child: Icon(Icons.token_rounded)),
               ),
             ],
             title: Text('Auditplus Fx', style: TextStyle(color: Colors.white)),
