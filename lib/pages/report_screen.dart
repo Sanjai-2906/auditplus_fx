@@ -44,6 +44,19 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   Future<void> _initializeApp(BuildContext context) async {
+    final provider = Provider.of<MytokenProvider>(context, listen: false);
+
+    while (provider.isLoading) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
+    final token = provider.token;
+
+    if (token == null || token.isEmpty) {
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
     list = await getList(context);
 
     symbols = [
@@ -55,7 +68,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     // ignore: use_build_context_synchronously
     final res = await getReport(context, "ALL", formattedDate, formattedDate);
-
+    if (!mounted) return;
     setState(() {
       allReportList = res;
       filteredReportList = res;

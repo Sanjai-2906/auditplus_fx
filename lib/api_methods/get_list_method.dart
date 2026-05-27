@@ -25,7 +25,7 @@ Future<List<String>> getList(BuildContext context) async {
       return parsedList;
     } else if (response.statusCode == 500) {
       toastification.show(
-        backgroundColor: const Color.fromRGBO(199, 226, 201, 1),
+        backgroundColor: const Color.fromARGB(255, 241, 169, 159),
         title: const Text('Server Error!'),
         description: Text('Response : ${response.data}'),
         type: ToastificationType.error,
@@ -59,10 +59,12 @@ Future<List<String>> getList(BuildContext context) async {
         autoCloseDuration: Duration(seconds: 2),
       );
     } else {
-      Provider.of<MytokenProvider>(context, listen: false).clearToken();
+      if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
+        Provider.of<MytokenProvider>(context, listen: false).clearToken();
+      }
       toastification.show(
         backgroundColor: const Color.fromRGBO(242, 186, 185, 1),
-        title: const Text('Error!'),
+        title: const Text('Get List Error!'),
         description: Text('Error: ${e.message}'),
         type: ToastificationType.error,
         alignment: Alignment.center,
@@ -74,7 +76,7 @@ Future<List<String>> getList(BuildContext context) async {
     //  Catch unexpected errors
     toastification.show(
       backgroundColor: const Color.fromRGBO(242, 186, 185, 1),
-      title: const Text('Error!'),
+      title: const Text('Get List Error!'),
       description: Text('Unexpected error: $e'),
       type: ToastificationType.error,
       alignment: Alignment.center,

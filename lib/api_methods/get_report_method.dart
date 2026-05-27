@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 import 'package:auditplus_fx/Providers/providers.dart';
-// import 'package:auditplus_fx/utils/utils.dart';
 import '../models/models.dart';
 import 'contants.dart';
 
-// Future<void> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
 Future<List<DbReportModel>> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
   final token = Provider.of<MytokenProvider>(context, listen: false).token;
   if (token == null) {
@@ -26,10 +22,13 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
   final dio = Dio();
   final data = GetReportModel(symbol: symbol, startDate: startDate, endDate: endDate);
   try {
-    final response = await dio.post('$url/report', data: jsonEncode(data));
+    final response = await dio.post(
+      '$url/report',
+      data: data.toJson(),
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
     final List<DbReportModel> reportList = (response.data as List).map((e) => DbReportModel.fromJson(e)).toList();
     return reportList;
-    // await createExcelFile(reportList);
   } on DioException catch (e) {
     final statusCode = e.response?.statusCode;
 
@@ -45,7 +44,7 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
     } else {
       toastification.show(
         backgroundColor: const Color.fromARGB(255, 242, 186, 185),
-        title: const Text('Error!'),
+        title: const Text('Report Error!'),
         description: Text('Status code: $statusCode\n${e.message}'),
         type: ToastificationType.error,
         alignment: Alignment.center,
@@ -54,7 +53,7 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
     }
   } catch (e) {
     toastification.show(
-      backgroundColor: const Color.fromRGBO(255, 242, 186, 185),
+      backgroundColor: const Color.fromRGBO(255, 242, 186, 1),
       title: const Text('Unexpected Error!'),
       description: Text(e.toString()),
       type: ToastificationType.error,
