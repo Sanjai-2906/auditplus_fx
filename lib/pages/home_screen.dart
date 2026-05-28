@@ -29,6 +29,7 @@ class HomeScreenState extends State<HomeScreen> {
   String? _lastTriggeredMethod;
   bool _frameScheduled = false;
   late Future<void> _initFuture;
+  late TextEditingController _symbolController;
 
   late TextEditingController _tokenController;
   late FocusNode _symbolFocusNode;
@@ -42,6 +43,7 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _symbolFocusNode = FocusNode();
     _tokenController = TextEditingController();
+    _symbolController = TextEditingController();
 
     _initFuture = _initializeApp(context);
   }
@@ -78,6 +80,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _symbolFocusNode.dispose();
+    _symbolController.dispose();
     _longButtonFocusNode.dispose();
     _shortButtonFocusNode.dispose();
     _closeButtonFocusNode.dispose();
@@ -297,6 +300,7 @@ class HomeScreenState extends State<HomeScreen> {
                                       width: 150,
                                       height: 35,
                                       child: SearchField<String>(
+                                        controller: _symbolController,
                                         focusNode: _symbolFocusNode,
                                         suggestions: symbols,
                                         suggestionState: Suggestion.hidden,
@@ -337,6 +341,7 @@ class HomeScreenState extends State<HomeScreen> {
                                           }).toList();
                                         },
                                         onSuggestionTap: (SearchFieldListItem<String> item) {
+                                          _symbolController.text = item.searchKey;
                                           _symbolFocusNode.unfocus();
 
                                           context.read<ValueProvider>().setSelectedItem(item, context);
