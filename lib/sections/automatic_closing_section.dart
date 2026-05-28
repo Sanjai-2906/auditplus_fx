@@ -21,6 +21,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6ReversalPlusPlusChecked',
     'MM7': 'MM7ReversalPlusPlusChecked',
     'MM8': 'MM8ReversalPlusPlusChecked',
+    'MM9': 'MM9ReversalPlusPlusChecked',
     'AM1': 'AM1ReversalPlusPlusChecked',
     'AM2': 'AM2ReversalPlusPlusChecked',
     'AM3': 'AM3ReversalPlusPlusChecked',
@@ -29,6 +30,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6ReversalPlusPlusChecked',
     'AM7': 'AM7ReversalPlusPlusChecked',
     'AM8': 'AM8ReversalPlusPlusChecked',
+    'AM9': 'AM9ReversalPlusPlusChecked',
   }[widget.method]!;
 
   String get reversalPlus => {
@@ -40,6 +42,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6ReversalPlusChecked',
     'MM7': 'MM7ReversalPlusChecked',
     'MM8': 'MM8ReversalPlusChecked',
+    'MM9': 'MM9ReversalPlusChecked',
     'AM1': 'AM1ReversalPlusChecked',
     'AM2': 'AM2ReversalPlusChecked',
     'AM3': 'AM3ReversalPlusChecked',
@@ -48,6 +51,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6ReversalPlusChecked',
     'AM7': 'AM7ReversalPlusChecked',
     'AM8': 'AM8ReversalPlusChecked',
+    'AM9': 'AM9ReversalPlusChecked',
   }[widget.method]!;
 
   String get reversal => {
@@ -59,6 +63,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6ReversalChecked',
     'MM7': 'MM7ReversalChecked',
     'MM8': 'MM8ReversalChecked',
+    'MM9': 'MM9ReversalChecked',
     'AM1': 'AM1ReversalChecked',
     'AM2': 'AM2ReversalChecked',
     'AM3': 'AM3ReversalChecked',
@@ -67,6 +72,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6ReversalChecked',
     'AM7': 'AM7ReversalChecked',
     'AM8': 'AM8ReversalChecked',
+    'AM9': 'AM9ReversalChecked',
   }[widget.method]!;
 
   String get signal => {
@@ -78,6 +84,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6SignalExitChecked',
     'MM7': 'MM7SignalExitChecked',
     'MM8': 'MM8SignalExitChecked',
+    'MM9': 'MM9SignalExitChecked',
     'AM1': 'AM1SignalExitChecked',
     'AM2': 'AM2SignalExitChecked',
     'AM3': 'AM3SignalExitChecked',
@@ -86,6 +93,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6SignalExitChecked',
     'AM7': 'AM7SignalExitChecked',
     'AM8': 'AM8SignalExitChecked',
+    'AM9': 'AM9SignalExitChecked',
   }[widget.method]!;
 
   String get tc => {
@@ -97,6 +105,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6TcChangeChecked',
     'MM7': 'MM7TcChangeChecked',
     'MM8': 'MM8TcChangeChecked',
+    'MM9': 'MM9TcChangeChecked',
     'AM1': 'AM1TcChangeChecked',
     'AM2': 'AM2TcChangeChecked',
     'AM3': 'AM3TcChangeChecked',
@@ -105,6 +114,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6TcChangeChecked',
     'AM7': 'AM7TcChangeChecked',
     'AM8': 'AM8TcChangeChecked',
+    'AM9': 'AM9TcChangeChecked',
   }[widget.method]!;
 
   String get tt => {
@@ -116,6 +126,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6TtChecked',
     'MM7': 'MM7TtChecked',
     'MM8': 'MM8TtChecked',
+    'MM9': 'MM9TtChecked',
     'AM1': 'AM1TtChecked',
     'AM2': 'AM2TtChecked',
     'AM3': 'AM3TtChecked',
@@ -124,6 +135,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6TtChecked',
     'AM7': 'AM7TtChecked',
     'AM8': 'AM8TtChecked',
+    'AM9': 'AM9TtChecked',
   }[widget.method]!;
 
   String get hw => {
@@ -135,6 +147,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6HwChecked',
     'MM7': 'MM7HwChecked',
     'MM8': 'MM8HwChecked',
+    'MM9': 'MM9HwChecked',
     'AM1': 'AM1HwChecked',
     'AM2': 'AM2HwChecked',
     'AM3': 'AM3HwChecked',
@@ -143,6 +156,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6HwChecked',
     'AM7': 'AM7HwChecked',
     'AM8': 'AM8HwChecked',
+    'AM9': 'AM9HwChecked',
   }[widget.method]!;
 
   String get hwTh => {
@@ -154,6 +168,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6HWTHChecked',
     'MM7': 'MM7HWTHChecked',
     'MM8': 'MM8HWTHChecked',
+    'MM9': 'MM9HWTHChecked',
     'AM1': 'AM1HWTHChecked',
     'AM2': 'AM2HWTHChecked',
     'AM3': 'AM3HWTHChecked',
@@ -162,6 +177,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6HWTHChecked',
     'AM7': 'AM7HWTHChecked',
     'AM8': 'AM8HWTHChecked',
+    'AM9': 'AM9HWTHChecked',
   }[widget.method]!;
 
   String get mf => {
@@ -173,6 +189,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6MfChecked',
     'MM7': 'MM7MfChecked',
     'MM8': 'MM8MfChecked',
+    'MM9': 'MM9MfChecked',
     'AM1': 'AM1MfChecked',
     'AM2': 'AM2MfChecked',
     'AM3': 'AM3MfChecked',
@@ -181,6 +198,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6MfChecked',
     'AM7': 'AM7MfChecked',
     'AM8': 'AM8MfChecked',
+    'AM9': 'AM9MfChecked',
   }[widget.method]!;
 
   String get tcTt => {
@@ -192,6 +210,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'MM6': 'MM6TCCROSSEDTTChecked',
     'MM7': 'MM7TCCROSSEDTTChecked',
     'MM8': 'MM8TCCROSSEDTTChecked',
+    'MM9': 'MM9TCCROSSEDTTChecked',
     'AM1': 'AM1TCCROSSEDTTChecked',
     'AM2': 'AM2TCCROSSEDTTChecked',
     'AM3': 'AM3TCCROSSEDTTChecked',
@@ -200,6 +219,7 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
     'AM6': 'AM6TCCROSSEDTTChecked',
     'AM7': 'AM7TCCROSSEDTTChecked',
     'AM8': 'AM8TCCROSSEDTTChecked',
+    'AM9': 'AM9TCCROSSEDTTChecked',
   }[widget.method]!;
 
   @override
@@ -217,7 +237,8 @@ class _AutomaticClosingSectionState extends State<AutomaticClosingSection> {
                 widget.method == "MM5" ||
                 widget.method == "MM6" ||
                 widget.method == "MM7" ||
-                widget.method == "MM8"
+                widget.method == "MM8" ||
+                widget.method == "MM9"
             ? value.manualSelectedValue
             : widget.amSymbol;
         return Padding(

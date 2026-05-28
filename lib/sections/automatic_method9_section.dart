@@ -7,6 +7,7 @@ import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
+import 'sections.dart';
 
 class AutomaticMethod9Section extends StatefulWidget {
   const AutomaticMethod9Section({super.key});
@@ -16,6 +17,7 @@ class AutomaticMethod9Section extends StatefulWidget {
 }
 
 class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
+  Set<String> expandedSymbols = {};
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -45,9 +47,16 @@ class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
+                                  final symbol = items[index].symbol;
+
+                                  if (!context.read<CheckedBoxProvider>().am9ValuesPerSymbol.containsKey(symbol)) {
+                                    Future.microtask(() {
+                                      context.read<CheckedBoxProvider>().loadAll(symbol);
+                                    });
+                                  }
                                   return Padding(
                                     key: ValueKey(items[index].symbol),
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -62,6 +71,7 @@ class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
                                           child: Column(
                                             children: [
                                               Row(
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Expanded(
                                                     flex: 3,
@@ -103,7 +113,7 @@ class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
                                                     flex: 3,
                                                     child: TextButton(
                                                       style: ElevatedButton.styleFrom(
-                                                        maximumSize: Size(75, 40),
+                                                        fixedSize: Size(75, 40),
                                                         backgroundColor: Color.fromRGBO(229, 231, 235, 1),
                                                         foregroundColor: Colors.black,
                                                         shape: RoundedRectangleBorder(
@@ -153,8 +163,32 @@ class _AutomaticMethod9SectionState extends State<AutomaticMethod9Section> {
                                                     },
                                                     icon: Icon(Icons.close, color: Color.fromRGBO(239, 68, 68, 1)),
                                                   ),
+                                                  IconButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      maximumSize: Size(45, 40),
+                                                      backgroundColor: Color.fromRGBO(50, 187, 221, 1),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadiusGeometry.circular(5),
+                                                        side: BorderSide(color: Colors.black, width: 1),
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      final symbol = items[index].symbol;
+
+                                                      setState(() {
+                                                        if (expandedSymbols.contains(symbol)) {
+                                                          expandedSymbols.remove(symbol);
+                                                        } else {
+                                                          expandedSymbols.add(symbol);
+                                                        }
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons.add, color: Color.fromRGBO(12, 9, 56, 1)),
+                                                  ),
                                                 ],
                                               ),
+                                              if (expandedSymbols.contains(items[index].symbol))
+                                                AutomaticClosingSection(method: 'AM9', amSymbol: items[index].symbol),
                                             ],
                                           ),
                                         ),

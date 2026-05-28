@@ -212,6 +212,14 @@ class HomeScreenState extends State<HomeScreen> {
                 if (check.isM4ShortAllChecked(symbol)) triggeredMethods.add("M4_SHORT");
                 if (check.isM5LongAllChecked(symbol)) triggeredMethods.add("M5_LONG");
                 if (check.isM5ShortAllChecked(symbol)) triggeredMethods.add("M5_SHORT");
+                if (check.isM6LongAllChecked(symbol)) triggeredMethods.add("M6_LONG");
+                if (check.isM6ShortAllChecked(symbol)) triggeredMethods.add("M6_SHORT");
+                if (check.isM7LongAllChecked(symbol)) triggeredMethods.add("M7_LONG");
+                if (check.isM7ShortAllChecked(symbol)) triggeredMethods.add("M7_SHORT");
+                if (check.isM8LongAllChecked(symbol)) triggeredMethods.add("M8_LONG");
+                if (check.isM8ShortAllChecked(symbol)) triggeredMethods.add("M8_SHORT");
+                if (check.isM9LongAllChecked(symbol)) triggeredMethods.add("M9_LONG");
+                if (check.isM9ShortAllChecked(symbol)) triggeredMethods.add("M9_SHORT");
                 if (!_frameScheduled) {
                   _frameScheduled = true;
 
@@ -249,6 +257,8 @@ class HomeScreenState extends State<HomeScreen> {
                         method = "M7";
                       } else if (triggeredMethods.any((el) => (el == "M8_LONG") || (el == "M8_SHORT"))) {
                         method = "M8";
+                      } else if (triggeredMethods.any((el) => (el == "M9_LONG") || (el == "M9_SHORT"))) {
+                        method = "M9";
                       }
                       showDialog(
                         context: context,
@@ -490,6 +500,19 @@ Widget settingDialog() {
                     value: val.isM8Checked,
                     onChanged: (_) {
                       val.enableMethod("MM8");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 9', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM9Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM9");
                     },
                     activeColor: Colors.green,
                   ),
