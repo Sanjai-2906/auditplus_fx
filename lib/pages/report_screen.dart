@@ -430,7 +430,7 @@ class _ReportScreenState extends State<ReportScreen> {
 }
 
 Widget typeWidget(String type) {
-  if (type == "ORDER_TYPE_BUY") {
+  if (type == "DEAL_TYPE_BUY") {
     return Text("buy", style: TextStyle(color: const Color.fromARGB(255, 24, 105, 255)));
   }
   return Text("sell", style: TextStyle(color: Colors.red));
@@ -507,11 +507,11 @@ Widget bottomModalWidget(DbReportModel item) {
           ),
         ],
       ),
-      Row(children: [Text("Method: ${item.info}", softWrap: true)]),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Expanded(child: Text("Description: ${item.description}", softWrap: true, maxLines: 3))],
-      ),
+      // Row(children: [Text("Method: ${item.info}", softWrap: true)]),
+      // Row(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [Expanded(child: Text("Description: ${item.description}", softWrap: true, maxLines: 3))],
+      // ),
     ],
   );
 }

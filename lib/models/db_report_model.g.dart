@@ -15,16 +15,12 @@ DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['closedAt'] as String),
       symbol: json['symbol'] as String,
-      method: json['method'] as String,
       openPrice: json['openPrice'] as num,
       closePrice: json['closePrice'] as num,
       profit: json['profit'] as num,
       actionType: json['actionType'] as String,
-      info: json['info'] as String,
       volume: json['volume'] as String,
       positionId: json['positionId'] as String,
-      status: json['status'] as String,
-      description: json['description'] as String,
     );
 
 Map<String, dynamic> _$DbReportModelToJson(DbReportModel instance) =>
@@ -32,14 +28,10 @@ Map<String, dynamic> _$DbReportModelToJson(DbReportModel instance) =>
       'openedAt': instance.openedAt?.toIso8601String(),
       'closedAt': instance.closedAt?.toIso8601String(),
       'symbol': instance.symbol,
-      'method': instance.method,
       'openPrice': instance.openPrice,
       'closePrice': instance.closePrice,
       'profit': instance.profit,
       'actionType': instance.actionType,
       'volume': instance.volume,
       'positionId': instance.positionId,
-      'info': instance.info,
-      'status': instance.status,
-      'description': instance.description,
     };
