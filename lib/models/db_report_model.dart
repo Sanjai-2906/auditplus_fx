@@ -39,6 +39,8 @@ class DbReportModel {
   num openPrice;
   num closePrice;
   num profit;
+  num swap;
+  num commission;
   String actionType;
   String volume;
   String positionId;
@@ -50,26 +52,13 @@ class DbReportModel {
     required this.openPrice,
     required this.closePrice,
     required this.profit,
+    required this.swap,
+    required this.commission,
     required this.actionType,
     required this.volume,
     required this.positionId,
   });
 
-  // Map<String, dynamic> toMap() => {
-  //   'openedAt': openedAt,
-  //   'closedAt': closedAt,
-  //   'symbol': symbol,
-  //   'method': method,
-  //   'openPrice': openPrice,
-  //   'closePrice': closePrice,
-  //   'profit': profit,
-  //   'actionType': actionType,
-  //   'volume': volume,
-  //   'info': info,
-  //   'positionId': positionId,
-  //   'status': status,
-  //   'description': description,
-  // };
   Map<String, dynamic> toMap() => {
     'openedAt': openedAt,
     'closedAt': closedAt,
@@ -77,6 +66,8 @@ class DbReportModel {
     'openPrice': openPrice,
     'closePrice': closePrice,
     'profit': profit,
+    'swap': swap,
+    'commission': commission,
     'actionType': actionType,
     'volume': volume,
     'positionId': positionId,
@@ -88,6 +79,6 @@ class DbReportModel {
 
   @override
   String toString() {
-    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId}";
+    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission}";
   }
 }
