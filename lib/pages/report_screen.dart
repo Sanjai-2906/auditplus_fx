@@ -31,6 +31,9 @@ class _ReportScreenState extends State<ReportScreen> {
   List<DbReportModel> allReportList = [];
   List<DbReportModel> filteredReportList = [];
 
+  int expandedIndex = -1;
+  bool isLoading = true;
+
   String selectedSymbol = "ALL";
   @override
   void initState() {
@@ -51,7 +54,6 @@ class _ReportScreenState extends State<ReportScreen> {
     }
 
     final token = provider.token;
-
     if (token == null || token.isEmpty) {
       return;
     }
@@ -82,6 +84,8 @@ class _ReportScreenState extends State<ReportScreen> {
 
       fromDateController.text = formattedDate;
       toDateController.text = formattedDate;
+
+      isLoading = false;
     });
   }
 
@@ -126,7 +130,20 @@ class _ReportScreenState extends State<ReportScreen> {
 
     setState(() {
       filteredReportList = tempList;
+      expandedIndex = -1;
     });
+  }
+
+  double get totalProfit {
+    return filteredReportList.fold(0.0, (sum, item) => sum + item.profit);
+  }
+
+  double get totalSwap {
+    return filteredReportList.fold(0.0, (sum, item) => sum + item.swap);
+  }
+
+  double get totalCommission {
+    return filteredReportList.fold(0.0, (sum, item) => sum + item.commission);
   }
 
   @override
@@ -160,270 +177,367 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            Container(
-              constraints: BoxConstraints(maxWidth: double.infinity),
-              decoration: BoxDecoration(color: Color.fromRGBO(84, 119, 146, 1)),
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
                 children: [
-                  SizedBox(
-                    width: 135,
-                    height: 35,
-                    child: SearchField<String>(
-                      focusNode: _menuSymbolFocusNode,
-                      suggestions: symbols,
-                      suggestionState: Suggestion.hidden,
-                      selectedValue: menuSelectedItem,
-                      searchInputDecoration: SearchInputDecoration(
-                        hintText: "Symbols",
-                        filled: true,
-                        fillColor: Colors.white,
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: double.infinity),
+                    decoration: BoxDecoration(color: Color.fromRGBO(84, 119, 146, 1)),
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 135,
+                          height: 35,
+                          child: SearchField<String>(
+                            focusNode: _menuSymbolFocusNode,
+                            suggestions: symbols,
+                            suggestionState: Suggestion.hidden,
+                            selectedValue: menuSelectedItem,
+                            searchInputDecoration: SearchInputDecoration(
+                              hintText: "Symbols",
+                              filled: true,
+                              fillColor: Colors.white,
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
 
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Colors.grey, width: 1),
-                        ),
-
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: Color.fromRGBO(33, 52, 72, 1), width: 1.5),
-                        ),
-                      ),
-                      maxSuggestionsInViewPort: 6,
-                      onSearchTextChanged: (searchText) {
-                        if (searchText.isEmpty) {
-                          return List<SearchFieldListItem<String>>.from(symbols);
-                        }
-
-                        final query = searchText.toUpperCase();
-                        return symbols.where((s) {
-                          final key = s.searchKey.toUpperCase();
-                          final value = (s.value ?? '').toUpperCase();
-                          return key.contains(query) || value.contains(query);
-                        }).toList();
-                      },
-                      onSuggestionTap: (SearchFieldListItem<String> item) {
-                        _menuSymbolFocusNode.unfocus();
-
-                        setState(() {
-                          menuSelectedItem = item;
-
-                          selectedSymbol = item.value!;
-                          menuSelectedValue = item.value!;
-                        });
-
-                        applyFilters();
-                      },
-                      onSubmit: (item) {
-                        Provider.of<ValueProvider>(
-                          context,
-                          listen: false,
-                        ).setSelectedItem(SearchFieldListItem(item), context);
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    ),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                        child: Container(
-                          decoration: BoxDecoration(color: Color.fromRGBO(189, 232, 245, 1)),
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              dateField(
-                                label: 'From Date *',
-                                controller: fromDateController,
-                                onTap: () {
-                                  pickDate(isFromDate: true);
-                                },
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(color: Colors.grey, width: 1),
                               ),
-                              dateField(
-                                label: 'To Date *',
-                                controller: toDateController,
-                                onTap: () {
-                                  pickDate(isFromDate: false);
-                                },
+
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(color: Color.fromRGBO(33, 52, 72, 1), width: 1.5),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        side: BorderSide(),
-                                        borderRadius: BorderRadiusGeometry.circular(5),
-                                      ),
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                            ),
+                            maxSuggestionsInViewPort: 6,
+                            onSearchTextChanged: (searchText) {
+                              if (searchText.isEmpty) {
+                                return List<SearchFieldListItem<String>>.from(symbols);
+                              }
+
+                              final query = searchText.toUpperCase();
+                              return symbols.where((s) {
+                                final key = s.searchKey.toUpperCase();
+                                final value = (s.value ?? '').toUpperCase();
+                                return key.contains(query) || value.contains(query);
+                              }).toList();
+                            },
+                            onSuggestionTap: (SearchFieldListItem<String> item) {
+                              _menuSymbolFocusNode.unfocus();
+
+                              setState(() {
+                                menuSelectedItem = item;
+
+                                selectedSymbol = item.value!;
+                                menuSelectedValue = item.value!;
+                              });
+
+                              applyFilters();
+                            },
+                            onSubmit: (item) {
+                              Provider.of<ValueProvider>(
+                                context,
+                                listen: false,
+                              ).setSelectedItem(SearchFieldListItem(item), context);
+                            },
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          ),
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                              child: Container(
+                                decoration: BoxDecoration(color: Color.fromRGBO(189, 232, 245, 1)),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    dateField(
+                                      label: 'From Date *',
+                                      controller: fromDateController,
+                                      onTap: () {
+                                        pickDate(isFromDate: true);
+                                      },
                                     ),
-                                    onPressed: () async {
-                                      final from = startDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                    dateField(
+                                      label: 'To Date *',
+                                      controller: toDateController,
+                                      onTap: () {
+                                        pickDate(isFromDate: false);
+                                      },
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide(),
+                                              borderRadius: BorderRadiusGeometry.circular(5),
+                                            ),
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                                          ),
+                                          onPressed: () async {
+                                            final from = startDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-                                      final to = endDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                            final to = endDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-                                      final res = await getReport(context, "ALL", from, to);
+                                            final res = await getReport(context, "ALL", from, to);
 
-                                      setState(() {
-                                        allReportList = res;
-                                      });
+                                            setState(() {
+                                              allReportList = res;
+                                            });
 
-                                      applyFilters();
+                                            applyFilters();
 
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("Submit", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            "Submit",
+                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.calendar_month, color: Colors.white, size: 18),
+                              SizedBox(width: 6),
+                              Text("Filter", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13)),
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.calendar_month, color: Colors.white, size: 18),
-                        SizedBox(width: 6),
-                        Text("Filter", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13)),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.zero,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(),
+                              borderRadius: BorderRadiusGeometry.circular(10),
+                            ),
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          ),
+                          onPressed: () async {
+                            final from = startDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+                            final to = endDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+                            reportList = await getReport(context, menuSelectedValue, from, to);
+                            await createExcelFile(reportList);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.download, size: 18, color: Colors.white),
+                              SizedBox(width: 6),
+                              Text("Download", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(),
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                      ),
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromRGBO(33, 52, 72, 1),
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                    ),
-                    onPressed: () async {
-                      final from = startDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.grey.shade800)),
+                            ),
+                            child: Column(
+                              children: [
+                                buildSummaryRow("Profit", totalProfit),
+                                buildSummaryRow("Swap", totalSwap),
+                                buildSummaryRow("Commission", totalCommission),
+                              ],
+                            ),
+                          ),
 
-                      final to = endDate ?? DateFormat('yyyy-MM-dd').format(DateTime.now());
-                      reportList = await getReport(context, menuSelectedValue, from, to);
-                      await createExcelFile(reportList);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.download, size: 18, color: Colors.white),
-                        SizedBox(width: 6),
-                        Text("Download", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14)),
-                      ],
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: filteredReportList.length,
+                              itemBuilder: (context, index) {
+                                final item = filteredReportList[index];
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      expandedIndex = expandedIndex == index ? -1 : index;
+                                    });
+                                  },
+
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+
+                                    decoration: BoxDecoration(
+                                      color: expandedIndex == index
+                                          ? const Color.fromRGBO(220, 240, 250, 1)
+                                          : Colors.transparent,
+
+                                      border: Border(bottom: BorderSide(color: Colors.grey.shade400)),
+                                    ),
+
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        /// TOP ROW
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  item.symbol,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+
+                                                const SizedBox(width: 5),
+
+                                                typeWidget(item.actionType),
+
+                                                const SizedBox(width: 5),
+
+                                                Text(item.volume, style: const TextStyle(color: Colors.black)),
+                                              ],
+                                            ),
+
+                                            Text(
+                                              DateFormat('yyyy.MM.dd HH:mm:ss').format(item.closedAt!),
+
+                                              style: const TextStyle(fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+
+                                        const SizedBox(height: 5),
+
+                                        /// PRICE ROW
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(item.openPrice.toStringAsFixed(2)),
+
+                                                const Icon(Icons.arrow_right_alt),
+
+                                                Text(item.closePrice.toStringAsFixed(2)),
+                                              ],
+                                            ),
+
+                                            Text(
+                                              item.profit.toStringAsFixed(2),
+                                              style: TextStyle(
+                                                color: item.profit >= 0 ? Colors.blue : Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        /// EXPANDED DETAILS
+                                        if (expandedIndex == index) ...[
+                                          const SizedBox(height: 12),
+
+                                          Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "#${item.positionId}",
+                                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text("Open- "),
+                                                          Text(
+                                                            DateFormat('yyyy.MM.dd HH:mm:ss').format(item.openedAt!),
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text("Swap- "),
+                                                          Text(
+                                                            item.swap.toString(),
+                                                            textAlign: TextAlign.right,
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Text("Commission- "),
+                                                          Text(
+                                                            item.commission.toString(),
+                                                            textAlign: TextAlign.right,
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.6,
-                width: MediaQuery.sizeOf(context).width * 0.95,
-                child: ListView.builder(
-                  itemCount: filteredReportList.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height * 0.3,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(189, 232, 245, 1),
-                                    borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                                  ),
-                                  padding: EdgeInsets.all(12),
-                                  child: bottomModalWidget(filteredReportList[index]),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  spacing: 3,
-                                  children: [
-                                    Text(filteredReportList[index].symbol),
-                                    typeWidget(filteredReportList[index].actionType),
-                                    Text(filteredReportList[index].volume),
-                                  ],
-                                ),
-                                Text(
-                                  filteredReportList[index].profit.toStringAsFixed(2),
-                                  style: TextStyle(
-                                    color: filteredReportList[index].profit > 0
-                                        ? Color.fromARGB(255, 24, 105, 255)
-                                        : Colors.red,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(filteredReportList[index].openPrice.toStringAsFixed(2)),
-                                    Icon(Icons.trending_flat),
-                                    Text(filteredReportList[index].closePrice.toStringAsFixed(2)),
-                                  ],
-                                ),
-                                Row(
-                                  spacing: 5,
-                                  children: [
-                                    Text(DateFormat('yyyy.MM.dd').format(filteredReportList[index].closedAt!)),
-                                    Text(DateFormat('hh:mm:ss').format(filteredReportList[index].closedAt!)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -458,60 +572,38 @@ Widget dateField({required String label, required TextEditingController controll
   );
 }
 
-Widget bottomModalWidget(DbReportModel item) {
-  return Column(
-    spacing: 10,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(spacing: 3, children: [Text(item.symbol), typeWidget(item.actionType), Text(item.volume)]),
-          Text(item.positionId, style: TextStyle(color: Color.fromARGB(255, 24, 105, 255))),
-        ],
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Text(item.openPrice.toStringAsFixed(2)),
-                Icon(Icons.trending_flat),
-                Text(item.closePrice.toStringAsFixed(2)),
-              ],
-            ),
-            Text(
-              item.profit.toStringAsFixed(2),
-              style: TextStyle(color: item.profit > 0 ? Color.fromARGB(255, 24, 105, 255) : Colors.red),
-            ),
-          ],
+Widget buildSummaryRow(String title, double value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text("$title:", style: const TextStyle(color: Colors.black, fontSize: 16)),
+
+        Text(
+          value.toStringAsFixed(2),
+          style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
         ),
-      ),
-      Row(
-        children: [
-          Row(
-            spacing: 5,
-            children: [
-              Text(DateFormat('yyyy.MM.dd').format(item.openedAt!)),
-              Text(DateFormat('hh:mm:ss').format(item.openedAt!)),
-            ],
-          ),
-          Icon(Icons.trending_flat),
-          Row(
-            spacing: 5,
-            children: [
-              Text(DateFormat('yyyy.MM.dd').format(item.closedAt!)),
-              Text(DateFormat('hh:mm:ss').format(item.closedAt!)),
-            ],
-          ),
-        ],
-      ),
-      // Row(children: [Text("Method: ${item.info}", softWrap: true)]),
-      // Row(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [Expanded(child: Text("Description: ${item.description}", softWrap: true, maxLines: 3))],
-      // ),
-    ],
+      ],
+    ),
+  );
+}
+
+Widget buildExtraRow(String title, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black54),
+        ),
+
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+      ],
+    ),
   );
 }

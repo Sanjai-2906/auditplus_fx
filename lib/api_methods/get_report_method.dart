@@ -28,7 +28,7 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
       options: Options(headers: {'Content-Type': 'application/json'}),
     );
     final List<DbReportModel> reportList = (response.data as List).map((e) => DbReportModel.fromJson(e)).toList();
-    print(reportList);
+    // print(reportList);
     return reportList;
   } on DioException catch (e) {
     final statusCode = e.response?.statusCode;
