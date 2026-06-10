@@ -92,7 +92,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Future<void> pickDate({required bool isFromDate}) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      firstDate: DateTime(2026),
+      firstDate: DateTime(2025),
       lastDate: DateTime.now(),
     );
 
@@ -135,15 +135,27 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   double get totalProfit {
-    return filteredReportList.fold(0.0, (sum, item) => sum + item.profit);
+    return filteredReportList.where((e) => e.dealType == "TRADE").fold(0.0, (sum, item) => sum + item.profit);
   }
 
   double get totalSwap {
-    return filteredReportList.fold(0.0, (sum, item) => sum + item.swap);
+    return filteredReportList.where((e) => e.dealType == "TRADE").fold(0.0, (sum, item) => sum + item.swap);
   }
 
   double get totalCommission {
-    return filteredReportList.fold(0.0, (sum, item) => sum + item.commission);
+    return filteredReportList.where((e) => e.dealType == "TRADE").fold(0.0, (sum, item) => sum + item.commission);
+  }
+
+  double get totalDeposit {
+    return filteredReportList.where((e) => e.dealType == "DEPOSIT").fold(0.0, (sum, item) => sum + item.profit);
+  }
+
+  double get totalWithdraw {
+    return filteredReportList.where((e) => e.dealType == "WITHDRAW").fold(0.0, (sum, item) => sum + item.profit.abs());
+  }
+
+  double get totalBalance {
+    return totalDeposit + totalProfit + totalSwap + totalCommission - totalWithdraw;
   }
 
   @override
@@ -379,6 +391,9 @@ class _ReportScreenState extends State<ReportScreen> {
                                 buildSummaryRow("Profit", totalProfit),
                                 buildSummaryRow("Swap", totalSwap),
                                 buildSummaryRow("Commission", totalCommission),
+                                buildSummaryRow("Deposit", totalDeposit),
+                                // buildSummaryRow("Withdraw", totalWithdraw),
+                                buildSummaryRow("Balance", totalBalance),
                               ],
                             ),
                           ),
@@ -415,10 +430,29 @@ class _ReportScreenState extends State<ReportScreen> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
+                                            // Row(
+                                            //   children: [
+                                            //     Text(
+                                            //       item.symbol,
+                                            //       style: const TextStyle(
+                                            //         color: Colors.black,
+                                            //         fontWeight: FontWeight.bold,
+                                            //       ),
+                                            //     ),
+
+                                            //     const SizedBox(width: 5),
+
+                                            //     typeWidget(item.actionType),
+
+                                            //     const SizedBox(width: 5),
+
+                                            //     Text(item.volume, style: const TextStyle(color: Colors.black)),
+                                            //   ],
+                                            // ),
                                             Row(
                                               children: [
                                                 Text(
-                                                  item.symbol,
+                                                  item.dealType == "TRADE" ? item.symbol : item.dealType,
                                                   style: const TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -427,11 +461,13 @@ class _ReportScreenState extends State<ReportScreen> {
 
                                                 const SizedBox(width: 5),
 
-                                                typeWidget(item.actionType),
+                                                if (item.dealType == "TRADE") ...[
+                                                  typeWidget(item.actionType),
 
-                                                const SizedBox(width: 5),
+                                                  const SizedBox(width: 5),
 
-                                                Text(item.volume, style: const TextStyle(color: Colors.black)),
+                                                  Text(item.volume, style: const TextStyle(color: Colors.black)),
+                                                ],
                                               ],
                                             ),
 

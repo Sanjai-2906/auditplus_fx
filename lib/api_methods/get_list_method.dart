@@ -62,6 +62,7 @@ Future<List<String>> getList(BuildContext context) async {
       if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
         Provider.of<MytokenProvider>(context, listen: false).clearToken();
       }
+      print(e.response!.data);
       toastification.show(
         backgroundColor: const Color.fromRGBO(242, 186, 185, 1),
         title: const Text('Get List Error!'),

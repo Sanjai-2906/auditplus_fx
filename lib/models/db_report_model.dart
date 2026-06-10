@@ -4,35 +4,6 @@ part 'db_report_model.g.dart';
 
 @JsonSerializable()
 class DbReportModel {
-  // DateTime? openedAt;
-  // DateTime? closedAt;
-  // String symbol;
-  // String method;
-  // num openPrice;
-  // num closePrice;
-  // num profit;
-  // String actionType;
-  // String volume;
-  // String positionId;
-  // String info;
-  // String status;
-  // String description;
-
-  // DbReportModel({
-  //   required this.openedAt,
-  //   required this.closedAt,
-  //   required this.symbol,
-  //   required this.method,
-  //   required this.openPrice,
-  //   required this.closePrice,
-  //   required this.profit,
-  //   required this.actionType,
-  //   required this.info,
-  //   required this.volume,
-  //   required this.positionId,
-  //   required this.status,
-  //   required this.description,
-  // });
   DateTime? openedAt;
   DateTime? closedAt;
   String symbol;
@@ -44,6 +15,7 @@ class DbReportModel {
   String actionType;
   String volume;
   String positionId;
+  String dealType;
 
   DbReportModel({
     required this.openedAt,
@@ -57,6 +29,7 @@ class DbReportModel {
     required this.actionType,
     required this.volume,
     required this.positionId,
+    required this.dealType,
   });
 
   Map<String, dynamic> toMap() => {
@@ -71,6 +44,7 @@ class DbReportModel {
     'actionType': actionType,
     'volume': volume,
     'positionId': positionId,
+    'dealType': dealType,
   };
 
   factory DbReportModel.fromJson(Map<String, dynamic> json) => _$DbReportModelFromJson(json);
@@ -79,6 +53,6 @@ class DbReportModel {
 
   @override
   String toString() {
-    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission}";
+    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission, DealType: $dealType}";
   }
 }

@@ -34,6 +34,7 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
     final statusCode = e.response?.statusCode;
 
     if (statusCode == 409) {
+      print(e.response?.data);
       toastification.show(
         backgroundColor: const Color.fromARGB(255, 240, 230, 174),
         title: Text('${e.response?.data}'),
@@ -43,6 +44,7 @@ Future<List<DbReportModel>> getReport(BuildContext context, String symbol, Strin
         autoCloseDuration: const Duration(seconds: 2),
       );
     } else {
+      print(e.message);
       toastification.show(
         backgroundColor: const Color.fromARGB(255, 242, 186, 185),
         title: const Text('Report Error!'),
