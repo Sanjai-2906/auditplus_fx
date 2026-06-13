@@ -8,12 +8,8 @@ part of 'db_report_model.dart';
 
 DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
     DbReportModel(
-      openedAt: json['openedAt'] == null
-          ? null
-          : DateTime.parse(json['openedAt'] as String),
-      closedAt: json['closedAt'] == null
-          ? null
-          : DateTime.parse(json['closedAt'] as String),
+      openedAt: json['openedAt'] as String?,
+      closedAt: json['closedAt'] as String?,
       symbol: json['symbol'] as String,
       openPrice: json['openPrice'] as num,
       closePrice: json['closePrice'] as num,
@@ -28,8 +24,8 @@ DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$DbReportModelToJson(DbReportModel instance) =>
     <String, dynamic>{
-      'openedAt': instance.openedAt?.toIso8601String(),
-      'closedAt': instance.closedAt?.toIso8601String(),
+      'openedAt': instance.openedAt,
+      'closedAt': instance.closedAt,
       'symbol': instance.symbol,
       'openPrice': instance.openPrice,
       'closePrice': instance.closePrice,

@@ -472,7 +472,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                             ),
 
                                             Text(
-                                              DateFormat('yyyy.MM.dd HH:mm:ss').format(item.closedAt!),
+                                              // DateFormat('yyyy.MM.dd HH:mm:ss').format(item.closedAt!),
+                                              item.closedAt!,
 
                                               style: const TextStyle(fontSize: 14),
                                             ),
@@ -527,7 +528,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                                         children: [
                                                           Text("Open- "),
                                                           Text(
-                                                            DateFormat('yyyy.MM.dd HH:mm:ss').format(item.openedAt!),
+                                                            // DateFormat('yyyy.MM.dd HH:mm:ss').format(item.openedAt!),
+                                                            item.openedAt!,
                                                             style: TextStyle(fontWeight: FontWeight.bold),
                                                           ),
                                                         ],

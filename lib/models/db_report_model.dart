@@ -4,8 +4,10 @@ part 'db_report_model.g.dart';
 
 @JsonSerializable()
 class DbReportModel {
-  DateTime? openedAt;
-  DateTime? closedAt;
+  // DateTime? openedAt;
+  // DateTime? closedAt;
+  String? openedAt;
+  String? closedAt;
   String symbol;
   num openPrice;
   num closePrice;
