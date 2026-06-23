@@ -8,6 +8,7 @@ part of 'db_report_model.dart';
 
 DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
     DbReportModel(
+      id: json['id'] as String,
       openedAt: json['openedAt'] as String?,
       closedAt: json['closedAt'] as String?,
       symbol: json['symbol'] as String,
@@ -24,6 +25,7 @@ DbReportModel _$DbReportModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$DbReportModelToJson(DbReportModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'openedAt': instance.openedAt,
       'closedAt': instance.closedAt,
       'symbol': instance.symbol,

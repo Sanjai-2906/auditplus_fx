@@ -1,4 +1,5 @@
 import 'package:auditplus_fx/models/models.dart';
+import 'package:auditplus_fx/pages/home_screen.dart';
 import 'package:auditplus_fx/utils/create_report.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,20 @@ import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
+
+enum ReportSortType {
+  none,
+  profitAsc,
+  profitDesc,
+  typeAsc,
+  typeDesc,
+  volumeAsc,
+  volumeDesc,
+  openTimeAsc,
+  openTimeDesc,
+  closeTimeAsc,
+  closeTimeDesc,
+}
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -31,6 +46,8 @@ class _ReportScreenState extends State<ReportScreen> {
   List<DbReportModel> allReportList = [];
   List<DbReportModel> filteredReportList = [];
 
+  ReportSortType currentSort = ReportSortType.none;
+
   int expandedIndex = -1;
   bool isLoading = true;
 
@@ -44,6 +61,12 @@ class _ReportScreenState extends State<ReportScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeApp(context);
     });
+  }
+
+  @override
+  void dispose() {
+    _menuSymbolFocusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeApp(BuildContext context) async {
@@ -118,10 +141,9 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-  void applyFilters() {
+  void applySymbolFilters() {
     List<DbReportModel> tempList = List.from(allReportList);
 
-    /// SYMBOL FILTER ONLY
     if (selectedSymbol != "ALL") {
       tempList = tempList.where((e) => e.symbol == selectedSymbol).toList();
     }
@@ -131,6 +153,66 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       filteredReportList = tempList;
       expandedIndex = -1;
+    });
+  }
+
+  void applySort(ReportSortType sortType) {
+    currentSort = sortType;
+
+    List<DbReportModel> tempList = List.from(allReportList);
+
+    switch (sortType) {
+      case ReportSortType.profitAsc:
+        tempList.sort((a, b) => a.profit.compareTo(b.profit));
+        break;
+
+      case ReportSortType.profitDesc:
+        tempList.sort((a, b) => b.profit.compareTo(a.profit));
+        break;
+
+      case ReportSortType.typeAsc:
+        tempList.sort((a, b) {
+          return a.actionType.compareTo(b.actionType);
+        });
+        break;
+
+      case ReportSortType.typeDesc:
+        tempList.sort((a, b) {
+          return b.actionType.compareTo(a.actionType);
+        });
+        break;
+
+      case ReportSortType.volumeAsc:
+        tempList.sort((a, b) => num.parse(a.volume).compareTo(num.parse(b.volume)));
+        break;
+
+      case ReportSortType.volumeDesc:
+        tempList.sort((a, b) => num.parse(b.volume).compareTo(num.parse(a.volume)));
+        break;
+
+      case ReportSortType.openTimeAsc:
+        tempList.sort((a, b) => DateTime.parse(a.openedAt ?? '').compareTo(DateTime.parse(b.openedAt!)));
+        break;
+
+      case ReportSortType.openTimeDesc:
+        tempList.sort((a, b) => DateTime.parse(b.openedAt ?? '').compareTo(DateTime.parse(a.openedAt!)));
+        break;
+
+      case ReportSortType.closeTimeAsc:
+        tempList.sort((a, b) => DateTime.parse(a.closedAt ?? '').compareTo(DateTime.parse(b.closedAt ?? '')));
+        break;
+
+      case ReportSortType.closeTimeDesc:
+        tempList.sort((a, b) => DateTime.parse(b.closedAt ?? '').compareTo(DateTime.parse(a.closedAt ?? '')));
+        break;
+
+      case ReportSortType.none:
+        tempList = allReportList;
+        break;
+    }
+
+    setState(() {
+      filteredReportList = tempList;
     });
   }
 
@@ -168,19 +250,25 @@ class _ReportScreenState extends State<ReportScreen> {
         actions: <Widget>[
           Consumer<ValueProvider>(
             builder: (context, auto, child) {
-              return TextButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: auto.isAutomaticSectionEnabled
-                      ? Color.fromRGBO(44, 187, 104, 1)
-                      : Color.fromRGBO(189, 232, 245, 1),
-                  foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.white, width: 2),
+              return Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: TextButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: auto.isAutomaticSectionEnabled
+                        ? Color.fromRGBO(44, 187, 104, 1)
+                        : Color.fromRGBO(189, 232, 245, 1),
+                    foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Colors.white, width: 2),
+                    ),
                   ),
+                  onPressed: () {
+                    auto.setAutomaticEnable();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                  },
+                  child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                 ),
-                onPressed: () => auto.setAutomaticEnable(),
-                child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               );
             },
           ),
@@ -249,7 +337,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                 menuSelectedValue = item.value!;
                               });
 
-                              applyFilters();
+                              // applyFilters();
+                              applySymbolFilters();
                             },
                             onSubmit: (item) {
                               Provider.of<ValueProvider>(
@@ -318,7 +407,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                               allReportList = res;
                                             });
 
-                                            applyFilters();
+                                            // applyFilters();
+                                            applySymbolFilters();
 
                                             // ignore: use_build_context_synchronously
                                             Navigator.pop(context);
@@ -346,8 +436,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.zero,
                             elevation: 0,
+                            minimumSize: Size.zero,
                             shape: RoundedRectangleBorder(
                               side: BorderSide(),
                               borderRadius: BorderRadiusGeometry.circular(10),
@@ -363,14 +453,161 @@ class _ReportScreenState extends State<ReportScreen> {
                             reportList = await getReport(context, menuSelectedValue, from, to);
                             await createExcelFile(reportList);
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.download, size: 18, color: Colors.white),
-                              SizedBox(width: 6),
-                              Text("Download", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 14)),
-                            ],
-                          ),
+                          child: Icon(Icons.download, size: 22, color: Colors.white),
+                        ),
+                        MenuAnchor(
+                          builder: (context, controller, child) {
+                            return IconButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(),
+                                  borderRadius: BorderRadiusGeometry.circular(10),
+                                ),
+                                foregroundColor: Colors.white,
+                                backgroundColor: Color.fromRGBO(33, 52, 72, 1),
+                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                              ),
+                              icon: const Icon(Icons.filter_alt),
+                              onPressed: () {
+                                if (controller.isOpen) {
+                                  controller.close();
+                                } else {
+                                  controller.open();
+                                }
+                              },
+                            );
+                          },
+                          menuChildren: [
+                            MenuItemButton(
+                              onPressed: () {
+                                applySort(ReportSortType.none);
+                              },
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [Text('None', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))],
+                                ),
+                              ),
+                            ),
+                            MenuItemButton(
+                              onPressed: () {
+                                if (currentSort == ReportSortType.profitAsc) {
+                                  applySort(ReportSortType.profitDesc);
+                                } else {
+                                  applySort(ReportSortType.profitAsc);
+                                }
+                              },
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Profit', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    if (currentSort == ReportSortType.profitAsc ||
+                                        currentSort == ReportSortType.profitDesc)
+                                      Icon(
+                                        currentSort == ReportSortType.profitAsc ? Icons.north : Icons.south,
+                                        size: 20,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            MenuItemButton(
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Type', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    if (currentSort == ReportSortType.typeAsc || currentSort == ReportSortType.typeDesc)
+                                      Icon(currentSort == ReportSortType.typeAsc ? Icons.north : Icons.south, size: 20),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                if (currentSort == ReportSortType.typeAsc) {
+                                  applySort(ReportSortType.typeDesc);
+                                } else {
+                                  applySort(ReportSortType.typeAsc);
+                                }
+                              },
+                            ),
+                            MenuItemButton(
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Volume', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    if (currentSort == ReportSortType.volumeAsc ||
+                                        currentSort == ReportSortType.volumeDesc)
+                                      Icon(
+                                        currentSort == ReportSortType.volumeAsc ? Icons.north : Icons.south,
+                                        size: 20,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                if (currentSort == ReportSortType.volumeAsc) {
+                                  applySort(ReportSortType.volumeDesc);
+                                } else {
+                                  applySort(ReportSortType.volumeAsc);
+                                }
+                              },
+                            ),
+                            MenuItemButton(
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Open Time', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    if (currentSort == ReportSortType.openTimeAsc ||
+                                        currentSort == ReportSortType.openTimeDesc)
+                                      Icon(
+                                        currentSort == ReportSortType.openTimeAsc ? Icons.north : Icons.south,
+                                        size: 20,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                if (currentSort == ReportSortType.openTimeAsc) {
+                                  applySort(ReportSortType.openTimeDesc);
+                                } else {
+                                  applySort(ReportSortType.openTimeAsc);
+                                }
+                              },
+                            ),
+                            MenuItemButton(
+                              child: SizedBox(
+                                width: 150,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Close Time', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    if (currentSort == ReportSortType.closeTimeAsc ||
+                                        currentSort == ReportSortType.closeTimeDesc)
+                                      Icon(
+                                        currentSort == ReportSortType.closeTimeAsc ? Icons.north : Icons.south,
+                                        size: 20,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                if (currentSort == ReportSortType.closeTimeAsc) {
+                                  applySort(ReportSortType.closeTimeDesc);
+                                } else {
+                                  applySort(ReportSortType.closeTimeAsc);
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -430,25 +667,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            // Row(
-                                            //   children: [
-                                            //     Text(
-                                            //       item.symbol,
-                                            //       style: const TextStyle(
-                                            //         color: Colors.black,
-                                            //         fontWeight: FontWeight.bold,
-                                            //       ),
-                                            //     ),
-
-                                            //     const SizedBox(width: 5),
-
-                                            //     typeWidget(item.actionType),
-
-                                            //     const SizedBox(width: 5),
-
-                                            //     Text(item.volume, style: const TextStyle(color: Colors.black)),
-                                            //   ],
-                                            // ),
                                             Row(
                                               children: [
                                                 Text(
@@ -472,9 +690,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                             ),
 
                                             Text(
-                                              // DateFormat('yyyy.MM.dd HH:mm:ss').format(item.closedAt!),
-                                              item.closedAt!,
-
+                                              DateFormat('dd.MM.yyyy HH:mm:ss').format(DateTime.parse(item.closedAt!)),
+                                              // item.closedAt!,
                                               style: const TextStyle(fontSize: 14),
                                             ),
                                           ],
@@ -528,8 +745,10 @@ class _ReportScreenState extends State<ReportScreen> {
                                                         children: [
                                                           Text("Open- "),
                                                           Text(
-                                                            // DateFormat('yyyy.MM.dd HH:mm:ss').format(item.openedAt!),
-                                                            item.openedAt!,
+                                                            DateFormat(
+                                                              'dd.MM.yyyy HH:mm:ss',
+                                                            ).format(DateTime.parse(item.openedAt!)),
+                                                            // item.openedAt!,
                                                             style: TextStyle(fontWeight: FontWeight.bold),
                                                           ),
                                                         ],

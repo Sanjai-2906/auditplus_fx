@@ -4,8 +4,7 @@ part 'db_report_model.g.dart';
 
 @JsonSerializable()
 class DbReportModel {
-  // DateTime? openedAt;
-  // DateTime? closedAt;
+  String id;
   String? openedAt;
   String? closedAt;
   String symbol;
@@ -20,6 +19,7 @@ class DbReportModel {
   String dealType;
 
   DbReportModel({
+    required this.id,
     required this.openedAt,
     required this.closedAt,
     required this.symbol,
@@ -35,6 +35,7 @@ class DbReportModel {
   });
 
   Map<String, dynamic> toMap() => {
+    'id': id,
     'openedAt': openedAt,
     'closedAt': closedAt,
     'symbol': symbol,
@@ -55,6 +56,6 @@ class DbReportModel {
 
   @override
   String toString() {
-    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission, DealType: $dealType}";
+    return "DbReportModel{Id: $id, Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission, DealType: $dealType}";
   }
 }
