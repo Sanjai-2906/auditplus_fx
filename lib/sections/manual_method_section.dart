@@ -24,19 +24,31 @@ class _ManualMethodSectionState extends State<ManualMethodSection> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildRow("Catcher", "LongTcChecked", "ShortTcChecked"),
-                  if (!(val.isM4Checked || val.isM5Checked || val.isM9Checked))
+                  if (val.isM1Checked ||
+                      val.isM2Checked ||
+                      val.isM3Checked ||
+                      val.isM4Checked ||
+                      val.isM6Checked ||
+                      val.isM7Checked ||
+                      val.isM8Checked ||
+                      val.isM9Checked)
                     _buildRow("Tracer", "LongTtChecked", "ShortTtChecked"),
                   if (val.isM1Checked || val.isM2Checked) _buildRow("Neo Cloud", "LongNeoChecked", "ShortNeoChecked"),
-                  if (val.isM3Checked || val.isM8Checked)
+                  if (val.isM3Checked || val.isM4Checked || val.isM8Checked)
                     _buildRow("Signal Exit", "LongSignalExitChecked", "ShortSignalExitChecked"),
                   if (val.isM1Checked || val.isM2Checked || val.isM9Checked || val.isM3Checked || val.isM6Checked)
                     _buildRow("MF", "LongMfChecked", "ShortMfChecked"),
-                  if (val.isM9Checked) _buildRow("HW", "LongHwChecked", "ShortHwChecked"),
-                  if (val.isM1Checked || val.isM4Checked || val.isM5Checked)
+                  // if (val.isM9Checked) _buildRow("HW", "LongHwChecked", "ShortHwChecked"),
+                  if (val.isM1Checked || val.isM4Checked || val.isM5Checked || val.isM9Checked)
                     _buildRow("Signal", "LongSignalChecked", "ShortSignalChecked"),
-                  if (val.isM2Checked || val.isM6Checked || val.isM7Checked || val.isM8Checked)
+                  if (val.isM1Checked || val.isM2Checked || val.isM6Checked || val.isM7Checked || val.isM8Checked)
                     _buildRow("Reversal", "LongReversalChecked", "ShortReversalChecked"),
-                  if (val.isM2Checked || val.isM6Checked || val.isM7Checked || val.isM8Checked)
+                  if (val.isM1Checked ||
+                      val.isM2Checked ||
+                      val.isM5Checked ||
+                      val.isM6Checked ||
+                      val.isM7Checked ||
+                      val.isM8Checked)
                     _buildRow("Reversal Plus", "LongReversalPlusChecked", "ShortReversalPlusChecked"),
                   if (val.isM5Checked) _buildRow("Divergence", "LongDivergenceChecked", "ShortDivergenceChecked"),
                   if (val.isM1Checked) _buildRow("Tc Cross Tt", "LongTcCrossTtChecked", "ShortTcCrossTtChecked"),

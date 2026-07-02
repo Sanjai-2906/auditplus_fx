@@ -507,10 +507,16 @@ class _ReportScreenState extends State<ReportScreen> {
                                     Text('Profit', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     if (currentSort == ReportSortType.profitAsc ||
                                         currentSort == ReportSortType.profitDesc)
-                                      Icon(
-                                        currentSort == ReportSortType.profitAsc ? Icons.north : Icons.south,
+                                      ImageIcon(
+                                        currentSort == ReportSortType.profitAsc
+                                            ? AssetImage('assets/ascending.png')
+                                            : AssetImage('assets/descending.png'),
                                         size: 20,
                                       ),
+                                    // Icon(
+                                    //   currentSort == ReportSortType.profitAsc ? Icons.north : Icons.south,
+                                    //   size: 20,
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -523,7 +529,13 @@ class _ReportScreenState extends State<ReportScreen> {
                                   children: [
                                     Text('Type', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     if (currentSort == ReportSortType.typeAsc || currentSort == ReportSortType.typeDesc)
-                                      Icon(currentSort == ReportSortType.typeAsc ? Icons.north : Icons.south, size: 20),
+                                      ImageIcon(
+                                        currentSort == ReportSortType.typeAsc
+                                            ? AssetImage('assets/ascending.png')
+                                            : AssetImage('assets/descending.png'),
+                                        size: 20,
+                                      ),
+                                    // Icon(currentSort == ReportSortType.typeAsc ? Icons.north : Icons.south, size: 20),
                                   ],
                                 ),
                               ),
@@ -544,10 +556,16 @@ class _ReportScreenState extends State<ReportScreen> {
                                     Text('Volume', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     if (currentSort == ReportSortType.volumeAsc ||
                                         currentSort == ReportSortType.volumeDesc)
-                                      Icon(
-                                        currentSort == ReportSortType.volumeAsc ? Icons.north : Icons.south,
+                                      ImageIcon(
+                                        currentSort == ReportSortType.volumeAsc
+                                            ? AssetImage('assets/ascending.png')
+                                            : AssetImage('assets/descending.png'),
                                         size: 20,
                                       ),
+                                    // Icon(
+                                    //   currentSort == ReportSortType.volumeAsc ? Icons.north : Icons.south,
+                                    //   size: 20,
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -568,10 +586,16 @@ class _ReportScreenState extends State<ReportScreen> {
                                     Text('Open Time', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     if (currentSort == ReportSortType.openTimeAsc ||
                                         currentSort == ReportSortType.openTimeDesc)
-                                      Icon(
-                                        currentSort == ReportSortType.openTimeAsc ? Icons.north : Icons.south,
+                                      ImageIcon(
+                                        currentSort == ReportSortType.openTimeAsc
+                                            ? AssetImage('assets/ascending.png')
+                                            : AssetImage('assets/descending.png'),
                                         size: 20,
                                       ),
+                                    // Icon(
+                                    //   currentSort == ReportSortType.openTimeAsc ? Icons.north : Icons.south,
+                                    //   size: 20,
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -592,10 +616,16 @@ class _ReportScreenState extends State<ReportScreen> {
                                     Text('Close Time', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     if (currentSort == ReportSortType.closeTimeAsc ||
                                         currentSort == ReportSortType.closeTimeDesc)
-                                      Icon(
-                                        currentSort == ReportSortType.closeTimeAsc ? Icons.north : Icons.south,
+                                      ImageIcon(
+                                        currentSort == ReportSortType.closeTimeAsc
+                                            ? AssetImage('assets/ascending.png')
+                                            : AssetImage('assets/descending.png'),
                                         size: 20,
                                       ),
+                                    // Icon(
+                                    //   currentSort == ReportSortType.closeTimeAsc ? Icons.north : Icons.south,
+                                    //   size: 20,
+                                    // ),
                                   ],
                                 ),
                               ),

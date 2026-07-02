@@ -512,12 +512,18 @@ class CheckedBoxProvider extends ChangeNotifier {
 
   bool isM9LongAllChecked(String symbol) {
     final v = getValues("MM", symbol);
-    return (v['LongTcChecked'] ?? false) && (v['LongMfChecked'] ?? false) && (v['LongHwChecked'] ?? false);
+    return (v['LongTcChecked'] ?? false) &&
+        (v['LongMfChecked'] ?? false) &&
+        (v['LongTtChecked'] ?? false) &&
+        (v['LongSignalChecked'] ?? false);
   }
 
   bool isM9ShortAllChecked(String symbol) {
     final v = getValues("MM", symbol);
-    return (v['ShortTcChecked'] ?? false) && (v['ShortMfChecked'] ?? false) && (v['ShortHwChecked'] ?? false);
+    return (v['ShortTcChecked'] ?? false) &&
+        (v['ShortMfChecked'] ?? false) &&
+        (v['ShortTtChecked'] ?? false) &&
+        (v['ShortSignalChecked'] ?? false);
   }
 
   Future<void> loadAll(String symbol) async {
