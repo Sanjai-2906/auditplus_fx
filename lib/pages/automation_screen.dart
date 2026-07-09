@@ -329,39 +329,39 @@ class _AutomationScreenState extends State<AutomationScreen> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => {
-                              am.changeMethodScreen('AM', Method.method9),
-                              _pageController.animateToPage(
-                                8,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              ),
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              decoration: BoxDecoration(
-                                color: am.autoScreenView == Method.method9
-                                    ? const Color.fromRGBO(33, 52, 72, 1)
-                                    // : Colors.transparent,
-                                    : Color.fromRGBO(209, 238, 250, 1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "M9",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: am.autoScreenView == Method.method9 ? Colors.white : Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: GestureDetector(
+                        //     onTap: () => {
+                        //       am.changeMethodScreen('AM', Method.method9),
+                        //       _pageController.animateToPage(
+                        //         8,
+                        //         duration: Duration(milliseconds: 300),
+                        //         curve: Curves.easeInOut,
+                        //       ),
+                        //     },
+                        //     child: AnimatedContainer(
+                        //       duration: const Duration(milliseconds: 200),
+                        //       padding: const EdgeInsets.symmetric(vertical: 12),
+                        //       decoration: BoxDecoration(
+                        //         color: am.autoScreenView == Method.method9
+                        //             ? const Color.fromRGBO(33, 52, 72, 1)
+                        //             // : Colors.transparent,
+                        //             : Color.fromRGBO(209, 238, 250, 1),
+                        //         borderRadius: BorderRadius.circular(8),
+                        //       ),
+                        //       child: Center(
+                        //         child: Text(
+                        //           "M9",
+                        //           style: TextStyle(
+                        //             fontSize: 16,
+                        //             color: am.autoScreenView == Method.method9 ? Colors.white : Colors.black,
+                        //             fontWeight: FontWeight.w600,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   );
@@ -447,9 +447,10 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM7";
                                     } else if (drop.autoScreenView == Method.method8) {
                                       method = "AM8";
-                                    } else if (drop.autoScreenView == Method.method9) {
-                                      method = "AM9";
                                     }
+                                    // else if (drop.autoScreenView == Method.method9) {
+                                    //   method = "AM9";
+                                    // }
                                     String? symbol = drop.amSelectedValue;
                                     if (symbol != null && symbol != "") {
                                       final data = CurrentAutomationModel(
@@ -495,9 +496,10 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM7";
                                     } else if (drop.autoScreenView == Method.method8) {
                                       method = "AM8";
-                                    } else if (drop.autoScreenView == Method.method9) {
-                                      method = "AM9";
                                     }
+                                    // else if (drop.autoScreenView == Method.method9) {
+                                    //   method = "AM9";
+                                    // }
                                     if (parsedValue != null) {
                                       drop.setAMVolume(method, parsedValue);
                                     }
@@ -521,9 +523,10 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                       method = "AM7";
                                     } else if (drop.autoScreenView == Method.method8) {
                                       method = "AM8";
-                                    } else if (drop.autoScreenView == Method.method9) {
-                                      method = "AM9";
                                     }
+                                    // else if (drop.autoScreenView == Method.method9) {
+                                    //   method = "AM9";
+                                    // }
                                     String? symbol = drop.amSelectedValue;
                                     if (symbol != null && symbol != "") {
                                       final data = CurrentAutomationModel(
@@ -594,9 +597,10 @@ class _AutomationScreenState extends State<AutomationScreen> {
                                     method = "AM7";
                                   } else if (autoLive.autoScreenView == Method.method8) {
                                     method = "AM8";
-                                  } else if (autoLive.autoScreenView == Method.method9) {
-                                    method = "AM9";
                                   }
+                                  // else if (autoLive.autoScreenView == Method.method9) {
+                                  //   method = "AM9";
+                                  // }
                                   String? symbol = autoLive.amSelectedValue;
                                   if (symbol != null && symbol != "") {
                                     final data = CurrentAutomationModel(
@@ -645,9 +649,10 @@ class _AutomationScreenState extends State<AutomationScreen> {
                       method = Method.method7;
                     } else if (index == 7) {
                       method = Method.method8;
-                    } else if (index == 8) {
-                      method = Method.method9;
                     }
+                    // else if (index == 8) {
+                    //   method = Method.method9;
+                    // }
                     screen.changeMethodScreen('AM', method);
                   },
                   physics: const BouncingScrollPhysics(),
@@ -660,7 +665,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                     AutomaticMethod6Section(),
                     AutomaticMethod7Section(),
                     AutomaticMethod8Section(),
-                    AutomaticMethod9Section(),
+                    // AutomaticMethod9Section(),
                   ],
                 );
               },

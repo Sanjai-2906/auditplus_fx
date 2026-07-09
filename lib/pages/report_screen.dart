@@ -592,10 +592,6 @@ class _ReportScreenState extends State<ReportScreen> {
                                             : AssetImage('assets/descending.png'),
                                         size: 20,
                                       ),
-                                    // Icon(
-                                    //   currentSort == ReportSortType.openTimeAsc ? Icons.north : Icons.south,
-                                    //   size: 20,
-                                    // ),
                                   ],
                                 ),
                               ),

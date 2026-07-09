@@ -1,0 +1,8 @@
+*Set a APK cover icon:
+-- dart run flutter_launcher_icons  //Run these command for the apk icon
+===> How to Check the icon is set the changes happen in a 
+auditplus_fx\android\app\src\main\res
+
+*build runner package
+dart run build runner --delete conflict outputs  //for the part_g file
+

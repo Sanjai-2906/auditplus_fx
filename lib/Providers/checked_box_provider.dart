@@ -20,7 +20,7 @@ class CheckedBoxProvider extends ChangeNotifier {
   Map<String, Map<String, bool>> mm6ValuesPerSymbol = {};
   Map<String, Map<String, bool>> mm7ValuesPerSymbol = {};
   Map<String, Map<String, bool>> mm8ValuesPerSymbol = {};
-  Map<String, Map<String, bool>> mm9ValuesPerSymbol = {};
+  // Map<String, Map<String, bool>> mm9ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am1ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am2ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am3ValuesPerSymbol = {};
@@ -29,7 +29,7 @@ class CheckedBoxProvider extends ChangeNotifier {
   Map<String, Map<String, bool>> am6ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am7ValuesPerSymbol = {};
   Map<String, Map<String, bool>> am8ValuesPerSymbol = {};
-  Map<String, Map<String, bool>> am9ValuesPerSymbol = {};
+  // Map<String, Map<String, bool>> am9ValuesPerSymbol = {};
 
   static Map<String, bool> _mmEmptyValues() => {
     'LongTcChecked': false,
@@ -168,19 +168,19 @@ class CheckedBoxProvider extends ChangeNotifier {
     'MM8TtChecked': true,
   };
 
-  static Map<String, bool> _mm9EmptyValues() => {
-    'MM9ReversalPlusPlusChecked': false,
-    'MM9ReversalPlusChecked': false,
-    'MM9ReversalChecked': false,
-    'MM9SignalExitChecked': false,
-    // 'MM9TcChangeChecked': false,
-    'MM9TcChangeChecked': true,
-    'MM9HwChecked': false,
-    'MM9MfChecked': false,
-    'MM9HWTHChecked': false,
-    'MM9TCCROSSEDTTChecked': false,
-    'MM9TtChecked': false,
-  };
+  // static Map<String, bool> _mm9EmptyValues() => {
+  //   'MM9ReversalPlusPlusChecked': false,
+  //   'MM9ReversalPlusChecked': false,
+  //   'MM9ReversalChecked': false,
+  //   'MM9SignalExitChecked': false,
+  //   // 'MM9TcChangeChecked': false,
+  //   'MM9TcChangeChecked': true,
+  //   'MM9HwChecked': false,
+  //   'MM9MfChecked': false,
+  //   'MM9HWTHChecked': false,
+  //   'MM9TCCROSSEDTTChecked': false,
+  //   'MM9TtChecked': false,
+  // };
 
   static Map<String, bool> _am1EmptyValues() => {
     'AM1ReversalPlusPlusChecked': false,
@@ -290,19 +290,19 @@ class CheckedBoxProvider extends ChangeNotifier {
     // 'AM8TtChecked': false,
     'AM8TtChecked': true,
   };
-  static Map<String, bool> _am9EmptyValues() => {
-    'AM9ReversalPlusPlusChecked': false,
-    'AM9ReversalPlusChecked': false,
-    'AM9ReversalChecked': false,
-    'AM9SignalExitChecked': false,
-    'AM9TcChangeChecked': true,
-    // 'AM9TcChangeChecked': false,
-    'AM9HwChecked': false,
-    'AM9MfChecked': false,
-    'AM9HWTHChecked': false,
-    'AM9TCCROSSEDTTChecked': false,
-    'AM9TtChecked': false,
-  };
+  // static Map<String, bool> _am9EmptyValues() => {
+  //   'AM9ReversalPlusPlusChecked': false,
+  //   'AM9ReversalPlusChecked': false,
+  //   'AM9ReversalChecked': false,
+  //   'AM9SignalExitChecked': false,
+  //   'AM9TcChangeChecked': true,
+  //   // 'AM9TcChangeChecked': false,
+  //   'AM9HwChecked': false,
+  //   'AM9MfChecked': false,
+  //   'AM9HWTHChecked': false,
+  //   'AM9TCCROSSEDTTChecked': false,
+  //   'AM9TtChecked': false,
+  // };
 
   //Generic getter
   Map<String, bool> getValues(String method, String symbol) {
@@ -324,9 +324,11 @@ class CheckedBoxProvider extends ChangeNotifier {
       return mm7ValuesPerSymbol[symbol] ?? {};
     } else if (method == "MM8") {
       return mm8ValuesPerSymbol[symbol] ?? {};
-    } else if (method == "MM9") {
-      return mm9ValuesPerSymbol[symbol] ?? {};
-    } else if (method == "AM1") {
+    }
+    // else if (method == "MM9") {
+    //   return mm9ValuesPerSymbol[symbol] ?? {};
+    // }
+    else if (method == "AM1") {
       return am1ValuesPerSymbol[symbol] ?? {};
     } else if (method == "AM2") {
       return am2ValuesPerSymbol[symbol] ?? {};
@@ -342,9 +344,10 @@ class CheckedBoxProvider extends ChangeNotifier {
       return am7ValuesPerSymbol[symbol] ?? {};
     } else if (method == "AM8") {
       return am8ValuesPerSymbol[symbol] ?? {};
-    } else if (method == "AM9") {
-      return am9ValuesPerSymbol[symbol] ?? {};
     }
+    // else if (method == "AM9") {
+    //   return am9ValuesPerSymbol[symbol] ?? {};
+    // }
     throw Exception("Invalid method");
   }
 
@@ -466,18 +469,26 @@ class CheckedBoxProvider extends ChangeNotifier {
 
   bool isM6LongAllChecked(String symbol) {
     final v = getValues("MM", symbol);
+
     return (v['LongTcChecked'] ?? false) &&
         (v['LongTtChecked'] ?? false) &&
         (v['LongMfChecked'] ?? false) &&
-        ((v['LongReversalPlusChecked'] ?? false) || (v['LongReversalChecked'] ?? false));
+        ((v['LongReversalPlusChecked'] ?? false) ||
+            (v['LongReversalChecked'] ?? false) ||
+            (v['LongSignalChecked'] ?? false) ||
+            (v['ShortSignalExitChecked'] ?? false));
   }
 
   bool isM6ShortAllChecked(String symbol) {
     final v = getValues("MM", symbol);
+
     return (v['ShortTcChecked'] ?? false) &&
         (v['ShortTtChecked'] ?? false) &&
         (v['ShortMfChecked'] ?? false) &&
-        ((v['ShortReversalPlusChecked'] ?? false) || (v['ShortReversalChecked'] ?? false));
+        ((v['ShortReversalPlusChecked'] ?? false) ||
+            (v['ShortReversalChecked'] ?? false) ||
+            (v['ShortSignalChecked'] ?? false) ||
+            (v['LongSignalExitChecked'] ?? false));
   }
 
   bool isM7LongAllChecked(String symbol) {
@@ -499,7 +510,7 @@ class CheckedBoxProvider extends ChangeNotifier {
     return (v['ShortTcChecked'] ?? false) &&
         (v['LongTtChecked'] ?? false) &&
         ((v['LongReversalPlusChecked'] ?? false) || (v['LongReversalChecked'] ?? false)) &&
-        (v['LongSignalExitChecked'] ?? false);
+        (v['ShortSignalExitChecked'] ?? false);
   }
 
   bool isM8ShortAllChecked(String symbol) {
@@ -507,24 +518,28 @@ class CheckedBoxProvider extends ChangeNotifier {
     return (v['LongTcChecked'] ?? false) &&
         (v['ShortTtChecked'] ?? false) &&
         ((v['ShortReversalPlusChecked'] ?? false) || (v['ShortReversalChecked'] ?? false)) &&
-        (v['ShortSignalExitChecked'] ?? false);
+        (v['LongSignalExitChecked'] ?? false);
   }
 
-  bool isM9LongAllChecked(String symbol) {
-    final v = getValues("MM", symbol);
-    return (v['LongTcChecked'] ?? false) &&
-        (v['LongMfChecked'] ?? false) &&
-        (v['LongTtChecked'] ?? false) &&
-        (v['LongSignalChecked'] ?? false);
-  }
+  // bool isM9LongAllChecked(String symbol) {
+  //   final v = getValues("MM", symbol);
+  //   return (v['LongTcChecked'] ?? false) &&
+  //       (v['LongMfChecked'] ?? false) &&
+  //       (v['LongTtChecked'] ?? false) &&
+  //       ((v['LongSignalChecked'] ?? false) ||
+  //           (v['LongReversalPlusChecked'] ?? false) ||
+  //           (v['LongReversalChecked'] ?? false));
+  // }
 
-  bool isM9ShortAllChecked(String symbol) {
-    final v = getValues("MM", symbol);
-    return (v['ShortTcChecked'] ?? false) &&
-        (v['ShortMfChecked'] ?? false) &&
-        (v['ShortTtChecked'] ?? false) &&
-        (v['ShortSignalChecked'] ?? false);
-  }
+  // bool isM9ShortAllChecked(String symbol) {
+  //   final v = getValues("MM", symbol);
+  //   return (v['ShortTcChecked'] ?? false) &&
+  //       (v['ShortMfChecked'] ?? false) &&
+  //       (v['ShortTtChecked'] ?? false) &&
+  //       ((v['ShortSignalChecked'] ?? false) ||
+  //           (v['ShortReversalChecked'] ?? false) ||
+  //           (v['ShortReversalPlusChecked'] ?? false));
+  // }
 
   Future<void> loadAll(String symbol) async {
     _isLoading = true;
@@ -540,7 +555,7 @@ class CheckedBoxProvider extends ChangeNotifier {
       final mm6 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'MM6');
       final mm7 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'MM7');
       final mm8 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'MM8');
-      final mm9 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'MM9');
+      // final mm9 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'MM9');
       final am1 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM1');
       final am2 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM2');
       final am3 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM3');
@@ -549,7 +564,7 @@ class CheckedBoxProvider extends ChangeNotifier {
       final am6 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM6');
       final am7 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM7');
       final am8 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM8');
-      final am9 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM9');
+      // final am9 = await getSymbolSetting(userId: "1", symbol: symbol, section: 'AM9');
 
       mmValuesPerSymbol[symbol] = {..._mmEmptyValues(), ...mm};
       mm1ValuesPerSymbol[symbol] = {..._mm1EmptyValues(), ...mm1};
@@ -560,7 +575,7 @@ class CheckedBoxProvider extends ChangeNotifier {
       mm6ValuesPerSymbol[symbol] = {..._mm6EmptyValues(), ...mm6};
       mm7ValuesPerSymbol[symbol] = {..._mm7EmptyValues(), ...mm7};
       mm8ValuesPerSymbol[symbol] = {..._mm8EmptyValues(), ...mm8};
-      mm9ValuesPerSymbol[symbol] = {..._mm9EmptyValues(), ...mm9};
+      // mm9ValuesPerSymbol[symbol] = {..._mm9EmptyValues(), ...mm9};
       am1ValuesPerSymbol[symbol] = {..._am1EmptyValues(), ...am1};
       am2ValuesPerSymbol[symbol] = {..._am2EmptyValues(), ...am2};
       am3ValuesPerSymbol[symbol] = {..._am3EmptyValues(), ...am3};
@@ -569,14 +584,26 @@ class CheckedBoxProvider extends ChangeNotifier {
       am6ValuesPerSymbol[symbol] = {..._am6EmptyValues(), ...am6};
       am7ValuesPerSymbol[symbol] = {..._am7EmptyValues(), ...am7};
       am8ValuesPerSymbol[symbol] = {..._am8EmptyValues(), ...am8};
-      am9ValuesPerSymbol[symbol] = {..._am9EmptyValues(), ...am9};
+      // am9ValuesPerSymbol[symbol] = {..._am9EmptyValues(), ...am9};
     } catch (e) {
-      mmValuesPerSymbol.clear();
-      am1ValuesPerSymbol.clear();
-      am2ValuesPerSymbol.clear();
-      am3ValuesPerSymbol.clear();
-      am4ValuesPerSymbol.clear();
-      am5ValuesPerSymbol.clear();
+      mmValuesPerSymbol.remove(symbol);
+      mm1ValuesPerSymbol.remove(symbol);
+      mm2ValuesPerSymbol.remove(symbol);
+      mm3ValuesPerSymbol.remove(symbol);
+      mm4ValuesPerSymbol.remove(symbol);
+      mm5ValuesPerSymbol.remove(symbol);
+      mm6ValuesPerSymbol.remove(symbol);
+      mm7ValuesPerSymbol.remove(symbol);
+      mm8ValuesPerSymbol.remove(symbol);
+
+      am1ValuesPerSymbol.remove(symbol);
+      am2ValuesPerSymbol.remove(symbol);
+      am3ValuesPerSymbol.remove(symbol);
+      am4ValuesPerSymbol.remove(symbol);
+      am5ValuesPerSymbol.remove(symbol);
+      am6ValuesPerSymbol.remove(symbol);
+      am7ValuesPerSymbol.remove(symbol);
+      am8ValuesPerSymbol.remove(symbol);
     }
 
     _isLoading = false;
@@ -618,10 +645,12 @@ class CheckedBoxProvider extends ChangeNotifier {
     } else if (method == 'MM8') {
       mm8ValuesPerSymbol[symbol] ??= _mm8EmptyValues();
       mm8ValuesPerSymbol[symbol]![field] = !(mm8ValuesPerSymbol[symbol]![field] ?? false);
-    } else if (method == 'MM9') {
-      mm9ValuesPerSymbol[symbol] ??= _mm9EmptyValues();
-      mm9ValuesPerSymbol[symbol]![field] = !(mm9ValuesPerSymbol[symbol]![field] ?? false);
-    } else if (method == 'AM1') {
+    }
+    // else if (method == 'MM9') {
+    //   mm9ValuesPerSymbol[symbol] ??= _mm9EmptyValues();
+    //   mm9ValuesPerSymbol[symbol]![field] = !(mm9ValuesPerSymbol[symbol]![field] ?? false);
+    // }
+    else if (method == 'AM1') {
       am1ValuesPerSymbol[symbol] ??= _am1EmptyValues();
       am1ValuesPerSymbol[symbol]![field] = !(am1ValuesPerSymbol[symbol]![field] ?? false);
     } else if (method == 'AM2') {
@@ -645,10 +674,11 @@ class CheckedBoxProvider extends ChangeNotifier {
     } else if (method == 'AM8') {
       am8ValuesPerSymbol[symbol] ??= _am8EmptyValues();
       am8ValuesPerSymbol[symbol]![field] = !(am8ValuesPerSymbol[symbol]![field] ?? false);
-    } else if (method == 'AM9') {
-      am9ValuesPerSymbol[symbol] ??= _am9EmptyValues();
-      am9ValuesPerSymbol[symbol]![field] = !(am9ValuesPerSymbol[symbol]![field] ?? false);
     }
+    // else if (method == 'AM9') {
+    //   am9ValuesPerSymbol[symbol] ??= _am9EmptyValues();
+    //   am9ValuesPerSymbol[symbol]![field] = !(am9ValuesPerSymbol[symbol]![field] ?? false);
+    // }
 
     notifyListeners();
 
@@ -681,8 +711,8 @@ class CheckedBoxProvider extends ChangeNotifier {
         return mm7ValuesPerSymbol[symbol]!;
       case 'MM8':
         return mm8ValuesPerSymbol[symbol]!;
-      case 'MM9':
-        return mm9ValuesPerSymbol[symbol]!;
+      // case 'MM9':
+      //   return mm9ValuesPerSymbol[symbol]!;
       case 'AM1':
         return am1ValuesPerSymbol[symbol]!;
       case 'AM2':
@@ -699,8 +729,8 @@ class CheckedBoxProvider extends ChangeNotifier {
         return am7ValuesPerSymbol[symbol]!;
       case 'AM8':
         return am8ValuesPerSymbol[symbol]!;
-      case 'AM9':
-        return am9ValuesPerSymbol[symbol]!;
+      // case 'AM9':
+      //   return am9ValuesPerSymbol[symbol]!;
       default:
         return {};
     }

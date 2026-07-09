@@ -25,7 +25,7 @@ class ValueProvider extends ChangeNotifier {
   bool isM6Checked = false;
   bool isM7Checked = false;
   bool isM8Checked = false;
-  bool isM9Checked = false;
+  // bool isM9Checked = false;
   void enableMethod(String method) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (method == "MM1") {
@@ -52,10 +52,11 @@ class ValueProvider extends ChangeNotifier {
     } else if (method == "MM8") {
       isM8Checked = !isM8Checked;
       await prefs.setBool('M8Checked', isM8Checked);
-    } else if (method == "MM9") {
-      isM9Checked = !isM9Checked;
-      await prefs.setBool('M9Checked', isM9Checked);
     }
+    //  else if (method == "MM9") {
+    //   isM9Checked = !isM9Checked;
+    //   await prefs.setBool('M9Checked', isM9Checked);
+    // }
     notifyListeners();
   }
 
@@ -69,7 +70,7 @@ class ValueProvider extends ChangeNotifier {
     isM6Checked = prefs.getBool('M6Checked') ?? false;
     isM7Checked = prefs.getBool('M7Checked') ?? false;
     isM8Checked = prefs.getBool('M8Checked') ?? false;
-    isM9Checked = prefs.getBool('M9Checked') ?? false;
+    // isM9Checked = prefs.getBool('M9Checked') ?? false;
   }
 
   //new section end

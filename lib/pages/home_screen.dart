@@ -26,8 +26,8 @@ class HomeScreenState extends State<HomeScreen> {
   List<SearchFieldListItem<String>> symbols = [];
   bool isLoading = true;
   bool _isDialogOpen = false;
-  String? _lastTriggeredMethod;
-  bool _frameScheduled = false;
+  String? lastTriggeredMethod;
+  Set<String> _activeTriggeredMethods = {};
   late Future<void> _initFuture;
   late TextEditingController _symbolController;
 
@@ -75,6 +75,91 @@ class HomeScreenState extends State<HomeScreen> {
         liveUpdation(context);
       });
     }
+  }
+
+  bool _setEquals(Set<String> a, Set<String> b) {
+    if (a.length != b.length) return false;
+    for (final item in a) {
+      if (!b.contains(item)) return false;
+    }
+    return true;
+  }
+
+  String? _pickEnabledMethod(Set<String> triggers, ValueProvider auto) {
+    final orderedMethods = [
+      if (auto.isM1Checked) "M1",
+      if (auto.isM2Checked) "M2",
+      if (auto.isM3Checked) "M3",
+      if (auto.isM4Checked) "M4",
+      if (auto.isM5Checked) "M5",
+      if (auto.isM6Checked) "M6",
+      if (auto.isM7Checked) "M7",
+      if (auto.isM8Checked) "M8",
+    ];
+
+    for (final method in orderedMethods) {
+      if (triggers.any((e) => e.startsWith(method))) {
+        return method;
+      }
+    }
+    return null;
+  }
+
+  void _checkAndShowMethodDialog(BuildContext context, ValueProvider auto, CheckedBoxProvider check) {
+    final symbol = auto.manualSelectedValue;
+
+    if (symbol == null || symbol.isEmpty) return;
+    if (check.isLoading) return;
+    if (_isDialogOpen) return;
+
+    final currentTriggered = <String>{};
+
+    if (check.isM1LongAllChecked(symbol)) currentTriggered.add("M1_LONG");
+    if (check.isM1ShortAllChecked(symbol)) currentTriggered.add("M1_SHORT");
+    if (check.isM2LongAllChecked(symbol)) currentTriggered.add("M2_LONG");
+    if (check.isM2ShortAllChecked(symbol)) currentTriggered.add("M2_SHORT");
+    if (check.isM3LongAllChecked(symbol)) currentTriggered.add("M3_LONG");
+    if (check.isM3ShortAllChecked(symbol)) currentTriggered.add("M3_SHORT");
+    if (check.isM4LongAllChecked(symbol)) currentTriggered.add("M4_LONG");
+    if (check.isM4ShortAllChecked(symbol)) currentTriggered.add("M4_SHORT");
+    if (check.isM5LongAllChecked(symbol)) currentTriggered.add("M5_LONG");
+    if (check.isM5ShortAllChecked(symbol)) currentTriggered.add("M5_SHORT");
+    if (check.isM6LongAllChecked(symbol)) currentTriggered.add("M6_LONG");
+    if (check.isM6ShortAllChecked(symbol)) currentTriggered.add("M6_SHORT");
+    if (check.isM7LongAllChecked(symbol)) currentTriggered.add("M7_LONG");
+    if (check.isM7ShortAllChecked(symbol)) currentTriggered.add("M7_SHORT");
+    if (check.isM8LongAllChecked(symbol)) currentTriggered.add("M8_LONG");
+    if (check.isM8ShortAllChecked(symbol)) currentTriggered.add("M8_SHORT");
+
+    if (currentTriggered.isEmpty) {
+      _activeTriggeredMethods.clear();
+      lastTriggeredMethod = null;
+      return;
+    }
+
+    if (_setEquals(currentTriggered, _activeTriggeredMethods)) {
+      return;
+    }
+    final newTriggers = currentTriggered.difference(_activeTriggeredMethods);
+    _activeTriggeredMethods = {...currentTriggered};
+
+    if (newTriggers.isEmpty) return;
+
+    final method = _pickEnabledMethod(newTriggers, auto);
+    if (method == null) return;
+
+    lastTriggeredMethod = method;
+    _isDialogOpen = true;
+
+    showDialog(
+      context: context,
+      builder: (_) => MethodDialog(method: method),
+    ).then((_) {
+      if (!mounted) return;
+      setState(() {
+        _isDialogOpen = false;
+      });
+    });
   }
 
   @override
@@ -201,83 +286,11 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           body: Consumer2<ValueProvider, CheckedBoxProvider>(
             builder: (context, auto, check, child) {
-              final symbol = auto.manualSelectedValue;
-              List<String> triggeredMethods = [];
-
-              if (symbol != null) {
-                if (check.isM1LongAllChecked(symbol)) triggeredMethods.add("M1_LONG");
-                if (check.isM1ShortAllChecked(symbol)) triggeredMethods.add("M1_SHORT");
-                if (check.isM2LongAllChecked(symbol)) triggeredMethods.add("M2_LONG");
-                if (check.isM2ShortAllChecked(symbol)) triggeredMethods.add("M2_SHORT");
-                if (check.isM3LongAllChecked(symbol)) triggeredMethods.add("M3_LONG");
-                if (check.isM3ShortAllChecked(symbol)) triggeredMethods.add("M3_SHORT");
-                if (check.isM4LongAllChecked(symbol)) triggeredMethods.add("M4_LONG");
-                if (check.isM4ShortAllChecked(symbol)) triggeredMethods.add("M4_SHORT");
-                if (check.isM5LongAllChecked(symbol)) triggeredMethods.add("M5_LONG");
-                if (check.isM5ShortAllChecked(symbol)) triggeredMethods.add("M5_SHORT");
-                if (check.isM6LongAllChecked(symbol)) triggeredMethods.add("M6_LONG");
-                if (check.isM6ShortAllChecked(symbol)) triggeredMethods.add("M6_SHORT");
-                if (check.isM7LongAllChecked(symbol)) triggeredMethods.add("M7_LONG");
-                if (check.isM7ShortAllChecked(symbol)) triggeredMethods.add("M7_SHORT");
-                if (check.isM8LongAllChecked(symbol)) triggeredMethods.add("M8_LONG");
-                if (check.isM8ShortAllChecked(symbol)) triggeredMethods.add("M8_SHORT");
-                if (check.isM9LongAllChecked(symbol)) triggeredMethods.add("M9_LONG");
-                if (check.isM9ShortAllChecked(symbol)) triggeredMethods.add("M9_SHORT");
-                if (!_frameScheduled) {
-                  _frameScheduled = true;
-
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _frameScheduled = false;
-
-                    if (!mounted) return;
-
-                    final sorted = [...triggeredMethods]..sort();
-                    final key = sorted.join(",");
-
-                    if (triggeredMethods.isNotEmpty && key != _lastTriggeredMethod && !_isDialogOpen) {
-                      _isDialogOpen = true;
-                      String method = "ALL";
-                      // showDialog(context: context, builder: (_) => methodDialog(context)).then((_) {
-                      //   if (mounted) {
-                      //     setState(() {
-                      //       _isDialogOpen = false;
-                      //     });
-                      //   }
-                      // });
-                      if (triggeredMethods.any((el) => (el == "M1_LONG") || (el == "M1_SHORT"))) {
-                        method = "M1";
-                      } else if (triggeredMethods.any((el) => (el == "M2_LONG") || (el == "M2_SHORT"))) {
-                        method = "M2";
-                      } else if (triggeredMethods.any((el) => (el == "M3_LONG") || (el == "M3_SHORT"))) {
-                        method = "M3";
-                      } else if (triggeredMethods.any((el) => (el == "M4_LONG") || (el == "M4_SHORT"))) {
-                        method = "M4";
-                      } else if (triggeredMethods.any((el) => (el == "M5_LONG") || (el == "M5_SHORT"))) {
-                        method = "M5";
-                      } else if (triggeredMethods.any((el) => (el == "M6_LONG") || (el == "M6_SHORT"))) {
-                        method = "M6";
-                      } else if (triggeredMethods.any((el) => (el == "M7_LONG") || (el == "M7_SHORT"))) {
-                        method = "M7";
-                      } else if (triggeredMethods.any((el) => (el == "M8_LONG") || (el == "M8_SHORT"))) {
-                        method = "M8";
-                      } else if (triggeredMethods.any((el) => (el == "M9_LONG") || (el == "M9_SHORT"))) {
-                        method = "M9";
-                      }
-                      showDialog(
-                        context: context,
-                        builder: (_) => MethodDialog(method: method),
-                      ).then((_) {
-                        if (mounted) {
-                          setState(() {
-                            _isDialogOpen = false;
-                          });
-                        }
-                      });
-                    }
-
-                    _lastTriggeredMethod = key;
-                  });
-                }
+              if (!auto.isAutomaticSectionEnabled && auto.manualSelectedValue != null && !check.isLoading) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  _checkAndShowMethodDialog(context, auto, check);
+                });
               }
               return auto.isAutomaticSectionEnabled
                   ? AutomationScreen(symbols: symbols)
@@ -510,19 +523,19 @@ Widget settingDialog() {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('Method 9', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Checkbox(
-                    value: val.isM9Checked,
-                    onChanged: (_) {
-                      val.enableMethod("MM9");
-                    },
-                    activeColor: Colors.green,
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     Text('Method 9', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              //     Checkbox(
+              //       value: val.isM9Checked,
+              //       onChanged: (_) {
+              //         val.enableMethod("MM9");
+              //       },
+              //       activeColor: Colors.green,
+              //     ),
+              //   ],
+              // ),
             ],
           );
         },

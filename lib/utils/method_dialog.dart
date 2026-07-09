@@ -22,7 +22,7 @@ class _MethodDialogState extends State<MethodDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // print("method in method dialog: ${widget.method}");
+    print("method in method dialog: ${widget.method}");
     return Dialog(
       insetPadding: EdgeInsets.zero,
       child: Container(
@@ -133,16 +133,16 @@ class _MethodDialogState extends State<MethodDialog> {
                             methodId: "MM8",
                             title: "Method 8",
                           ),
-                        if ((widget.method == "M9" && val.isM9Checked) || widget.method == "ALL")
-                          _buildMethodContainer(
-                            context: context,
-                            symbol: symbol,
-                            longAllChecked: check.isM9LongAllChecked,
-                            shortAllChecked: check.isM9ShortAllChecked,
-                            isMethodChecked: val.isM9Checked,
-                            methodId: "MM9",
-                            title: "Method 9",
-                          ),
+                        // if ((widget.method == "M9" && val.isM9Checked) || widget.method == "ALL")
+                        //   _buildMethodContainer(
+                        //     context: context,
+                        //     symbol: symbol,
+                        //     longAllChecked: check.isM9LongAllChecked,
+                        //     shortAllChecked: check.isM9ShortAllChecked,
+                        //     isMethodChecked: val.isM9Checked,
+                        //     methodId: "MM9",
+                        //     title: "Method 9",
+                        //   ),
                       ],
                     ),
                   ),
