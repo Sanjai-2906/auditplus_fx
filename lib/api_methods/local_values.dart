@@ -16,10 +16,6 @@ Future<void> setLocalValues(LocalValuesModel data) async {
   final _ = await dio.post(
     '$url/set-local',
     data: data.toJson(),
-    options: Options(
-      headers: {
-        'Content-Type': 'application/json', // 🔥 REQUIRED
-      },
-    ),
+    options: Options(headers: {'Content-Type': 'application/json'}),
   );
 }

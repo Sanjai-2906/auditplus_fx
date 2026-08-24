@@ -9,14 +9,14 @@ import '../models/models.dart';
 import '../utils/utils.dart';
 import 'sections.dart';
 
-class AutomaticMethod4Section extends StatefulWidget {
-  const AutomaticMethod4Section({super.key});
+class AutomaticMethod7Section extends StatefulWidget {
+  const AutomaticMethod7Section({super.key});
 
   @override
-  State<AutomaticMethod4Section> createState() => _AutomaticMethod4SectionState();
+  State<AutomaticMethod7Section> createState() => _AutomaticMethod7SectionState();
 }
 
-class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
+class _AutomaticMethod7SectionState extends State<AutomaticMethod7Section> {
   Set<String> expandedSymbols = {};
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                 children: [
                   Consumer<ValueProvider>(
                     builder: (context, autoLive, child) {
-                      if (autoLive.liveAutomaticTradeM4.isEmpty) {
+                      if (autoLive.liveAutomaticTradeM7.isEmpty) {
                         return Text("No items found");
                       } else {
                         return SizedBox(
                           width: double.infinity,
                           child: Consumer<ValueProvider>(
                             builder: (context, autoLive, child) {
-                              final items = autoLive.liveAutomaticTradeM4.values.toList();
+                              final items = autoLive.liveAutomaticTradeM7.values.toList();
                               return ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -49,7 +49,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                 itemBuilder: (context, index) {
                                   final symbol = items[index].symbol;
 
-                                  if (!context.read<CheckedBoxProvider>().am4ValuesPerSymbol.containsKey(symbol)) {
+                                  if (!context.read<CheckedBoxProvider>().am7ValuesPerSymbol.containsKey(symbol)) {
                                     Future.microtask(() {
                                       context.read<CheckedBoxProvider>().loadAll(symbol);
                                     });
@@ -71,6 +71,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                           child: Column(
                                             children: [
                                               Row(
+                                                mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Expanded(
                                                     flex: 3,
@@ -100,7 +101,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                                       ),
                                                     ),
                                                     onPressed: () async {
-                                                      await timeDialog(context, items[index], "AM4");
+                                                      await timeDialog(context, items[index], "AM7");
                                                       await Provider.of<ValueProvider>(
                                                         context,
                                                         listen: false,
@@ -112,7 +113,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                                     flex: 3,
                                                     child: TextButton(
                                                       style: ElevatedButton.styleFrom(
-                                                        maximumSize: Size(75, 40),
+                                                        fixedSize: Size(75, 40),
                                                         backgroundColor: Color.fromRGBO(229, 231, 235, 1),
                                                         foregroundColor: Colors.black,
                                                         shape: RoundedRectangleBorder(
@@ -126,7 +127,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                                           volume: items[index].volume,
                                                           isEnabled: true,
                                                           action: ActionType.close,
-                                                          method: "AM4",
+                                                          method: "AM7",
                                                         );
                                                         await automaticTrading(context, data);
                                                       },
@@ -155,7 +156,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                                         volume: items[index].volume,
                                                         isEnabled: false,
                                                         action: ActionType.disable,
-                                                        method: "AM4",
+                                                        method: "AM7",
                                                       );
                                                       await automaticTrading(context, data);
                                                       autoLive.removeLiveTrade(data.symbol, data.method);
@@ -187,7 +188,7 @@ class _AutomaticMethod4SectionState extends State<AutomaticMethod4Section> {
                                                 ],
                                               ),
                                               if (expandedSymbols.contains(items[index].symbol))
-                                                AutomaticClosingSection(method: 'AM4', amSymbol: items[index].symbol),
+                                                AutomaticClosingSection(method: 'AM7', amSymbol: items[index].symbol),
                                             ],
                                           ),
                                         ),

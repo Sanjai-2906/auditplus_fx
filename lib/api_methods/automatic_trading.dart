@@ -20,12 +20,12 @@ Future<void> automaticTrading(BuildContext context, CurrentAutomationModel data)
     );
     return;
   }
-  print(data);
+  print(data.toJson());
   Dio dio = Dio();
   try {
     final _ = await dio.post(
       "$url/automatic",
-      data: data,
+      data: data.toJson(),
       options: Options(headers: {'Content-Type': 'application/json', 'auth-token': token}),
     );
   } on DioException catch (e) {

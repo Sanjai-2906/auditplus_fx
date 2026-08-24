@@ -9,7 +9,7 @@ import '../models/models.dart';
 import 'providers.dart';
 
 //Screen Selection
-enum Method { method1, method2, method3, method4, method5, method9 }
+enum Method { method1, method2, method3, method4, method5, method6, method7, method8, method9 }
 
 class ValueProvider extends ChangeNotifier {
   //Screen Changes
@@ -22,6 +22,10 @@ class ValueProvider extends ChangeNotifier {
   bool isM3Checked = false;
   bool isM4Checked = false;
   bool isM5Checked = false;
+  bool isM6Checked = false;
+  bool isM7Checked = false;
+  bool isM8Checked = false;
+  // bool isM9Checked = false;
   void enableMethod(String method) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (method == "MM1") {
@@ -39,7 +43,20 @@ class ValueProvider extends ChangeNotifier {
     } else if (method == "MM5") {
       isM5Checked = !isM5Checked;
       await prefs.setBool('M5Checked', isM5Checked);
+    } else if (method == "MM6") {
+      isM6Checked = !isM6Checked;
+      await prefs.setBool('M6Checked', isM6Checked);
+    } else if (method == "MM7") {
+      isM7Checked = !isM7Checked;
+      await prefs.setBool('M7Checked', isM7Checked);
+    } else if (method == "MM8") {
+      isM8Checked = !isM8Checked;
+      await prefs.setBool('M8Checked', isM8Checked);
     }
+    //  else if (method == "MM9") {
+    //   isM9Checked = !isM9Checked;
+    //   await prefs.setBool('M9Checked', isM9Checked);
+    // }
     notifyListeners();
   }
 
@@ -50,6 +67,10 @@ class ValueProvider extends ChangeNotifier {
     isM3Checked = prefs.getBool('M3Checked') ?? false;
     isM4Checked = prefs.getBool('M4Checked') ?? false;
     isM5Checked = prefs.getBool('M5Checked') ?? false;
+    isM6Checked = prefs.getBool('M6Checked') ?? false;
+    isM7Checked = prefs.getBool('M7Checked') ?? false;
+    isM8Checked = prefs.getBool('M8Checked') ?? false;
+    // isM9Checked = prefs.getBool('M9Checked') ?? false;
   }
 
   //new section end
@@ -74,6 +95,9 @@ class ValueProvider extends ChangeNotifier {
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM3 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM4 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM5 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM6 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM7 = {};
+  Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM8 = {};
   Map<String, LiveAutomaticTradeModel> liveAutomaticTradeM9 = {};
 
   ValueProvider(BuildContext context) {
@@ -107,6 +131,12 @@ class ValueProvider extends ChangeNotifier {
         liveAutomaticTradeM4[item.symbol] = item;
       } else if (item.method == 'AM5') {
         liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM6') {
+        liveAutomaticTradeM6[item.symbol] = item;
+      } else if (item.method == 'AM7') {
+        liveAutomaticTradeM7[item.symbol] = item;
+      } else if (item.method == 'AM8') {
+        liveAutomaticTradeM8[item.symbol] = item;
       } else if (item.method == 'AM9') {
         liveAutomaticTradeM9[item.symbol] = item;
       }
@@ -162,6 +192,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -185,6 +218,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -230,6 +266,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -253,6 +292,9 @@ class ValueProvider extends ChangeNotifier {
         ...liveAutomaticTradeM3.values,
         ...liveAutomaticTradeM4.values,
         ...liveAutomaticTradeM5.values,
+        ...liveAutomaticTradeM6.values,
+        ...liveAutomaticTradeM7.values,
+        ...liveAutomaticTradeM8.values,
         ...liveAutomaticTradeM9.values,
       ],
     );
@@ -309,6 +351,12 @@ class ValueProvider extends ChangeNotifier {
       liveAutomaticTradeM4.remove(symbol);
     } else if (method == 'AM5') {
       liveAutomaticTradeM5.remove(symbol);
+    } else if (method == 'AM6') {
+      liveAutomaticTradeM6.remove(symbol);
+    } else if (method == 'AM7') {
+      liveAutomaticTradeM7.remove(symbol);
+    } else if (method == 'AM8') {
+      liveAutomaticTradeM8.remove(symbol);
     } else if (method == 'AM9') {
       liveAutomaticTradeM9.remove(symbol);
     }
@@ -346,12 +394,68 @@ class ValueProvider extends ChangeNotifier {
         symbol: mod.symbol,
         volume: mod.volume,
       );
+    } else if (mod.method == 'AM6') {
+      liveAutomaticTradeM6[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM7') {
+      liveAutomaticTradeM7[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
+    } else if (mod.method == 'AM8') {
+      liveAutomaticTradeM8[mod.symbol] = LiveAutomaticTradeModel(
+        method: mod.method,
+        symbol: mod.symbol,
+        volume: mod.volume,
+      );
     } else if (mod.method == 'AM9') {
       liveAutomaticTradeM9[mod.symbol] = LiveAutomaticTradeModel(
         method: mod.method,
         symbol: mod.symbol,
         volume: mod.volume,
       );
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> updateTradeRange() async {
+    final response = await getLocalValues();
+
+    liveAutomaticTradeM1.clear();
+    liveAutomaticTradeM2.clear();
+    liveAutomaticTradeM3.clear();
+    liveAutomaticTradeM4.clear();
+    liveAutomaticTradeM5.clear();
+    liveAutomaticTradeM6.clear();
+    liveAutomaticTradeM7.clear();
+    liveAutomaticTradeM8.clear();
+    liveAutomaticTradeM9.clear();
+
+    for (var item in response.liveAutomaticTrade) {
+      if (item.method == 'AM1') {
+        liveAutomaticTradeM1[item.symbol] = item;
+      } else if (item.method == 'AM2') {
+        liveAutomaticTradeM2[item.symbol] = item;
+      } else if (item.method == 'AM3') {
+        liveAutomaticTradeM3[item.symbol] = item;
+      } else if (item.method == 'AM4') {
+        liveAutomaticTradeM4[item.symbol] = item;
+      } else if (item.method == 'AM5') {
+        liveAutomaticTradeM5[item.symbol] = item;
+      } else if (item.method == 'AM6') {
+        liveAutomaticTradeM6[item.symbol] = item;
+      } else if (item.method == 'AM7') {
+        liveAutomaticTradeM7[item.symbol] = item;
+      } else if (item.method == 'AM8') {
+        liveAutomaticTradeM8[item.symbol] = item;
+      } else if (item.method == 'AM9') {
+        liveAutomaticTradeM9[item.symbol] = item;
+      }
     }
 
     notifyListeners();

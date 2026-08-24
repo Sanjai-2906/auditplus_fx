@@ -6,10 +6,10 @@ import 'package:auditplus_fx/pages/automation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
-import 'package:auditplus_fx/drawer_widget.dart';
 
 import '../Providers/providers.dart';
 import '../api_methods/api_methods.dart';
+import '../utils/utils.dart';
 import '../sections/sections.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,9 +26,10 @@ class HomeScreenState extends State<HomeScreen> {
   List<SearchFieldListItem<String>> symbols = [];
   bool isLoading = true;
   bool _isDialogOpen = false;
-  String? _lastTriggeredMethod;
-  bool _frameScheduled = false;
+  String? lastTriggeredMethod;
+  Set<String> _activeTriggeredMethods = {};
   late Future<void> _initFuture;
+  late TextEditingController _symbolController;
 
   late TextEditingController _tokenController;
   late FocusNode _symbolFocusNode;
@@ -42,6 +43,7 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _symbolFocusNode = FocusNode();
     _tokenController = TextEditingController();
+    _symbolController = TextEditingController();
 
     _initFuture = _initializeApp(context);
   }
@@ -75,9 +77,95 @@ class HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  bool _setEquals(Set<String> a, Set<String> b) {
+    if (a.length != b.length) return false;
+    for (final item in a) {
+      if (!b.contains(item)) return false;
+    }
+    return true;
+  }
+
+  String? _pickEnabledMethod(Set<String> triggers, ValueProvider auto) {
+    final orderedMethods = [
+      if (auto.isM1Checked) "M1",
+      if (auto.isM2Checked) "M2",
+      if (auto.isM3Checked) "M3",
+      if (auto.isM4Checked) "M4",
+      if (auto.isM5Checked) "M5",
+      if (auto.isM6Checked) "M6",
+      if (auto.isM7Checked) "M7",
+      if (auto.isM8Checked) "M8",
+    ];
+
+    for (final method in orderedMethods) {
+      if (triggers.any((e) => e.startsWith(method))) {
+        return method;
+      }
+    }
+    return null;
+  }
+
+  void _checkAndShowMethodDialog(BuildContext context, ValueProvider auto, CheckedBoxProvider check) {
+    final symbol = auto.manualSelectedValue;
+
+    if (symbol == null || symbol.isEmpty) return;
+    if (check.isLoading) return;
+    if (_isDialogOpen) return;
+
+    final currentTriggered = <String>{};
+
+    if (check.isM1LongAllChecked(symbol)) currentTriggered.add("M1_LONG");
+    if (check.isM1ShortAllChecked(symbol)) currentTriggered.add("M1_SHORT");
+    if (check.isM2LongAllChecked(symbol)) currentTriggered.add("M2_LONG");
+    if (check.isM2ShortAllChecked(symbol)) currentTriggered.add("M2_SHORT");
+    if (check.isM3LongAllChecked(symbol)) currentTriggered.add("M3_LONG");
+    if (check.isM3ShortAllChecked(symbol)) currentTriggered.add("M3_SHORT");
+    if (check.isM4LongAllChecked(symbol)) currentTriggered.add("M4_LONG");
+    if (check.isM4ShortAllChecked(symbol)) currentTriggered.add("M4_SHORT");
+    if (check.isM5LongAllChecked(symbol)) currentTriggered.add("M5_LONG");
+    if (check.isM5ShortAllChecked(symbol)) currentTriggered.add("M5_SHORT");
+    if (check.isM6LongAllChecked(symbol)) currentTriggered.add("M6_LONG");
+    if (check.isM6ShortAllChecked(symbol)) currentTriggered.add("M6_SHORT");
+    if (check.isM7LongAllChecked(symbol)) currentTriggered.add("M7_LONG");
+    if (check.isM7ShortAllChecked(symbol)) currentTriggered.add("M7_SHORT");
+    if (check.isM8LongAllChecked(symbol)) currentTriggered.add("M8_LONG");
+    if (check.isM8ShortAllChecked(symbol)) currentTriggered.add("M8_SHORT");
+
+    if (currentTriggered.isEmpty) {
+      _activeTriggeredMethods.clear();
+      lastTriggeredMethod = null;
+      return;
+    }
+
+    if (_setEquals(currentTriggered, _activeTriggeredMethods)) {
+      return;
+    }
+    final newTriggers = currentTriggered.difference(_activeTriggeredMethods);
+    _activeTriggeredMethods = {...currentTriggered};
+
+    if (newTriggers.isEmpty) return;
+
+    final method = _pickEnabledMethod(newTriggers, auto);
+    if (method == null) return;
+
+    lastTriggeredMethod = method;
+    _isDialogOpen = true;
+
+    showDialog(
+      context: context,
+      builder: (_) => MethodDialog(method: method),
+    ).then((_) {
+      if (!mounted) return;
+      setState(() {
+        _isDialogOpen = false;
+      });
+    });
+  }
+
   @override
   void dispose() {
     _symbolFocusNode.dispose();
+    _symbolController.dispose();
     _longButtonFocusNode.dispose();
     _shortButtonFocusNode.dispose();
     _closeButtonFocusNode.dispose();
@@ -174,102 +262,35 @@ class HomeScreenState extends State<HomeScreen> {
             actions: <Widget>[
               Consumer<ValueProvider>(
                 builder: (context, auto, child) {
-                  return TextButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: auto.isAutomaticSectionEnabled
-                          ? Color.fromRGBO(44, 187, 104, 1)
-                          : Color.fromRGBO(189, 232, 245, 1),
-                      foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Colors.white, width: 2),
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: TextButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: auto.isAutomaticSectionEnabled
+                            ? Color.fromRGBO(44, 187, 104, 1)
+                            : Color.fromRGBO(189, 232, 245, 1),
+                        foregroundColor: auto.isAutomaticSectionEnabled ? Color.fromRGBO(2, 12, 40, 1) : Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.white, width: 2),
+                        ),
                       ),
+                      onPressed: () => auto.setAutomaticEnable(),
+                      child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () => auto.setAutomaticEnable(),
-                    child: Text('AUTO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                   );
                 },
-              ),
-              GestureDetector(
-                onTap: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                    child: Container(
-                      color: Color.fromRGBO(189, 232, 245, 1),
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text('Enter the token'),
-                          const SizedBox(height: 15),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            autofocus: true,
-                            controller: _tokenController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                              labelText: 'Token',
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              String enteredToken = _tokenController.text;
-                              Provider.of<MytokenProvider>(context, listen: false).setToken(enteredToken);
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Submit'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                child: Padding(padding: const EdgeInsets.all(8.0), child: Icon(Icons.token_rounded)),
               ),
             ],
             title: Text('Auditplus Fx', style: TextStyle(color: Colors.white)),
           ),
           body: Consumer2<ValueProvider, CheckedBoxProvider>(
             builder: (context, auto, check, child) {
-              final symbol = auto.manualSelectedValue;
-              List<String> triggeredMethods = [];
-
-              if (symbol != null) {
-                if (check.isM1LongAllChecked(symbol)) triggeredMethods.add("M1_LONG");
-                if (check.isM1ShortAllChecked(symbol)) triggeredMethods.add("M1_SHORT");
-                if (check.isM2LongAllChecked(symbol)) triggeredMethods.add("M2_LONG");
-                if (check.isM2ShortAllChecked(symbol)) triggeredMethods.add("M2_SHORT");
-                if (check.isM3LongAllChecked(symbol)) triggeredMethods.add("M3_LONG");
-                if (check.isM3ShortAllChecked(symbol)) triggeredMethods.add("M3_SHORT");
-                if (check.isM4LongAllChecked(symbol)) triggeredMethods.add("M4_LONG");
-                if (check.isM4ShortAllChecked(symbol)) triggeredMethods.add("M4_SHORT");
-                if (!_frameScheduled) {
-                  _frameScheduled = true;
-
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _frameScheduled = false;
-
-                    if (!mounted) return;
-
-                    final sorted = [...triggeredMethods]..sort();
-                    final key = sorted.join(",");
-
-                    if (triggeredMethods.isNotEmpty && key != _lastTriggeredMethod && !_isDialogOpen) {
-                      _isDialogOpen = true;
-
-                      showDialog(context: context, builder: (_) => methodDialog(context)).then((_) {
-                        if (mounted) {
-                          setState(() {
-                            _isDialogOpen = false;
-                          });
-                        }
-                      });
-                    }
-
-                    _lastTriggeredMethod = key;
-                  });
-                }
+              if (!auto.isAutomaticSectionEnabled && auto.manualSelectedValue != null && !check.isLoading) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  _checkAndShowMethodDialog(context, auto, check);
+                });
               }
               return auto.isAutomaticSectionEnabled
                   ? AutomationScreen(symbols: symbols)
@@ -292,6 +313,7 @@ class HomeScreenState extends State<HomeScreen> {
                                       width: 150,
                                       height: 35,
                                       child: SearchField<String>(
+                                        controller: _symbolController,
                                         focusNode: _symbolFocusNode,
                                         suggestions: symbols,
                                         suggestionState: Suggestion.hidden,
@@ -323,8 +345,6 @@ class HomeScreenState extends State<HomeScreen> {
                                           if (searchText.isEmpty) {
                                             return List<SearchFieldListItem<String>>.from(symbols);
                                           }
-                                          // context.read<ValueProvider>().clearSelectedValue();
-                                          // context.read<CheckedBoxProvider>().clearState("MM");
 
                                           final query = searchText.toUpperCase();
                                           return symbols.where((s) {
@@ -334,10 +354,10 @@ class HomeScreenState extends State<HomeScreen> {
                                           }).toList();
                                         },
                                         onSuggestionTap: (SearchFieldListItem<String> item) {
+                                          _symbolController.text = item.searchKey;
                                           _symbolFocusNode.unfocus();
 
                                           context.read<ValueProvider>().setSelectedItem(item, context);
-                                          // context.read<CheckedBoxProvider>().loadForSymbol(item.value!);
                                           context.read<CheckedBoxProvider>().loadAll(item.value!);
                                         },
                                         onSubmit: (item) {
@@ -358,7 +378,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   onPressed: () => showDialog(
                                     barrierDismissible: false,
                                     context: context,
-                                    builder: (context) => methodDialog(context),
+                                    builder: (context) => MethodDialog(method: "ALL"),
                                   ),
                                   child: Text(
                                     'All Methods',
@@ -389,7 +409,7 @@ class HomeScreenState extends State<HomeScreen> {
 Widget settingDialog() {
   return Dialog(
     child: Container(
-      color: Color.fromRGBO(189, 232, 245, 1),
+      decoration: BoxDecoration(color: Color.fromRGBO(189, 232, 245, 1), borderRadius: BorderRadius.circular(15)),
       padding: const EdgeInsets.all(8.0),
       child: Consumer<ValueProvider>(
         builder: (context, val, child) {
@@ -400,7 +420,7 @@ Widget settingDialog() {
               const Text('Methods', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 1', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -413,7 +433,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 2', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -426,7 +446,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 3', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -439,7 +459,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -452,7 +472,7 @@ Widget settingDialog() {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text('Method 5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Checkbox(
@@ -464,6 +484,58 @@ Widget settingDialog() {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 6', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM6Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM6");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM7Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM7");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Method 8', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Checkbox(
+                    value: val.isM8Checked,
+                    onChanged: (_) {
+                      val.enableMethod("MM8");
+                    },
+                    activeColor: Colors.green,
+                  ),
+                ],
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     Text('Method 9', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              //     Checkbox(
+              //       value: val.isM9Checked,
+              //       onChanged: (_) {
+              //         val.enableMethod("MM9");
+              //       },
+              //       activeColor: Colors.green,
+              //     ),
+              //   ],
+              // ),
             ],
           );
         },

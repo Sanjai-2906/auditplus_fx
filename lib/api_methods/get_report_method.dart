@@ -1,15 +1,12 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 import 'package:auditplus_fx/Providers/providers.dart';
-import 'package:auditplus_fx/create_report.dart';
 import '../models/models.dart';
 import 'contants.dart';
 
-Future<void> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
+Future<List<DbReportModel>> getReport(BuildContext context, String symbol, String startDate, String endDate) async {
   final token = Provider.of<MytokenProvider>(context, listen: false).token;
   if (token == null) {
     toastification.show(
@@ -20,19 +17,24 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
       alignment: Alignment.center,
       autoCloseDuration: const Duration(seconds: 2),
     );
-    return;
+    return [];
   }
   final dio = Dio();
   final data = GetReportModel(symbol: symbol, startDate: startDate, endDate: endDate);
   try {
-    final response = await dio.post('$url/report', data: jsonEncode(data));
+    final response = await dio.post(
+      '$url/report',
+      data: data.toJson(),
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
     final List<DbReportModel> reportList = (response.data as List).map((e) => DbReportModel.fromJson(e)).toList();
-
-    await createExcelFile(reportList);
+    // print(reportList);
+    return reportList;
   } on DioException catch (e) {
     final statusCode = e.response?.statusCode;
 
     if (statusCode == 409) {
+      print(e.response?.data);
       toastification.show(
         backgroundColor: const Color.fromARGB(255, 240, 230, 174),
         title: Text('${e.response?.data}'),
@@ -42,9 +44,10 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
         autoCloseDuration: const Duration(seconds: 2),
       );
     } else {
+      print(e.message);
       toastification.show(
         backgroundColor: const Color.fromARGB(255, 242, 186, 185),
-        title: const Text('Error!'),
+        title: const Text('Report Error!'),
         description: Text('Status code: $statusCode\n${e.message}'),
         type: ToastificationType.error,
         alignment: Alignment.center,
@@ -53,7 +56,7 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
     }
   } catch (e) {
     toastification.show(
-      backgroundColor: const Color.fromRGBO(255, 242, 186, 185),
+      backgroundColor: const Color.fromRGBO(255, 242, 186, 1),
       title: const Text('Unexpected Error!'),
       description: Text(e.toString()),
       type: ToastificationType.error,
@@ -61,4 +64,5 @@ Future<void> getReport(BuildContext context, String symbol, String startDate, St
       autoCloseDuration: const Duration(seconds: 2),
     );
   }
+  return [];
 }

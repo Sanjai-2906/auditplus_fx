@@ -4,7 +4,7 @@ import 'package:excel/excel.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'models/models.dart';
+import '../models/models.dart';
 
 Future<void> createExcelFile(List<DbReportModel> reports) async {
   var excel = Excel.createExcel();

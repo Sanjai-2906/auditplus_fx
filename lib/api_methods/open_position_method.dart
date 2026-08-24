@@ -35,6 +35,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   late bool reversal;
   late bool signal;
   late bool tc;
+  late bool tt;
   late bool hw;
   late bool hwTh;
   late bool mf;
@@ -54,6 +55,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
   reversal = checkedProv.getValue(symbol, method, "${method}ReversalChecked");
   signal = checkedProv.getValue(symbol, method, "${method}SignalExitChecked");
   tc = checkedProv.getValue(symbol, method, "${method}TcChangeChecked");
+  tt = checkedProv.getValue(symbol, method, "${method}TtChecked");
   hw = checkedProv.getValue(symbol, method, "${method}HwChecked");
   hwTh = checkedProv.getValue(symbol, method, "${method}HWTHChecked");
   mf = checkedProv.getValue(symbol, method, "${method}MfChecked");
@@ -71,6 +73,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     reversal: reversal,
     signalExit: signal,
     tcChange: tc,
+    tt: tt,
     hyperWave: hw,
     hyperWaveThreshold: hwTh,
     moneyFlow: mf,
@@ -87,14 +90,17 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
     late bool reversal;
     late bool signal;
     late bool tc;
+    late bool tt;
     late bool hw;
     late bool hwTh;
+    late bool mf;
 
     reversalPlusPlus = checkedProv.getValue(symbol, "MM", "${method}ReversalPlusPlusChecked");
     reversalPlus = checkedProv.getValue(symbol, "MM", "${method}ReversalPlusChecked");
     reversal = checkedProv.getValue(symbol, "MM", "${method}ReversalChecked");
     signal = checkedProv.getValue(symbol, "MM", "${method}SignalExitChecked");
     tc = checkedProv.getValue(symbol, "MM", "${method}TcChangeChecked");
+    tt = checkedProv.getValue(symbol, "MM", "${method}TtChecked");
     hw = checkedProv.getValue(symbol, "MM", "${method}HwChecked");
     hwTh = checkedProv.getValue(symbol, "MM", "${method}HWTHChecked");
     mf = checkedProv.getValue(symbol, "MM", "${method}MfChecked");
@@ -108,6 +114,7 @@ Future<void> openPosition(String method, String actionType, num? takeProfit, Bui
       reversal: reversal,
       signalExit: signal,
       tcChange: tc,
+      tt: tt,
       hyperWave: hw,
       hyperWaveThreshold: hwTh,
       moneyFlow: mf,

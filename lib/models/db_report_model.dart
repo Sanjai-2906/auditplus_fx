@@ -4,50 +4,50 @@ part 'db_report_model.g.dart';
 
 @JsonSerializable()
 class DbReportModel {
-  DateTime? openedAt;
-  DateTime? closedAt;
+  String id;
+  String? openedAt;
+  String? closedAt;
   String symbol;
-  String method;
   num openPrice;
   num closePrice;
   num profit;
+  num swap;
+  num commission;
   String actionType;
-  num volume;
+  String volume;
   String positionId;
-  String info;
-  String status;
-  String description;
+  String dealType;
 
   DbReportModel({
+    required this.id,
     required this.openedAt,
     required this.closedAt,
     required this.symbol,
-    required this.method,
     required this.openPrice,
     required this.closePrice,
     required this.profit,
+    required this.swap,
+    required this.commission,
     required this.actionType,
-    required this.info,
     required this.volume,
     required this.positionId,
-    required this.status,
-    required this.description,
+    required this.dealType,
   });
 
   Map<String, dynamic> toMap() => {
+    'id': id,
     'openedAt': openedAt,
     'closedAt': closedAt,
     'symbol': symbol,
-    'method': method,
     'openPrice': openPrice,
     'closePrice': closePrice,
     'profit': profit,
+    'swap': swap,
+    'commission': commission,
     'actionType': actionType,
     'volume': volume,
-    'info': info,
     'positionId': positionId,
-    'status': status,
-    'description': description,
+    'dealType': dealType,
   };
 
   factory DbReportModel.fromJson(Map<String, dynamic> json) => _$DbReportModelFromJson(json);
@@ -56,6 +56,6 @@ class DbReportModel {
 
   @override
   String toString() {
-    return "DbReportModel{Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Method : $method,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Info : $info, Status : $status, Description : $description}";
+    return "DbReportModel{Id: $id, Opened Time : $openedAt,Closed Time : $closedAt,Symbol : $symbol,Open Price : $openPrice,Close Price : $closePrice,Profit: $profit,Action Type : $actionType,Volume : $volume,Postion Id : $positionId, Swap: $swap, Commission: $commission, DealType: $dealType}";
   }
 }
